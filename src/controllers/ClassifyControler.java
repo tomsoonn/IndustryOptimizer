@@ -32,7 +32,7 @@ public class ClassifyControler implements Initializable, FileListener {
     }
 
     public void handleResults(ActionEvent event) throws FileNotFoundException {
-        controller.handleResults(tableView,"input/classify.csv");
+        controller.handleResults(tableView,"input/result.csv");
     }
 
     public void handleData(ActionEvent event) throws IOException {

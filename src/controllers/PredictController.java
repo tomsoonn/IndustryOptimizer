@@ -55,7 +55,6 @@ public class PredictController implements Initializable{
 
     @FXML
     protected void handleConfirm(ActionEvent event) throws IOException {
-        System.out.println(getValue());
         if (getValue() > 100){
             new Alert(Alert.AlertType.ERROR, "Niepoprawne wartości metali").showAndWait();
             return;
@@ -69,7 +68,7 @@ public class PredictController implements Initializable{
         BufferedWriter task = new BufferedWriter(new FileWriter("output/task.txt"));
         task.write("predict");
         task.close();
-        BufferedWriter data = new BufferedWriter(new FileWriter("output/data.csv"));
+        BufferedWriter data = new BufferedWriter(new FileWriter("output/predict.csv"));
         data.write(val);
         data.close();
     }
@@ -170,7 +169,6 @@ public class PredictController implements Initializable{
         stage.setTitle("Predict");
         stage.setScene(new Scene(root, 1140, 550));
         stage.show();
-        //controller.setScene(stage, root, "Predict");
     }
 
     static String readFile(String path, Charset encoding)

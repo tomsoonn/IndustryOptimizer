@@ -8,7 +8,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import monitor.FileMonitor;
 
-import java.io.File;
+import java.io.*;
+
 import controllers.Controller;
 
 public class Main extends Application {
@@ -23,12 +24,13 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    public static void main(String[] args) throws IOException, InterruptedException {
+        //new ProcessBuilder("python3", "python/main.py");
 
-    public static void main(String[] args) {
         Controller controller = Controller.getInstance();
         FileMonitor monitor = new FileMonitor (1000);
 
-        monitor.addFile (new File("input/classify.csv"));
+        monitor.addFile (new File("input/result.csv"));
         monitor.addFile (new File("input/extreme.csv"));
         monitor.addFile (new File("input/predict.txt"));
 
@@ -43,11 +45,11 @@ public class Main extends Application {
             for (int j=0; j<15; j++){
                 DBObject prod = new BasicDBObject("_id", j)
                         .append("name", "stop niklu")
-                        .append("parametry", new BasicDBObject("metale", new BasicDBObject("nikiel", 0.6)
-                                .append("miedź", 0.2)
-                                .append("żelazo", 0.1)
-                                .append("mangan", 0.05)
-                                .append("magnez", 0.05))
+                        .append("parametry", new BasicDBObject("metale", new BasicDBObject("nikiel", 60)
+                                .append("miedź", 20)
+                                .append("żelazo", 10)
+                                .append("mangan", 5)
+                                .append("magnez", 5))
                                 .append("temp1", ThreadLocalRandom.current().nextInt(1000, 1500 + 1))
                                 .append("czas1", ThreadLocalRandom.current().nextInt(55, 75 + 1))
                                 .append("temp2", ThreadLocalRandom.current().nextInt(800, 1100 + 1))

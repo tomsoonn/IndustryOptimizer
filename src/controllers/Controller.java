@@ -75,7 +75,7 @@ public class Controller implements FileListener {
         JSON json = new JSON();
         String serialize = json.serialize(cursor);
         System.out.println(serialize);
-        BufferedWriter out = new BufferedWriter(new FileWriter("output/test.json"));
+        BufferedWriter out = new BufferedWriter(new FileWriter("output/classify.json"));
         out.write(serialize);
         out.close();
         BufferedWriter task = new BufferedWriter(new FileWriter("output/task.txt"));
