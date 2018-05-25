@@ -1,23 +1,19 @@
-package sample;
+package main;
 
 import com.mongodb.*;
-import com.mongodb.client.MongoDatabase;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import monitor.FileMonitor;
 
-import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
-
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
+import controllers.Controller;
 
 public class Main extends Application {
-
+    public static MongoClient mongoClient = new MongoClient();
+    public static DB database = mongoClient.getDB("aghio");
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -25,24 +21,18 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 1140, 700));
         primaryStage.show();
-
-        /*primaryStage.setTitle("ListView Experiment 1");
-
-        ListView listView = new ListView();
-
-        listView.getItems().add("Item 1");
-        listView.getItems().add("Item 2");
-        listView.getItems().add("Item 3");
-
-        HBox hbox = new HBox(listView);
-
-        Scene scene = new Scene(hbox, 300, 120);
-        primaryStage.setScene(scene);
-        primaryStage.show();*/
     }
 
 
     public static void main(String[] args) {
+        Controller controller = Controller.getInstance();
+        FileMonitor monitor = new FileMonitor (1000);
+
+        monitor.addFile (new File("input/classify.csv"));
+        monitor.addFile (new File("input/extreme.csv"));
+        monitor.addFile (new File("input/predict.txt"));
+
+        monitor.addListener (controller);
         //MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://127.0.0.1:27017"));
         /*MongoClient mongoClient = new MongoClient();
         DB database = mongoClient.getDB("aghio");
@@ -67,8 +57,8 @@ public class Main extends Application {
                 collection.insert(prod);
             }
 
-        }*/
-        /*Set<String> colls = database.getCollectionNames();
+        }
+        Set<String> colls = database.getCollectionNames();
 
         for (String s : colls) {
             System.out.println(s);

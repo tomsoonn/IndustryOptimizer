@@ -4,13 +4,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ExtremePane" prefHeight="700.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ExtremeController">
+<AnchorPane fx:id="StatsPane" prefHeight="700.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.StatsController">
     <children>
         <BorderPane layoutX="-6.0" layoutY="-6.0" prefHeight="714.0" prefWidth="1154.0">
             <left>
@@ -26,14 +25,14 @@
                         </Label>
                         <Label layoutX="126.0" layoutY="59.0" text="(Wybierz z listy)" />
                         <ListView fx:id="listView" layoutX="76.0" layoutY="129.0" prefHeight="371.0" prefWidth="200.0" />
-                        <Button fx:id="classifyButton" layoutX="141.0" layoutY="524.0" mnemonicParsing="false" onAction="#handleData" text="Wybierz" />
-                        <Label layoutX="615.0" layoutY="118.0" prefHeight="49.0" prefWidth="288.0" text="Wartości ekstremalne i samotnicy" textAlignment="JUSTIFY" wrapText="true">
+                        <Button fx:id="classifyButton" layoutX="141.0" layoutY="523.0" mnemonicParsing="false" onAction="#handleData" text="Wybierz" />
+                        <Label layoutX="716.0" layoutY="118.0" prefHeight="49.0" prefWidth="87.0" text="Statystyki" textAlignment="JUSTIFY" wrapText="true">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </Label>
-                        <TableView fx:id="tableView" layoutX="399.0" layoutY="129.0" prefHeight="372.0" prefWidth="721.0" />
-                        <Button layoutX="657.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleShowData" prefHeight="64.0" prefWidth="204.0" text="Wyświetl" />
+                        <ListView layoutX="504.0" layoutY="178.0" prefHeight="322.0" prefWidth="510.0" />
+                        <Button layoutX="657.0" layoutY="27.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="204.0" text="Wyświetl" />
                         <Separator layoutX="354.0" layoutY="4.0" orientation="VERTICAL" prefHeight="621.0" prefWidth="17.0" />
                     </children></Pane>
             </center>
@@ -49,7 +48,7 @@
             <top>
                 <Pane prefHeight="91.0" prefWidth="1154.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Label layoutX="291.0" layoutY="23.0" text="Wartości ekstremalne i samotnicy">
+                        <Label layoutX="291.0" layoutY="23.0" text="Wynik">
                             <font>
                                 <Font size="36.0" />
                             </font>

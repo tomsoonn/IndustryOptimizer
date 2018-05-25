@@ -58,13 +58,13 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button layoutX="868.0" layoutY="119.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="151.0" text="Pokaż wynik" />
+                  <Button layoutX="868.0" layoutY="119.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="151.0" onAction="#handleShowData" text="Pokaż wynik" />
                   <Label layoutX="834.0" layoutY="246.0" text="Ocena">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField layoutX="923.0" layoutY="246.0" prefHeight="27.0" prefWidth="122.0" />
+                  <TextField fx:id="quality" layoutX="923.0" layoutY="246.0" prefHeight="27.0" prefWidth="122.0" />
                     </children></Pane>
             </center>
             <bottom>

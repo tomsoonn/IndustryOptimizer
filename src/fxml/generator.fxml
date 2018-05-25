@@ -22,20 +22,14 @@
                             </font>
                         </Label>
                         <Separator layoutX="-412.0" prefHeight="3.0" prefWidth="1565.0" />
-                  <Label layoutX="83.0" layoutY="135.0" text="Podaj liczbę atrybutów:">
+                  <Label layoutX="83.0" layoutY="135.0" text="Podaj liczbę danych:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="83.0" layoutY="205.0" text="Podaj atrybuty:">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <TextField layoutX="317.0" layoutY="59.0" />
-                  <TextField layoutX="317.0" layoutY="133.0" />
-                  <TextArea layoutX="317.0" layoutY="205.0" prefHeight="200.0" prefWidth="167.0" />
-                  <Button layoutX="123.0" layoutY="467.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="317.0" text="Generuj dane" />
+                  <TextField fx:id="filename" layoutX="317.0" layoutY="59.0" />
+                  <TextField fx:id="quantity" layoutX="317.0" layoutY="133.0" />
+                  <Button layoutX="131.0" layoutY="341.0" onAction="#handleGenerate" mnemonicParsing="false" prefHeight="78.0" prefWidth="317.0" text="Generuj dane" />
                     </children>
                 </Pane>
             </left>
@@ -43,7 +37,7 @@
                 <Pane prefHeight="575.0" prefWidth="694.0" BorderPane.alignment="CENTER">
                     <children>
                         <Separator layoutX="-3.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="625.0" prefWidth="0.0" />
-                  <Button layoutX="130.0" layoutY="44.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="317.0" text="Pokaż wygenerowane dane" />
+                  <Button layoutX="130.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleShowData" prefHeight="78.0" prefWidth="317.0" text="Pokaż wygenerowane dane" />
                   <TextArea layoutX="79.0" layoutY="188.0" prefHeight="366.0" prefWidth="428.0" />
                     </children></Pane>
             </center>
