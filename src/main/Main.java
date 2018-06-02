@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import monitor.FileMonitor;
 
 import java.io.*;
+import java.util.Properties;
 
 import controllers.Controller;
 
@@ -25,49 +26,22 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        //new ProcessBuilder("python3", "python/main.py");
+        Properties prop = new Properties();
+        InputStream input = new FileInputStream("config.properties");
+        prop.load(input);
+
+        ProcessBuilder pb = new ProcessBuilder(prop.getProperty("pythonPath"), "main.py");
+        pb.directory(new File("./python"));
+        pb.start();
 
         Controller controller = Controller.getInstance();
         FileMonitor monitor = new FileMonitor (1000);
 
-        monitor.addFile (new File("input/result.csv"));
-        monitor.addFile (new File("input/extreme.csv"));
-        monitor.addFile (new File("input/predict.txt"));
-
+        monitor.addFile (new File("python/output/results.csv"));
+        monitor.addFile (new File("python/output/extreme.csv"));
+        monitor.addFile (new File("python/output/statistics.txt"));
         monitor.addListener (controller);
-        //MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://127.0.0.1:27017"));
-        /*MongoClient mongoClient = new MongoClient();
-        DB database = mongoClient.getDB("aghio");
-        //DBCollection collection = database.getCollection("production");
-
-        for (int i=10; i<25; i++){
-            DBCollection collection = database.getCollection("2018-01-" + i);
-            for (int j=0; j<15; j++){
-                DBObject prod = new BasicDBObject("_id", j)
-                        .append("name", "stop niklu")
-                        .append("parametry", new BasicDBObject("metale", new BasicDBObject("nikiel", 60)
-                                .append("miedź", 20)
-                                .append("żelazo", 10)
-                                .append("mangan", 5)
-                                .append("magnez", 5))
-                                .append("temp1", ThreadLocalRandom.current().nextInt(1000, 1500 + 1))
-                                .append("czas1", ThreadLocalRandom.current().nextInt(55, 75 + 1))
-                                .append("temp2", ThreadLocalRandom.current().nextInt(800, 1100 + 1))
-                                .append("czas2", ThreadLocalRandom.current().nextInt(25, 45 + 1)))
-                        .append("jakość", ThreadLocalRandom.current().nextInt(1, 5 + 1));
-
-                collection.insert(prod);
-            }
-
-        }
-        Set<String> colls = database.getCollectionNames();
-
-        for (String s : colls) {
-            System.out.println(s);
-        }*/
-
 
         launch(args);
-
     }
 }

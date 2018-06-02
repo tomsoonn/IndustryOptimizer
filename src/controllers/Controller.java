@@ -75,11 +75,11 @@ public class Controller implements FileListener {
         JSON json = new JSON();
         String serialize = json.serialize(cursor);
         System.out.println(serialize);
-        BufferedWriter out = new BufferedWriter(new FileWriter("output/classify.json"));
+        BufferedWriter out = new BufferedWriter(new FileWriter("python/input/classify.json"));
         out.write(serialize);
         out.close();
-        BufferedWriter task = new BufferedWriter(new FileWriter("output/task.txt"));
-        task.write(taskName);
+        BufferedWriter task = new BufferedWriter(new FileWriter("python/task_folder/task.txt"));
+        task.write(taskName + "," + collection.count());
         task.close();
     }
 
@@ -120,14 +120,42 @@ public class Controller implements FileListener {
     }
 
     public void handleShowData(TextField textView, String path) throws IOException {
-        while (!changed);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Poczekaj na wykonanie analizy");
+        while (!changed){
+            alert.showAndWait();
+        }
+        alert.close();
         changed = false;
-        String content = readFile(path, Charset.defaultCharset());
-        textView.setText(content);
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        String line = "";
+        String[] result = null;
+        while ((line = br.readLine()) != null)
+            result = line.split(",");
+        assert result != null;
+        textView.setText(result[9]);
     }
 
+    public void handleResult(String path, TextArea textArea) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Poczekaj na wykonanie analizy");
+        while (!changed){
+            alert.showAndWait();
+        }
+        alert.close();
+        String line;
+        String content = "";
+        FileReader fileReader = new FileReader(path);
+        BufferedReader buffer = new BufferedReader(fileReader);
+
+        while ((line = buffer.readLine()) != null) {
+            content += line;
+            content += "\n";
+        }
+        buffer.close();
+        textArea.setText(content);
+    }
     @Override
     public void fileChanged(File fileName){
+        System.out.println("changed");
         changed = true;
     }
 }

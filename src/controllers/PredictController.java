@@ -65,17 +65,17 @@ public class PredictController implements Initializable{
         }
         String val = tf1.getText() + "," + tf2.getText() + "," + tf3.getText() + "," + tf4.getText() + "," + tf5.getText()
                 + "," + tf6.getText() + "," + tf7.getText() + "," + tf8.getText() + "," + tf9.getText();
-        BufferedWriter task = new BufferedWriter(new FileWriter("output/task.txt"));
-        task.write("predict");
+        BufferedWriter task = new BufferedWriter(new FileWriter("python/task_folder/task.txt"));
+        task.write("predict,1");
         task.close();
-        BufferedWriter data = new BufferedWriter(new FileWriter("output/predict.csv"));
-        data.write(val);
+        BufferedWriter data = new BufferedWriter(new FileWriter("python/input/predict.csv"));
+        data.write(val + ",3");
         data.close();
     }
 
     @FXML
     protected void handleShowData(ActionEvent event) throws IOException {
-        controller.handleShowData(quality, "input/predict.txt");
+        controller.handleShowData(quality, "python/output/results.csv");
     }
 
     @Override
