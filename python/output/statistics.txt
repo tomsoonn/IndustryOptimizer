@@ -1,0 +1,176 @@
+Średnia zawartość metalu 1 : 13.75
+Średnia zawartość metalu 2 : 16.0
+Średnia zawartość metalu 3 : 13.875
+Średnia zawartość metalu 4 : 31.1875
+Średnia zawartość metalu 5 : 25.1875
+Średnia wartość temperatury 1 : 969.8125
+Średnia wartość temperatury 2 : 1310.5625
+Średni czas ogrzewania 1 : 148.6875
+Sredni czas ogrzewania 2 :158.375
+Srednia ocena w skali 1-5:2.5625
+
+Maksymalna zawartość metalu 1 : 25.0
+Maksymalna zawartość metalu 2 : 30.0
+Maksymalna zawartość metalu 3 : 31.0
+Maksymalna zawartość metalu 4 : 60.0
+Maksymalna zawartość metalu 5 : 62.0
+Maksymalna wartość temperatury 1 : 1156.0
+Maksymalna wartość temperatury 2 : 1479.0
+Maksymalna czas ogrzewania 1 : 191.0
+Maksymalna czas ogrzewania 2 :198.0
+Maksymalna ocena w skali 1-5:5.0
+
+Minimalna zawartość metalu 1 : 1.0
+Minimalna zawartość metalu 2 : 4.0
+Minimalna zawartość metalu 3 : 2.0
+Minimalna zawartość metalu 4 : 2.0
+Minimalna zawartość metalu 5 : 0.0
+Minimalna wartość temperatury 1 : 804.0
+Minimalna wartość temperatury 2 : 1059.0
+Minimalna czas ogrzewania 1 : 108.0
+Minimalna czas ogrzewania 2 :110.0
+Minimalna ocena w skali 1-5:1.0
+
+Odchylenie standardowe zawartości metalu 1 : 1.0
+Odchylenie standardowe zawartości metalu 2 : 4.0
+Odchylenie standardowe zawartości metalu 3 : 2.0
+Odchylenie standardowe zawartości metalu 4 : 2.0
+Odchylenie standardowe zawartości metalu 5 : 0.0
+Odchylenie standardowe temperatury 1 : 804.0
+Odchylenie standardowe temperatury 2 : 1059.0
+Odchylenie standardowe czasu ogrzewania 1 : 108.0
+Odchylenie standardowe czasu ogrzewania 2 :110.0
+Odchylenie standardowe oceny w skali 1-5:1.0
+
+Średnia zawartość metalu 1 : 13.75
+Średnia zawartość metalu 2 : 16.0
+Średnia zawartość metalu 3 : 13.875
+Średnia zawartość metalu 4 : 31.1875
+Średnia zawartość metalu 5 : 25.1875
+Średnia wartość temperatury 1 : 969.8125
+Średnia wartość temperatury 2 : 1310.5625
+Średni czas ogrzewania 1 : 148.6875
+Sredni czas ogrzewania 2 :158.375
+Srednia ocena w skali 1-5:2.5625
+
+Maksymalna zawartość metalu 1 : 25.0
+Maksymalna zawartość metalu 2 : 30.0
+Maksymalna zawartość metalu 3 : 31.0
+Maksymalna zawartość metalu 4 : 60.0
+Maksymalna zawartość metalu 5 : 62.0
+Maksymalna wartość temperatury 1 : 1156.0
+Maksymalna wartość temperatury 2 : 1479.0
+Maksymalna czas ogrzewania 1 : 191.0
+Maksymalna czas ogrzewania 2 :198.0
+Maksymalna ocena w skali 1-5:5.0
+
+Minimalna zawartość metalu 1 : 1.0
+Minimalna zawartość metalu 2 : 4.0
+Minimalna zawartość metalu 3 : 2.0
+Minimalna zawartość metalu 4 : 2.0
+Minimalna zawartość metalu 5 : 0.0
+Minimalna wartość temperatury 1 : 804.0
+Minimalna wartość temperatury 2 : 1059.0
+Minimalna czas ogrzewania 1 : 108.0
+Minimalna czas ogrzewania 2 :110.0
+Minimalna ocena w skali 1-5:1.0
+
+Odchylenie standardowe zawartości metalu 1 : 1.0
+Odchylenie standardowe zawartości metalu 2 : 4.0
+Odchylenie standardowe zawartości metalu 3 : 2.0
+Odchylenie standardowe zawartości metalu 4 : 2.0
+Odchylenie standardowe zawartości metalu 5 : 0.0
+Odchylenie standardowe temperatury 1 : 804.0
+Odchylenie standardowe temperatury 2 : 1059.0
+Odchylenie standardowe czasu ogrzewania 1 : 108.0
+Odchylenie standardowe czasu ogrzewania 2 :110.0
+Odchylenie standardowe oceny w skali 1-5:1.0
+
+Średnia zawartość metalu 1 : 13.75
+Średnia zawartość metalu 2 : 16.0
+Średnia zawartość metalu 3 : 13.875
+Średnia zawartość metalu 4 : 31.1875
+Średnia zawartość metalu 5 : 25.1875
+Średnia wartość temperatury 1 : 969.8125
+Średnia wartość temperatury 2 : 1310.5625
+Średni czas ogrzewania 1 : 148.6875
+Sredni czas ogrzewania 2 :158.375
+Srednia ocena w skali 1-5:2.5625
+
+Maksymalna zawartość metalu 1 : 25.0
+Maksymalna zawartość metalu 2 : 30.0
+Maksymalna zawartość metalu 3 : 31.0
+Maksymalna zawartość metalu 4 : 60.0
+Maksymalna zawartość metalu 5 : 62.0
+Maksymalna wartość temperatury 1 : 1156.0
+Maksymalna wartość temperatury 2 : 1479.0
+Maksymalna czas ogrzewania 1 : 191.0
+Maksymalna czas ogrzewania 2 :198.0
+Maksymalna ocena w skali 1-5:5.0
+
+Minimalna zawartość metalu 1 : 1.0
+Minimalna zawartość metalu 2 : 4.0
+Minimalna zawartość metalu 3 : 2.0
+Minimalna zawartość metalu 4 : 2.0
+Minimalna zawartość metalu 5 : 0.0
+Minimalna wartość temperatury 1 : 804.0
+Minimalna wartość temperatury 2 : 1059.0
+Minimalna czas ogrzewania 1 : 108.0
+Minimalna czas ogrzewania 2 :110.0
+Minimalna ocena w skali 1-5:1.0
+
+Odchylenie standardowe zawartości metalu 1 : 1.0
+Odchylenie standardowe zawartości metalu 2 : 4.0
+Odchylenie standardowe zawartości metalu 3 : 2.0
+Odchylenie standardowe zawartości metalu 4 : 2.0
+Odchylenie standardowe zawartości metalu 5 : 0.0
+Odchylenie standardowe temperatury 1 : 804.0
+Odchylenie standardowe temperatury 2 : 1059.0
+Odchylenie standardowe czasu ogrzewania 1 : 108.0
+Odchylenie standardowe czasu ogrzewania 2 :110.0
+Odchylenie standardowe oceny w skali 1-5:1.0
+
+Średnia zawartość metalu 1 : 13.75
+Średnia zawartość metalu 2 : 16.0
+Średnia zawartość metalu 3 : 13.875
+Średnia zawartość metalu 4 : 31.1875
+Średnia zawartość metalu 5 : 25.1875
+Średnia wartość temperatury 1 : 969.8125
+Średnia wartość temperatury 2 : 1310.5625
+Średni czas ogrzewania 1 : 148.6875
+Sredni czas ogrzewania 2 :158.375
+Srednia ocena w skali 1-5:2.5625
+
+Maksymalna zawartość metalu 1 : 25.0
+Maksymalna zawartość metalu 2 : 30.0
+Maksymalna zawartość metalu 3 : 31.0
+Maksymalna zawartość metalu 4 : 60.0
+Maksymalna zawartość metalu 5 : 62.0
+Maksymalna wartość temperatury 1 : 1156.0
+Maksymalna wartość temperatury 2 : 1479.0
+Maksymalna czas ogrzewania 1 : 191.0
+Maksymalna czas ogrzewania 2 :198.0
+Maksymalna ocena w skali 1-5:5.0
+
+Minimalna zawartość metalu 1 : 1.0
+Minimalna zawartość metalu 2 : 4.0
+Minimalna zawartość metalu 3 : 2.0
+Minimalna zawartość metalu 4 : 2.0
+Minimalna zawartość metalu 5 : 0.0
+Minimalna wartość temperatury 1 : 804.0
+Minimalna wartość temperatury 2 : 1059.0
+Minimalna czas ogrzewania 1 : 108.0
+Minimalna czas ogrzewania 2 :110.0
+Minimalna ocena w skali 1-5:1.0
+
+Odchylenie standardowe zawartości metalu 1 : 1.0
+Odchylenie standardowe zawartości metalu 2 : 4.0
+Odchylenie standardowe zawartości metalu 3 : 2.0
+Odchylenie standardowe zawartości metalu 4 : 2.0
+Odchylenie standardowe zawartości metalu 5 : 0.0
+Odchylenie standardowe temperatury 1 : 804.0
+Odchylenie standardowe temperatury 2 : 1059.0
+Odchylenie standardowe czasu ogrzewania 1 : 108.0
+Odchylenie standardowe czasu ogrzewania 2 :110.0
+Odchylenie standardowe oceny w skali 1-5:1.0
+
