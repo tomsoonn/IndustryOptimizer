@@ -66,8 +66,10 @@ def save_to_file(file , marks):
         print(len(marks))
         for i in range(len(lines)):
             line = lines[i]
+            print(line)
+            print(marks[i])
             line = line.split(",")
-            line[len(line) -1 ] = marks[i]
+            line[len(line) - 1] = marks[i]
             line = ",".join(line)
             lines[i] = line
     with open("output/results.csv", "w"):
