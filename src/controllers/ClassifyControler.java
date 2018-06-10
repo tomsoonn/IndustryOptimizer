@@ -4,14 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import monitor.FileListener;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 
@@ -37,6 +37,10 @@ public class ClassifyControler implements Initializable, FileListener {
 
     public void handleData(ActionEvent event) throws IOException {
         controller.handleData(listView, "classify");
+    }
+
+    public void handleProcessing(ActionEvent event) throws IOException {
+        controller.handleProcessing("python/output/processing.txt");
     }
 
     @Override

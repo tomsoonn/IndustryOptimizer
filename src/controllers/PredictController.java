@@ -71,11 +71,16 @@ public class PredictController implements Initializable{
         BufferedWriter data = new BufferedWriter(new FileWriter("python/input/predict.csv"));
         data.write(val + ",3");
         data.close();
+        controller.handleConfirm();
     }
 
     @FXML
     protected void handleShowData(ActionEvent event) throws IOException {
         controller.handleShowData(quality, "python/output/results.csv");
+    }
+
+    public void handleProcessing(ActionEvent event) throws IOException {
+        controller.handleProcessing("python/output/processing.txt");
     }
 
     @Override

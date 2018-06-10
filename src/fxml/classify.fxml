@@ -35,7 +35,8 @@
                   </Label>
                    <Button fx:id="classifyButton" layoutX="126.0" layoutY="524.0" mnemonicParsing="false" onAction="#handleData" text="Wybierz" />
                   <TableView fx:id="tableView" layoutX="374.0" layoutY="130.0" prefHeight="372.0" prefWidth="721.0" />
-                  <Button onAction="#handleResults" layoutX="374.0" layoutY="44.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="108.0" text="Pokaż wyniki" />
+                  <Button layoutX="374.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleResults" prefHeight="47.0" prefWidth="108.0" text="Pokaż wyniki" />
+                  <Button layoutX="935.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleProcessing" prefHeight="47.0" prefWidth="160.0" text="Pokaż przebieg wyznaczania wyników" textAlignment="CENTER" wrapText="true" />
                </children></Pane>
          </center>
          <bottom>

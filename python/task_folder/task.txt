@@ -1,1 +1,1 @@
-extreme,temperatura,40
+statistics,80

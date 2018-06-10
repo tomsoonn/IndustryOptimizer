@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import monitor.FileListener;
 import org.javafxdata.datasources.provider.CSVDataSource;
@@ -27,6 +28,7 @@ import static controllers.PredictController.readFile;
 public class Controller implements FileListener {
     private static Controller controller = new Controller( );
     private volatile boolean changed = false;
+    private volatile boolean isChanged = false;
 
     private Controller() { }
 
@@ -81,9 +83,13 @@ public class Controller implements FileListener {
         BufferedWriter task = new BufferedWriter(new FileWriter("python/task_folder/task.txt"));
         task.write(taskName + "," + collection.count());
         task.close();
+        isChanged = true;
     }
 
     public void handleResults(TableView tableView, String path) throws FileNotFoundException {
+        if (!isChanged)
+            return;
+        isChanged = false;
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Poczekaj na wykonanie analizy");
         while (!changed){
             alert.showAndWait();
@@ -110,9 +116,10 @@ public class Controller implements FileListener {
                     TableRow<String> currentRow = getTableRow();
 
                     if (!isEmpty()) {
-
                         if(item.equals("v.good"))
                             currentRow.setStyle("-fx-background-color:lightgreen");
+                        if(item.equals("v.bad"))
+                            currentRow.setStyle("-fx-background-color:red");
                     }
                 }
             };
@@ -120,6 +127,9 @@ public class Controller implements FileListener {
     }
 
     public void handleShowData(TextField textView, String path) throws IOException {
+        if (!isChanged)
+            return;
+        isChanged = false;
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Poczekaj na wykonanie analizy");
         while (!changed){
             alert.showAndWait();
@@ -135,7 +145,14 @@ public class Controller implements FileListener {
         textView.setText(result[9]);
     }
 
+    public void handleConfirm(){
+        isChanged = true;
+    }
+
     public void handleResult(String path, TextArea textArea) throws IOException {
+        if (!isChanged)
+            return;
+        isChanged = false;
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Poczekaj na wykonanie analizy");
         while (!changed){
             alert.showAndWait();
@@ -152,6 +169,34 @@ public class Controller implements FileListener {
         }
         buffer.close();
         textArea.setText(content);
+    }
+
+    public void handleProcessing(String path) throws IOException {
+        String line;
+        String content = "";
+        FileReader fileReader = new FileReader("python/output/processing.txt");
+        BufferedReader buffer = new BufferedReader(fileReader);
+
+        while ((line = buffer.readLine()) != null) {
+            content += line;
+            content += "\n";
+        }
+        buffer.close();
+
+        TextArea textArea = new TextArea(content);
+        textArea.setWrapText(true);
+        textArea.setEditable(false);
+
+        StackPane secondaryLayout = new StackPane();
+        secondaryLayout.getChildren().add(textArea);
+
+        Scene secondScene = new Scene(secondaryLayout, 1000, 700);
+
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Processing");
+        newWindow.setScene(secondScene);
+
+        newWindow.show();
     }
     @Override
     public void fileChanged(File fileName){

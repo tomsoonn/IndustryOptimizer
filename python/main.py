@@ -126,11 +126,16 @@ def simple_predict(filename, filename_test, names, N):
     second = None
     third = None
     result = list([])
+    with open("output/processing.txt", "a") as f:
+        f.write("Predictions 1 [przewidywanie bazujące na zawartości metali i procesie grzewczym]\n")
     for model in models:
         model[1].fit(X_train, Y_train)
         predictions = model[1].predict(X_validation)
         print(predictions)
         print("////////////////////")
+        predictions_to_write = ",".join(predictions)
+        with open("output/processing.txt", "a") as f:
+            f.write(predictions_to_write+"\n\n")
         if(first ==None):
             first =convert_marks(predictions)
             print(first)
@@ -140,6 +145,8 @@ def simple_predict(filename, filename_test, names, N):
         else:
             third = convert_marks(predictions)
             print(third)
+    with open("output/processing.txt", "a") as f:
+        f.write("\n")
     for i in range(N):
         if(first[i] == second[i]):
              result.append(first[i])
@@ -199,17 +206,24 @@ def simple_predict2(filename, filename_test, names, N):
     second = None
     third = None
     result = list([])
+    with open("output/processing.txt", "a") as f:
+        f.write("Predictions 2 [przewidywanie bazujące na składzie stopu]\n")
     for model in models:
         model[1].fit(X_train, Y_train)
         predictions = model[1].predict(X_validation)
         print(predictions)
         print("////////////////////")
+        predictions_to_write = ",".join(predictions)
+        with open("output/processing.txt", "a") as f:
+            f.write(predictions_to_write+"\n\n")
         if(first ==None):
             first =convert_marks2(predictions)
         elif(second == None):
             second = convert_marks2(predictions)
         else:
             third = convert_marks2(predictions)
+    with open("output/processing.txt", "a") as f:
+        f.write("\n")
     for i in range(N):
         if(first[i] == second[i] or first[i] == third[i] or second[i] == third[i]):
              result.append(first[i])
@@ -225,6 +239,11 @@ def make_prediction(file1, file2, file3, file4, N):
     print(r)
     print("RESULT2")
     print(r2)
+    r_to_write = str(r)
+    r2_to_write = str(r2)
+    with open("output/processing.txt", "a") as f:
+        f.write("Ocena, pierwsza część przewidywania:\n" + r_to_write + "\n")
+        f.write("Ocena, druga część przewidywania:\n" + r2_to_write + "\n")
     results = sum_marks(r,r2)
     print(results)
     results = convert_marks_reverse(results)
@@ -236,6 +255,8 @@ def process():
     with open(file_with_task) as f:
         line = f.readlines()[0]
         if(line.startswith("classify")):
+            with open("output/processing.txt", "w"):
+                pass
             parser.parse("input/classify.json", "processing/test.csv")
             parser.convert_parse_file("processing/test.csv", "processing/test1.csv")
             parser.convert_parse_file2("processing/test.csv", "processing/test2.csv")
@@ -244,6 +265,8 @@ def process():
 
             print(make_prediction("processing/test2.csv", "trening_sets/dane2.csv", "processing/test1.csv", "trening_sets/dane4.csv", int(line[1])))
         elif line.startswith("predict"):
+            with open("output/processing.txt", "w"):
+                pass
             parser.convert_parse_file("input/predict.csv", "processing/test1.csv")
             parser.convert_parse_file2("input/predict.csv", "processing/test2.csv")
             line = line.split(",")

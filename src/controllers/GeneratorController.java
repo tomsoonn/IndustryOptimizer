@@ -55,10 +55,8 @@ public class GeneratorController {
         for (int i = 1; i<=Integer.parseInt(quantity.getText()); i++){
             String[] res = val[i].split("\"metale\" :");
             String[] res1 = res[1].split(", \"jakość\"");
-            //System.out.println(res1[0]);
             area += res1[0];
             area += "\n";
-            System.out.println(area);
         }
         textArea.clear();
         textArea.setText(area);
