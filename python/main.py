@@ -147,6 +147,20 @@ def simple_predict(filename, filename_test, names, N):
         else:
             third = convert_marks(predictions)
             print(third)
+
+        with open("output/process_machine_learning.txt", "a") as f_:
+
+            if model[0] == "SVM" :
+                f_.write("\n\nSVM function\n" + str(model[1].decision_function(X_train)))
+            if model[0] == "KNN":
+                f_.write("\n\nKNN graph\n" + str(model[1].kneighbors_graph(X_train)))
+            if model[0] =="LDA":
+                f_.write("\n\nLDA function\n" + str(model[1].decision_function(X_train)))
+            if model[0] =="LR":
+                f_.write("\n\nLR function\n" + str(model[1].decision_function(X_train)))
+            if model[0] =="CART":
+                f_.write("\n\nCART path\n" + str(model[1].decision_path(X_train)))
+
     with open("output/processing.txt", "a") as f:
         f.write("\n")
     for i in range(N):
@@ -224,6 +238,20 @@ def simple_predict2(filename, filename_test, names, N):
             second = convert_marks2(predictions)
         else:
             third = convert_marks2(predictions)
+
+        with open("output/process_machine_learning.txt", "a") as f_:
+
+            if model[0] == "SVM" :
+                f_.write("\n\nSVM function\n" + str(model[1].decision_function(X_train)))
+            if model[0] == "KNN":
+                f_.write("\n\nKNN graph\n" + str(model[1].kneighbors_graph(X_train)))
+            if model[0] =="LDA":
+                f_.write("\n\nLDA function\n" + str(model[1].decision_function(X_train)))
+            if model[0] =="LR":
+                f_.write("\n\nLR function\n" + str(model[1].decision_function(X_train)))
+            if model[0] =="CART":
+                f_.write("\n\nCART path\n" + str(model[1].decision_path(X_train)))
+
     with open("output/processing.txt", "a") as f:
         f.write("\n")
     for i in range(N):
@@ -255,6 +283,8 @@ def make_prediction(file1, file2, file3, file4, N):
 
 def process():
     with open(file_with_task) as f:
+        with open("output/process_machine_learning.txt", "w"):
+            pass
         line = f.readlines()[0]
         if(line.startswith("classify")):
             with open("output/processing.txt", "w"):

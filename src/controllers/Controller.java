@@ -182,6 +182,15 @@ public class Controller implements FileListener {
             content += "\n";
         }
         buffer.close();
+        content += "\nMachine Learning:\n";
+
+        FileReader fileReader1 = new FileReader("python/output/process_machine_learning.txt");
+        BufferedReader buffer1 = new BufferedReader(fileReader1);
+        while ((line = buffer1.readLine()) != null) {
+            content += line;
+            content += "\n";
+        }
+        buffer1.close();
 
         TextArea textArea = new TextArea(content);
         textArea.setWrapText(true);
