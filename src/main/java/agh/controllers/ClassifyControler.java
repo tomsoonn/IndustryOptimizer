@@ -7,14 +7,13 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import agh.monitor.FileListener;
 
 import java.io.*;
 import java.net.URL;
 import java.util.*;
 
 
-public class ClassifyControler implements Initializable, FileListener {
+public class ClassifyControler implements Initializable {
 
     private Controller controller = Controller.getInstance();
 
@@ -50,8 +49,4 @@ public class ClassifyControler implements Initializable, FileListener {
         controller.setScene(stage, root, "Classify");
     }
 
-    @Override
-    public void fileChanged(File fileName) {
-
-    }
 }
