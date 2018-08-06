@@ -1,4 +1,4 @@
-package main.java.generator;
+package agh.generator;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -8,7 +8,7 @@ import com.mongodb.DBObject;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import main.Main;
+import agh.Main;
 
 public class Generator {
 

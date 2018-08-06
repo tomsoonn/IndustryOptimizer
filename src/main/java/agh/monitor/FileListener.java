@@ -1,4 +1,4 @@
-package monitor;
+package agh.monitor;
 
 import java.io.File;
 import java.io.IOException;

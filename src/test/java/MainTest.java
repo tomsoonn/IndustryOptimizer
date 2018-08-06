@@ -1,5 +1,3 @@
-package main;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
+import agh.Main;
 
 import static org.junit.Assert.*;
 
@@ -20,7 +19,7 @@ public class MainTest extends ApplicationTest {
 
     @Override
     public void start (Stage stage) throws Exception {
-        mainNode = FXMLLoader.load(Main.class.getResource("../fxml/main.fxml"));
+        mainNode = FXMLLoader.load(Main.class.getResource("/fxml/main.fxml"));
         stage.setScene(new Scene(mainNode));
         stage.show();
         stage.toFront();

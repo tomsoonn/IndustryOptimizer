@@ -1,3 +1,4 @@
+package agh;
 
 import com.mongodb.*;
 import javafx.application.Application;
@@ -8,12 +9,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import monitor.FileMonitor;
+import agh.monitor.FileMonitor;
 
 import java.io.*;
 import java.util.Properties;
 
-import controllers.Controller;
+import agh.controllers.Controller;
 
 public class Main extends Application {
     public static MongoClient mongoClient = new MongoClient();

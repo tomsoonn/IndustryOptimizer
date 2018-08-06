@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="StatsPane" prefHeight="700.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.StatsController">
+<AnchorPane fx:id="StatsPane" prefHeight="700.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.controllers.StatsController">
     <children>
         <BorderPane layoutX="-6.0" layoutY="-6.0" prefHeight="714.0" prefWidth="1154.0">
             <left>

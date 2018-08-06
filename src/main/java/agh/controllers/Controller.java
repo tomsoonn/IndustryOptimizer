@@ -1,4 +1,4 @@
-package main.java.controllers;
+package agh.controllers;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -11,19 +11,16 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import monitor.FileListener;
+import agh.monitor.FileListener;
 import org.javafxdata.datasources.provider.CSVDataSource;
 import org.javafxdata.datasources.reader.DataSourceReader;
 import org.javafxdata.datasources.reader.FileSource;
-import main.Main;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import static controllers.PredictController.readFile;
+import agh.Main;
 
 public class Controller implements FileListener {
     private static Controller controller = new Controller( );

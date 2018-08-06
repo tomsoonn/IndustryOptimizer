@@ -1,11 +1,9 @@
-package main.java.controllers;
+package agh.controllers;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.util.JSON;
-import generator.Generator;
+import agh.generator.Generator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -14,13 +12,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import main.Main;
-import org.bson.Document;
+import agh.Main;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Iterator;
 
 public class GeneratorController {
 

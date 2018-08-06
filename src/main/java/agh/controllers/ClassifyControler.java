@@ -1,15 +1,13 @@
-package main.java.controllers;
+package agh.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import monitor.FileListener;
+import agh.monitor.FileListener;
 
 import java.io.*;
 import java.net.URL;
