@@ -11,7 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import agh.monitor.FileListener;
 import org.javafxdata.datasources.provider.CSVDataSource;
 import org.javafxdata.datasources.reader.DataSourceReader;
 import org.javafxdata.datasources.reader.FileSource;
@@ -22,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 import agh.Main;
 
-public class Controller implements FileListener {
+public class Controller {
     private static Controller controller = new Controller( );
     private volatile boolean changed = false;
     private volatile boolean isChanged = false;
@@ -74,25 +73,9 @@ public class Controller implements FileListener {
         JSON json = new JSON();
         String serialize = json.serialize(cursor);
         System.out.println(serialize);
-        BufferedWriter out = new BufferedWriter(new FileWriter("python/input/classify.json"));
-        out.write(serialize);
-        out.close();
-        BufferedWriter task = new BufferedWriter(new FileWriter("python/task_folder/task.txt"));
-        task.write(taskName + "," + collection.count());
-        task.close();
-        isChanged = true;
     }
 
     public void handleResults(TableView tableView, String path) throws FileNotFoundException {
-        if (!isChanged)
-            return;
-        isChanged = false;
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Poczekaj na wykonanie analizy");
-        while (!changed){
-            alert.showAndWait();
-        }
-        alert.close();
-        changed = false;
         DataSourceReader dsr1 = new FileSource(path);
         String[] columnsArray = {"m1", "m2", "m3", "m4", "m5", "t1", "cz1", "t2", "cz2", "ocena"};
         CSVDataSource ds1 = new CSVDataSource(dsr1,columnsArray);
@@ -124,15 +107,6 @@ public class Controller implements FileListener {
     }
 
     public void handleShowData(TextField textView, String path) throws IOException {
-        if (!isChanged)
-            return;
-        isChanged = false;
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Poczekaj na wykonanie analizy");
-        while (!changed){
-            alert.showAndWait();
-        }
-        alert.close();
-        changed = false;
         BufferedReader br = new BufferedReader(new FileReader(path));
         String line = "";
         String[] result = null;
@@ -147,14 +121,6 @@ public class Controller implements FileListener {
     }
 
     public void handleResult(String path, TextArea textArea) throws IOException {
-        if (!isChanged)
-            return;
-        isChanged = false;
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Poczekaj na wykonanie analizy");
-        while (!changed){
-            alert.showAndWait();
-        }
-        alert.close();
         String line;
         String content = "";
         FileReader fileReader = new FileReader(path);
@@ -204,9 +170,5 @@ public class Controller implements FileListener {
 
         newWindow.show();
     }
-    @Override
-    public void fileChanged(File fileName){
-        System.out.println("changed");
-        changed = true;
-    }
+
 }
