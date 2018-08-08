@@ -5,42 +5,91 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import agh.Main;
 
 public class Generator {
+    private PrintWriter writer;
+    private Scanner in = new Scanner(System.in);
 
-    public static void generate(int quantity, String name){
-        DBCollection collection = Main.database.getCollection(name);
-        for (int j=0; j<quantity; j++){
-            ArrayList<Integer> load = n_random();
-            DBObject prod = new BasicDBObject("_id", j)
-                    .append("name", "stop niklu")
-                    .append("parametry", new BasicDBObject("metale", new BasicDBObject("nikiel", load.get(0))
-                            .append("miedź", load.get(1))
-                            .append("żelazo", load.get(2))
-                            .append("mangan", load.get(3))
-                            .append("magnez", load.get(4)))
-                            .append("temp1", ThreadLocalRandom.current().nextInt(800, 1200 + 1))
-                            .append("czas1", ThreadLocalRandom.current().nextInt(100, 200 + 1))
-                            .append("temp2", ThreadLocalRandom.current().nextInt(1000, 1500 + 1))
-                            .append("czas2", ThreadLocalRandom.current().nextInt(100, 200 + 1)))
-                    .append("jakość", ThreadLocalRandom.current().nextInt(1, 5 + 1));
+    public void generate(int q, String filename) {
+        try{
+            writer = new PrintWriter(filename, "UTF-8");
+            writer.print("@RELATION " + filename + "\n\n");
+            writer.print("@ATTRIBUTE temperatura numeric\n");
+            writer.print("@ATTRIBUTE Aluminium numeric\n");
+            writer.print("@ATTRIBUTE wAl numeric\n");
+            writer.print("@ATTRIBUTE Miedz numeric\n");
+            writer.print("@ATTRIBUTE wMi numeric\n");
+            writer.print("@ATTRIBUTE Nikiel numeric\n");
+            writer.print("@ATTRIBUTE wNi numeric\n");
+            writer.print("@ATTRIBUTE Cynk numeric\n");
+            writer.print("@ATTRIBUTE wCy numeric\n");
+            writer.print("@ATTRIBUTE Olow numeric\n");
+            writer.print("@ATTRIBUTE wOl numeric\n");
+            writer.print("@ATTRIBUTE Cyna numeric\n");
+            writer.print("@ATTRIBUTE wCy numeric\n");
+            writer.print("@ATTRIBUTE Magnez numeric\n");
+            writer.print("@ATTRIBUTE wMa numeric\n");
+            writer.print("@ATTRIBUTE Zelazo numeric\n");
+            writer.print("@ATTRIBUTE wZe numeric\n");
+            writer.print("@ATTRIBUTE Krzem numeric\n");
+            writer.print("@ATTRIBUTE wKr numeric\n");
 
-            collection.insert(prod);
+            writer.print("\n@DATA");
+
+            System.out.println("start");
+            Random r = new Random();
+            int temperature =0;
+            double ratio =0;
+            for (int j=0; j<q; j++){
+                ArrayList<Integer> load = n_random(9);
+                writer.print("\n");
+                temperature = r.nextInt(1500)+500;
+                writer.print(temperature);
+                writer.print(",");
+                for(int i=0; i<load.size()-2; i++){
+                    writer.print(load.get(i));
+                    writer.print(",");
+                    if(temperature<getMinTemperature(i+1))
+                        ratio = 0;
+                    else if (temperature<1000) {
+                        ratio = getRatio(i+1);
+                    }
+                    else
+                        ratio = getRatio(i+1)+(temperature/5000);
+                    writer.print(ratio);
+                    writer.print(",");
+                }
+                writer.print(load.get(load.size()-1));
+                writer.print(",");
+                if(temperature<getMinTemperature(load.size()-1+1))
+                    writer.print(0.0f);
+                else if (temperature<1000) {
+                    writer.print(getRatio(load.size()-1+1));
+                }
+                else
+                    writer.print(getRatio(load.size()-1+1)+(temperature/5000));
+
+            }
+            writer.close();
+        } catch (IOException e) {
+            writer.close();
         }
+        System.out.println("koniec");
     }
 
-    public static ArrayList n_random() {
+    public static ArrayList n_random(int n) {
         Random r = new Random();
         ArrayList<Integer> load = new ArrayList<Integer>();
         int temp;
         int sum = 0;
-        for (int i = 1; i <= 5; i++) {
-            if (!(i == 5)) {
-                temp = r.nextInt((100 - sum) / (5 - i)) + 1;
+        for (int i = 1; i <= n; i++) {
+            if (!(i == n)) {
+                temp = r.nextInt((100 - sum) / (n - i)) + 1;
                 load.add(temp);
                 sum += temp;
 
@@ -51,6 +100,39 @@ public class Generator {
             }
         }
         return load;
+    }
+
+    public int getMinTemperature(int i){
+        switch (i) {
+            case 1 : return 660;
+            case 2 : return 1084;
+            case 3 : return 1453;
+            case 4 : return 420;
+            case 5 : return 327;
+            case 6 : return 232;
+            case 7 : return 650;
+            case 8 : return 1500;
+            case 9 : return 1410;
+            default: return 0;
+        }
+
+    }
+
+    public double getRatio(int i){
+        switch (i) {
+            case 1 : return 2;
+            case 2 : return 1.5;
+            case 3 : return 1;
+            case 4 : return 2.3;
+            case 5 : return 2.5;
+            case 6 : return 2.8;
+            case 7 : return 2;
+            case 8 : return 1;
+            case 9 : return 1;
+            default: return 0;
+
+        }
+
     }
 }
 
