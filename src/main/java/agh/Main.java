@@ -1,5 +1,6 @@
 package agh;
 
+import agh.generator.Generator;
 import com.mongodb.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -33,6 +34,10 @@ public class Main extends Application {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        launch(args);
+        Generator generator = new Generator();
+
+        //minTime = 30, coeff = 2/3, minHeatingTime = 10, coolingTempCoeff2 = 0.5, minHeatTime2 = 25
+        //generator.generateQuality(20, "AlSi.arff", "110000000", 30, 0.6666, 10, 0.5, 25,  90);
+        //launch(args);
     }
 }
