@@ -35,7 +35,7 @@ public class GeneratorController {
             new Alert(Alert.AlertType.ERROR, "Nie wprowadzono wszystkich danych").showAndWait();
             return;
         }
-        Generator.generate(Integer.parseInt(quantity.getText()), filename.getText());
+        //Generator.generate(Integer.parseInt(quantity.getText()), filename.getText());
     }
 
     @FXML
