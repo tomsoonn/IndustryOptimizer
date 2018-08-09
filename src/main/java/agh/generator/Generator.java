@@ -1,8 +1,10 @@
 package agh.generator;
 
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+
 
 public class Generator {
     private PrintWriter writer;
@@ -187,18 +189,31 @@ public class Generator {
 
      */
 
-    public int getMinTemperature(int i){
+    public int getMinTemperature(int i) {
         switch (i) {
-            case 1 : return 660;
-            case 2 : return 1084;
-            case 3 : return 1453;
-            case 4 : return 420;
-            case 5 : return 327;
-            case 6 : return 232;
-            case 7 : return 650;
-            case 8 : return 1500;
-            case 9 : return 1410;
-            default: return 0;
+            case 1:
+                return 660;
+            case 2:
+                return 1084;
+            case 3:
+                return 1453;
+            case 4:
+                return 420;
+            case 5:
+                return 327;
+            case 6:
+                return 232;
+            case 7:
+                return 650;
+            case 8:
+                return 1500;
+            case 9:
+                return 1410;
+            default:
+                return 0;
+        }
+    }
+
     public int getMinTemperature(Metals metal) {
         switch (metal) {
             case Aluminium:
