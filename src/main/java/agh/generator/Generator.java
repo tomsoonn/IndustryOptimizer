@@ -13,35 +13,27 @@ import agh.Main;
 
 public class Generator {
     private PrintWriter writer;
-    private Scanner in = new Scanner(System.in);
 
-    public void generate(int q, String filename) {
+    public void generateRatio(int q,  Metals metal, boolean labeled) {
+        String filename = "w"+metal.toString();
         try{
             writer = new PrintWriter(filename, "UTF-8");
             writer.print("@RELATION " + filename + "\n\n");
             writer.print("@ATTRIBUTE temperatura numeric\n");
             writer.print("@ATTRIBUTE Aluminium numeric\n");
-            writer.print("@ATTRIBUTE wAl numeric\n");
             writer.print("@ATTRIBUTE Miedz numeric\n");
-            writer.print("@ATTRIBUTE wMi numeric\n");
             writer.print("@ATTRIBUTE Nikiel numeric\n");
-            writer.print("@ATTRIBUTE wNi numeric\n");
             writer.print("@ATTRIBUTE Cynk numeric\n");
-            writer.print("@ATTRIBUTE wCy numeric\n");
             writer.print("@ATTRIBUTE Olow numeric\n");
-            writer.print("@ATTRIBUTE wOl numeric\n");
             writer.print("@ATTRIBUTE Cyna numeric\n");
-            writer.print("@ATTRIBUTE wCy numeric\n");
             writer.print("@ATTRIBUTE Magnez numeric\n");
-            writer.print("@ATTRIBUTE wMa numeric\n");
             writer.print("@ATTRIBUTE Zelazo numeric\n");
-            writer.print("@ATTRIBUTE wZe numeric\n");
             writer.print("@ATTRIBUTE Krzem numeric\n");
-            writer.print("@ATTRIBUTE wKr numeric\n");
+            writer.print("@ATTRIBUTE w"+metal.toString()+" numeric\n");
 
             writer.print("\n@DATA");
 
-            System.out.println("start");
+            System.out.println("generation started");
             Random r = new Random();
             int temperature =0;
             double ratio =0;
@@ -51,35 +43,28 @@ public class Generator {
                 temperature = r.nextInt(1500)+500;
                 writer.print(temperature);
                 writer.print(",");
-                for(int i=0; i<load.size()-2; i++){
+                for(int i=0; i<load.size(); i++){
                     writer.print(load.get(i));
                     writer.print(",");
-                    if(temperature<getMinTemperature(i+1))
-                        ratio = 0;
-                    else if (temperature<1000) {
-                        ratio = getRatio(i+1);
-                    }
-                    else
-                        ratio = getRatio(i+1)+(temperature/5000);
-                    writer.print(ratio);
-                    writer.print(",");
                 }
-                writer.print(load.get(load.size()-1));
-                writer.print(",");
-                if(temperature<getMinTemperature(load.size()-1+1))
-                    writer.print(0.0f);
+                if(temperature<getMinTemperature(metal)) {
+                    ratio = 0;
+                }
                 else if (temperature<1000) {
-                    writer.print(getRatio(load.size()-1+1));
+                    ratio = getRatio(metal);
                 }
-                else
-                    writer.print(getRatio(load.size()-1+1)+(temperature/5000));
+                else {
+                    ratio = getRatio(metal)+(temperature/2000.0);
+                }
+                if(labeled) writer.print(ratio);
+                else writer.print("?");
 
             }
             writer.close();
         } catch (IOException e) {
             writer.close();
         }
-        System.out.println("koniec");
+        System.out.println("generation ended");
     }
 
     public static ArrayList n_random(int n) {
@@ -102,34 +87,34 @@ public class Generator {
         return load;
     }
 
-    public int getMinTemperature(int i){
-        switch (i) {
-            case 1 : return 660;
-            case 2 : return 1084;
-            case 3 : return 1453;
-            case 4 : return 420;
-            case 5 : return 327;
-            case 6 : return 232;
-            case 7 : return 650;
-            case 8 : return 1500;
-            case 9 : return 1410;
-            default: return 0;
+    public int getMinTemperature(Metals metal){
+        switch (metal) {
+            case Aluminium : return 660;
+            case Miedz : return 1084;
+            case Nikiel : return 1453;
+            case Cynk : return 420;
+            case Olow : return 327;
+            case Cyna : return 232;
+            case Magnez : return 650;
+            case Zelazo : return 1500;
+            case Krzem : return 1410;
+            default: return -1;
         }
 
     }
 
-    public double getRatio(int i){
-        switch (i) {
-            case 1 : return 2;
-            case 2 : return 1.5;
-            case 3 : return 1;
-            case 4 : return 2.3;
-            case 5 : return 2.5;
-            case 6 : return 2.8;
-            case 7 : return 2;
-            case 8 : return 1;
-            case 9 : return 1;
-            default: return 0;
+    public double getRatio(Metals metal){
+        switch (metal) {
+            case Aluminium : return 2;
+            case Miedz : return 1.5;
+            case Zelazo : return 1;
+            case Cynk : return 2.3;
+            case Olow : return 2.5;
+            case Cyna : return 2.8;
+            case Magnez : return 2;
+            case Krzem : return 1;
+            case Nikiel : return 1;
+            default: return -1;
 
         }
 
