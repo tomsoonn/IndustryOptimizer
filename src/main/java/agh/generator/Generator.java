@@ -39,13 +39,13 @@ public class Generator {
             int temperature;
             double ratio;
             for (int j = 0; j < quantity; j++) {
-                ArrayList<Integer> load = n_random(9);
+                ArrayList load = n_random(9);
                 writer.print("\n");
                 temperature = r.nextInt(1500) + 500;
                 writer.print(temperature);
                 writer.print(",");
-                for (int i = 0; i < load.size(); i++) {
-                    writer.print(load.get(i));
+                for (Object aLoad : load) {
+                    writer.print(aLoad);
                     writer.print(",");
                 }
                 if (temperature < getMinTemperature(metal)) {
@@ -67,9 +67,9 @@ public class Generator {
     }
 
 
-    public static ArrayList n_random(int n) {
+    private static ArrayList n_random(int n) {
         Random r = new Random();
-        ArrayList<Integer> load = new ArrayList<Integer>();
+        ArrayList<Integer> load = new ArrayList<>();
         int temp;
         int sum = 0;
         for (int i = 1; i <= n; i++) {
@@ -89,10 +89,10 @@ public class Generator {
 
     private int getHighestTemperatureArray(int[] metalList){
         int temperature = 0;
-        for (int i = 1; i <= 9; i++){
-            if (metalList[i-1] != 0){
-                if (getMinTemperatureQuality(i) > temperature)
-                    temperature = getMinTemperatureQuality(i);
+        for (Metals metal : Metals.values()){
+            if (metalList[metal.getValue()-1] != 0){
+                if (getMinTemperature(metal) > temperature)
+                    temperature = getMinTemperature(metal);
             }
         }
         return temperature;
@@ -129,8 +129,8 @@ public class Generator {
             for (int i = 0; i < quantity; i++){
                 int quality = 90;
                 writer.print("\n");
-                for (int j = 0; j < metals.length; j++) {
-                    writer.print(metals[j]);
+                for (int metal : metals) {
+                    writer.print(metal);
                     writer.print(",");
                 }
                 int temperatureBound = (int) (0.7*temperatureLevel);
@@ -149,20 +149,56 @@ public class Generator {
                 writer.print(time);
                 writer.print(",");
 
-
                 if (quality!=0)
-                    quality -= Math.abs(time-50)/(20.0/quality);
+                    quality -= Math.abs(time-50)/(20.0/(0.6*quality));
 
                 int optimalCoolingTemperature = (int) (0.6666*temperature);
 
-                int coolingTemperature = (r.nextInt(400) + optimalCoolingTemperature - 200);
+                int coolingTemperature = (r.nextInt((int) (0.25*temperature)) + optimalCoolingTemperature - (int) (0.25*temperature)/2);
                 writer.print(coolingTemperature);
                 writer.print(",");
 
                 if (quality!=0)
-                    quality -= Math.abs(coolingTemperature-optimalCoolingTemperature)/(200.0/(0.3*quality));
+                    quality -= Math.abs(coolingTemperature-optimalCoolingTemperature)/(((0.25*temperature)/2)/(0.3*quality));
 
+                int heatingTime = (r.nextInt(20) + 5);
+                writer.print(heatingTime);
+                writer.print(",");
 
+                if (quality!=0)
+                    quality -= Math.abs(heatingTime-15)/(10.0/(0.1*quality));
+
+                int optimalCoolingTemperature2 = (int) (0.5*optimalCoolingTemperature);
+
+                int coolingTemperature2 = (r.nextInt((int) (0.25*coolingTemperature)) + optimalCoolingTemperature2 - (int) (0.25*optimalCoolingTemperature)/2);
+                writer.print(coolingTemperature2);
+                writer.print(",");
+
+                if (quality!=0)
+                    quality -= Math.abs(coolingTemperature2-optimalCoolingTemperature2)/(((0.25*optimalCoolingTemperature)/2)/(0.1*quality));
+
+                int heatingTime2 = (r.nextInt(30) + 10);
+                writer.print(heatingTime2);
+                writer.print(",");
+
+                if (quality!=0)
+                    quality -= Math.abs(heatingTime2-25)/(15.0/(0.05*quality));
+
+                int level = (r.nextInt(5) + 1);
+                writer.print(level);
+                writer.print(",");
+
+                switch (level){
+                    case 1: quality += 0;
+                    break;
+                    case 2: quality += 2;
+                    break;
+                    case 3: quality += 4;
+                    break;
+                    case 4: quality += 6;
+                    break;
+                    case 5: quality += 8;
+                }
 
                 writer.print(quality);
             }
@@ -175,46 +211,8 @@ public class Generator {
         System.out.println("koniec");
     }
 
-    /*
 
-    1 - Aluminium - 660
-    2 - Miedź - 1084
-    3 - Nikiel - 1453
-    4 - Cynk - 420
-    5 - Ołów - 327
-    6 - Cyna - 232
-    7 - Magnez - 650
-    8 - Żelazo - 1500
-    9 - Krzem - 1410
-
-     */
-
-    public int getMinTemperature(int i) {
-        switch (i) {
-            case 1:
-                return 660;
-            case 2:
-                return 1084;
-            case 3:
-                return 1453;
-            case 4:
-                return 420;
-            case 5:
-                return 327;
-            case 6:
-                return 232;
-            case 7:
-                return 650;
-            case 8:
-                return 1500;
-            case 9:
-                return 1410;
-            default:
-                return 0;
-        }
-    }
-
-    public int getMinTemperature(Metals metal) {
+    private int getMinTemperature(Metals metal) {
         switch (metal) {
             case Aluminium:
                 return 660;
@@ -240,23 +238,7 @@ public class Generator {
 
     }
 
-    private int getMinTemperatureQuality(int i){
-        switch (i) {
-            case 1 : return 660;
-            case 2 : return 1410;
-            case 3 : return 650;
-            case 4 : return 1084;
-            case 5 : return 420;
-            case 6 : return 232;
-            case 7 : return 1453;
-            case 8 : return 1500;
-            case 9 : return 327;
-            default: return 0;
-        }
-
-    }
-
-    public double getRatio(Metals metal) {
+    private double getRatio(Metals metal) {
         switch (metal) {
             case Aluminium:
                 return 2;
