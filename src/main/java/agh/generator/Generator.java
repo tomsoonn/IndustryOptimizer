@@ -7,7 +7,13 @@ import java.util.*;
 public class Generator {
     private PrintWriter writer;
 
-    public void generateRatio(int q, Metals metal, boolean labeled) {
+    public void generateRatioForAll(int quantity, boolean labeled){
+        for (Metals metal : Metals.values()){
+            generateRatio(quantity,metal,labeled);
+        }
+    }
+
+    public void generateRatio(int quantity, Metals metal, boolean labeled) {
         String filename = "w" + metal.toString() + ".arff";
         try {
             writer = new PrintWriter(filename, "UTF-8");
@@ -30,7 +36,7 @@ public class Generator {
             Random r = new Random();
             int temperature;
             double ratio;
-            for (int j = 0; j < q; j++) {
+            for (int j = 0; j < quantity; j++) {
                 ArrayList<Integer> load = n_random(9);
                 writer.print("\n");
                 temperature = r.nextInt(1500) + 500;
@@ -47,7 +53,7 @@ public class Generator {
                 } else {
                     ratio = getRatio(metal) + (temperature / 2000.0);
                 }
-                if (labeled) writer.print(ratio);
+                if (labeled) writer.print(String.format(Locale.US, "%.2g", ratio));
                 else writer.print("?");
 
             }
