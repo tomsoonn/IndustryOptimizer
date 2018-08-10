@@ -11,8 +11,8 @@ public class MainClass {
         //gen.generateQ("AlSitu.arff", alsi, 10, false);
 
         ProductionData prod = new ProductionData();
-        prod.trainAndTest();
-        prod.classify();
+        prod.trainAndTest("AlSi.arff", "AlSit.arff");
+        prod.classify("AlSiu.arff", "AlSil.arff");
 
     }
 }
