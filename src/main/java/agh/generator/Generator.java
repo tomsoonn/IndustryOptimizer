@@ -160,16 +160,9 @@ public class Generator {
             int temperatureLevel = getHighestTemperatureArray(metals);
             for (int i = 0; i < quantity; i++){
                 int quality = 90;
-                writer.print("\n");
-                for (int metal : metals) {
-                    writer.print(metal);
-                    writer.print(",");
-                }
                 int temperatureBound = (int) (0.7*temperatureLevel);
                 int minTemperature = (int) (0.5*temperatureLevel);
                 int temperature = (r.nextInt(temperatureBound) + minTemperature);
-                writer.print(temperature);
-                writer.print(",");
 
                 if (temperature >= temperatureLevel){
                     quality += (temperature-temperatureLevel)/((minTemperature+temperatureBound-temperatureLevel)/10);
@@ -178,8 +171,7 @@ public class Generator {
                 }
 
                 int time = (r.nextInt(40) + 30);
-                writer.print(time);
-                writer.print(",");
+
 
                 if (quality!=0)
                     quality -= Math.abs(time-50)/(20.0/(0.6*quality));
@@ -187,15 +179,13 @@ public class Generator {
                 int optimalCoolingTemperature = (int) (0.6666*temperature);
 
                 int coolingTemperature = (r.nextInt((int) (0.25*temperature)) + optimalCoolingTemperature - (int) (0.25*temperature)/2);
-                writer.print(coolingTemperature);
-                writer.print(",");
+
 
                 if (quality!=0)
                     quality -= Math.abs(coolingTemperature-optimalCoolingTemperature)/(((0.25*temperature)/2)/(0.3*quality));
 
                 int heatingTime = (r.nextInt(20) + 5);
-                writer.print(heatingTime);
-                writer.print(",");
+
 
                 if (quality!=0)
                     quality -= Math.abs(heatingTime-15)/(10.0/(0.1*quality));
@@ -203,22 +193,19 @@ public class Generator {
                 int optimalCoolingTemperature2 = (int) (0.5*optimalCoolingTemperature);
 
                 int coolingTemperature2 = (r.nextInt((int) (0.25*coolingTemperature)) + optimalCoolingTemperature2 - (int) (0.25*optimalCoolingTemperature)/2);
-                writer.print(coolingTemperature2);
-                writer.print(",");
+
 
                 if (quality!=0)
                     quality -= Math.abs(coolingTemperature2-optimalCoolingTemperature2)/(((0.25*optimalCoolingTemperature)/2)/(0.1*quality));
 
                 int heatingTime2 = (r.nextInt(30) + 10);
-                writer.print(heatingTime2);
-                writer.print(",");
+
 
                 if (quality!=0)
                     quality -= Math.abs(heatingTime2-25)/(15.0/(0.05*quality));
 
                 int level = (r.nextInt(5) + 1);
-                writer.print(level);
-                writer.print(",");
+
 
                 switch (level){
                     case 1: quality += 0;
@@ -232,9 +219,44 @@ public class Generator {
                     case 5: quality += 8;
                 }
 
+                if (quality >= 0 && quality <= 100) {
+
+                    writer.print("\n");
+
+                    for (int metal : metals) {
+                        writer.print(metal);
+                        writer.print(",");
+                    }
+
+                    writer.print(temperature);
+                    writer.print(",");
+
+                    writer.print(time);
+                    writer.print(",");
+
+                    writer.print(coolingTemperature);
+                    writer.print(",");
+
+                    writer.print(heatingTime);
+                    writer.print(",");
+
+                    writer.print(coolingTemperature2);
+                    writer.print(",");
+
+                    writer.print(heatingTime2);
+                    writer.print(",");
+
+                    writer.print(level);
+                    writer.print(",");
+
+                    writer.print(quality);
+
                 if (labeled) writer.print(quality);
                 else writer.print("?");
+                }
             }
+
+
 
 
             writer.close();
