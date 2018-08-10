@@ -15,6 +15,27 @@ public class Generator {
         }
     }
 
+    public void generateQualityForAllStops(int quantity, boolean labeled, boolean numeric){
+        int[] alsi = {80, 20, 0, 0, 0, 0, 0, 0, 0};
+        int[] alsimg = {80, 15, 5, 0, 0, 0, 0, 0, 0};
+        int[] alsimgcu = {80, 12, 2, 6, 0, 0, 0, 0, 0};
+        int[] mgalsi = {8, 2, 90, 0, 0, 0, 0, 0, 0};
+        int[] mgalzn = {7, 0, 90, 0, 3, 0, 0, 0, 0};
+        int[] cusn = {0, 0, 0, 98, 0, 2, 0, 0, 0};
+        int[] cuzn = {0, 0, 0, 70, 30, 0, 0, 0, 0};
+        int[] nicufe = {0, 0, 0, 30, 0, 0, 67, 3, 0};
+        int[] pbzncu = {0, 0, 0, 2, 0, 3, 0, 0, 95};
+        generateQ("AlSi.arff", alsi, quantity, labeled, numeric);
+        generateQ("AlSiMg.arff", alsimg, quantity, labeled, numeric);
+        generateQ("AlSiMgCu.arff", alsimgcu, quantity, labeled, numeric);
+        generateQ("MgAlSi.arff", mgalsi, quantity, labeled, numeric);
+        generateQ("MgAlZn.arff", mgalzn, quantity, labeled, numeric);
+        generateQ("CuSn.arff", cusn, quantity, labeled, numeric);
+        generateQ("CuZn.arff", cuzn, quantity, labeled, numeric);
+        generateQ("NiCuFe.arff", nicufe, quantity, labeled, numeric);
+        generateQ("PbZnCu.arff", pbzncu, quantity, labeled, numeric);
+    }
+
     public void generateRatio(int quantity, Metals metal, boolean labeled) {
         String filename = "w" + metal.toString() + ".arff";
         try {
@@ -98,8 +119,19 @@ public class Generator {
         return temperature;
     }
 
+    private void printType(boolean numeric){
+        if (numeric)
+            writer.write("numeric");
+        else {
+            writer.print("{" + 0);
+            for (int i = 1; i < 101; i++)
+                writer.print("," + i);
+        }
+        writer.print("}\n");
+    }
 
-    public void generateQ(String filename, int[] metals, int quantity){
+
+    public void generateQ(String filename, int[] metals, int quantity, boolean labeled, boolean numeric){
         try {
             writer = new PrintWriter(filename, "UTF-8");
             writer.print("@RELATION " + filename + "\n\n");
@@ -119,8 +151,8 @@ public class Generator {
             writer.print("@ATTRIBUTE TemperaturaStudzenia2 numeric\n");
             writer.print("@ATTRIBUTE CzasPodgrzewania2 numeric\n");
             writer.print("@ATTRIBUTE StopieńUszlachetniania numeric\n");
-            writer.print("@ATTRIBUTE Jakość numeric\n");
-
+            writer.print("@ATTRIBUTE Jakość ");
+            printType(numeric);
             writer.print("\n@DATA");
 
             System.out.println("start");
@@ -200,7 +232,8 @@ public class Generator {
                     case 5: quality += 8;
                 }
 
-                writer.print(quality);
+                if (labeled) writer.print(quality);
+                else writer.print("?");
             }
 
 
