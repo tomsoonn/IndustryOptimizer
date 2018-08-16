@@ -19,7 +19,6 @@ public class ClassifyControler implements Initializable {
 
     @FXML private ListView<String> listView;
 
-
     @FXML private Pane ClassifyPane;
     @FXML private TableView tableView;
 

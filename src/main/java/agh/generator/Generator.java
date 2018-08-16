@@ -7,15 +7,15 @@ import java.util.*;
 
 
 public class Generator {
-    private PrintWriter writer;
+    private static PrintWriter writer;
 
-    public void generateRatioForAll(int quantity, boolean labeled){
+    public static void generateRatioForAll(int quantity, boolean labeled){
         for (Metals metal : Metals.values()){
             generateRatio(quantity,metal,labeled);
         }
     }
 
-    public void generateQualityForAllStops(int quantity, boolean labeled, boolean numeric){
+    public static void generateQualityForAllStops(int quantity, boolean labeled, boolean numeric){
         int[] alsi = {80, 20, 0, 0, 0, 0, 0, 0, 0};
         int[] alsimg = {80, 15, 5, 0, 0, 0, 0, 0, 0};
         int[] alsimgcu = {80, 12, 2, 6, 0, 0, 0, 0, 0};
@@ -36,7 +36,7 @@ public class Generator {
         generateQ("PbZnCu.arff", pbzncu, quantity, labeled, numeric);
     }
 
-    public void generateRatio(int quantity, Metals metal, boolean labeled) {
+    public static void generateRatio(int quantity, Metals metal, boolean labeled) {
         String filename = "w" + metal.toString() + ".arff";
         try {
             writer = new PrintWriter(filename, "UTF-8");
@@ -108,7 +108,7 @@ public class Generator {
         return load;
     }
 
-    private int getHighestTemperatureArray(int[] metalList){
+    private static int getHighestTemperatureArray(int[] metalList){
         int temperature = 0;
         for (Metals metal : Metals.values()){
             if (metalList[metal.getValue()-1] != 0){
@@ -119,7 +119,7 @@ public class Generator {
         return temperature;
     }
 
-    private void printType(boolean numeric){
+    private static void printType(boolean numeric){
         if (numeric)
             writer.write("numeric");
         else {
@@ -131,7 +131,7 @@ public class Generator {
     }
 
 
-    public void generateQ(String filename, int[] metals, int quantity, boolean labeled, boolean numeric){
+    public static void generateQ(String filename, int[] metals, int quantity, boolean labeled, boolean numeric){
         try {
             writer = new PrintWriter(filename, "UTF-8");
             writer.print("@RELATION " + filename + "\n\n");
@@ -267,7 +267,7 @@ public class Generator {
     }
 
 
-    private int getMinTemperature(Metals metal) {
+    private static int getMinTemperature(Metals metal) {
         switch (metal) {
             case Aluminium:
                 return 660;
@@ -293,7 +293,7 @@ public class Generator {
 
     }
 
-    private double getRatio(Metals metal) {
+    private static double getRatio(Metals metal) {
         switch (metal) {
             case Aluminium:
                 return 2;
