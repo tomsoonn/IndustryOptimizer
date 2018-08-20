@@ -1,10 +1,11 @@
 package agh.classification;
 
+import agh.Main;
 import agh.generator.Generator;
 
 public class WekaManager {
 
-    public static String[] makePrediction(String[] data){
+    public static String makePrediction(String[] data, int classifier){
         String[] result = new String[3];
 
         String line = new String();
@@ -13,9 +14,10 @@ public class WekaManager {
             line += data[i] +",";
         line += "?";
 
-        Generator.printLine("Predicion.arff", line);
+        Generator.printLine("Prediction.arff", line);
+        String quality = Main.productionData.classify("Prediction.arff", "Predicted.arff",classifier);
 
-
-        return result;
+        return quality;
     }
+
 }

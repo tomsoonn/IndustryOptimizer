@@ -27,26 +27,13 @@ public class ProductionData {
 
     private MultilayerPerceptron mlp = new MultilayerPerceptron();
     private RandomForest forest = new RandomForest();
+    private M5P m5p = new M5P();
+    private Vote vote = new Vote();
     private Classifier actualClassifier = forest;
-    private List<Classifier> classifiers = new ArrayList<>();
 
     public ProductionData() {
-        initailizeClassifiers();
     }
 
-    //asForNow
-    private void initailizeClassifiers() {
-        classifiers.add(new MultilayerPerceptron());
-        classifiers.add(new RandomForest());
-        classifiers.add(new REPTree());
-        classifiers.add(new DecisionTable());
-        classifiers.add(new M5P());
-        classifiers.add(new RandomCommittee());
-        classifiers.add(new RandomForest());
-        classifiers.add(new RandomTree());
-        classifiers.add(new KStar());
-        classifiers.add(new AdditiveRegression());
-    }
 
     public void trainAndTest(String trainFile, String testFile) {
         try {
@@ -79,17 +66,20 @@ public class ProductionData {
 
 
             actualClassifier.buildClassifier(trainData);
-
-            mlp.setLearningRate(0.3);
-            mlp.setMomentum(0.2);
-            mlp.setTrainingTime(2000);
-            mlp.setHiddenLayers("3");
-            //mlp.buildClassifier(trainData);
+            forest.buildClassifier(trainData);
+            m5p.buildClassifier(trainData);
+            //mlp.setLearningRate(0.3);
+            //mlp.setMomentum(0.2);
+            //mlp.setTrainingTime(2000);
+            //mlp.setHiddenLayers("3");
+            mlp.buildClassifier(trainData);
+            vote.setClassifiers(new Classifier[]{new M5P(), new RandomForest(), new MultilayerPerceptron()});
+            vote.buildClassifier(trainData);
 
             Evaluation eval = new Evaluation(trainData);
 
-            eval.evaluateModel(actualClassifier, testData);
-            System.out.println(eval.toSummaryString("\nResults: "+actualClassifier.toString()+"\n==================\n", false));
+            //eval.evaluateModel(actualClassifier, testData);
+            //System.out.println(eval.toSummaryString("\nResults: "+actualClassifier.toString()+"\n==================\n", false));
             //eval.evaluateModel(mlp, testData);
             //System.out.println(eval.toSummaryString("\nResults MultilayerPerceptron\n================\n", false));
         } catch (Exception e) {
@@ -97,7 +87,7 @@ public class ProductionData {
         }
     }
 
-    public void classify(String unlabeledFile, String labeledFile) {
+    public String classify(String unlabeledFile, String labeledFile, int classifier) {
         Instances unlabeled = null;
         try {
             unlabeled = new Instances(new BufferedReader(new FileReader(unlabeledFile)));
@@ -128,6 +118,18 @@ public class ProductionData {
 
         //System.out.println(labeled.toString());
 
+        switch (classifier){
+            case 0: actualClassifier=mlp;
+            break;
+            case 1: actualClassifier=m5p;
+            break;
+            case 2: actualClassifier=forest;
+            break;
+            case 3: actualClassifier=vote;
+            break;
+
+        }
+
         // label instances
         for (int i = 0; i < unlabeled.numInstances(); i++) {
             double clsLabel = 0;
@@ -142,6 +144,9 @@ public class ProductionData {
         System.out.println(unlabeled.toString() + "\n\nunalbeled--------------------------------------------------\n");
         System.out.println(labeled.toString() + "\n\nlabeled--------------------------------------------------\n");
 
+        String result = labeled.toString().split(",")[16];
+
+
         // save labeled data
         try {
             BufferedWriter writer = new BufferedWriter(
@@ -153,7 +158,7 @@ public class ProductionData {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return result;
     }
 
 }

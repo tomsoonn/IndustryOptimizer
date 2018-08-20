@@ -12,7 +12,7 @@ public class MainClass {
 
         ProductionData prod = new ProductionData();
         prod.trainAndTest("AlSi.arff", "AlSit.arff");
-        prod.classify("AlSiu.arff", "AlSil.arff");
+        //prod.classify("AlSiu.arff", "AlSil.arff");
 
     }
 }

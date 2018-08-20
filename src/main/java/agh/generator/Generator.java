@@ -74,9 +74,9 @@ public class Generator {
                 if (temperature < getMinTemperature(metal)) {
                     ratio = 0;
                 } else if (temperature < 1000) {
-                    ratio = getRatio(metal);
+                    ratio = Metals.getRatio(metal);
                 } else {
-                    ratio = getRatio(metal) + (temperature / 2000.0);
+                    ratio = Metals.getRatio(metal) + (temperature / 2000.0);
                 }
                 if (labeled) writer.print(String.format(Locale.US, "%.2g", ratio));
                 else writer.print("?");
@@ -304,31 +304,5 @@ public class Generator {
 
     }
 
-    private static double getRatio(Metals metal) {
-        switch (metal) {
-            case Aluminium:
-                return 2;
-            case Miedz:
-                return 1.5;
-            case Zelazo:
-                return 1;
-            case Cynk:
-                return 2.3;
-            case Olow:
-                return 2.5;
-            case Cyna:
-                return 2.8;
-            case Magnez:
-                return 2;
-            case Krzem:
-                return 1;
-            case Nikiel:
-                return 1;
-            default:
-                return -1;
-
-        }
-
-    }
 }
 

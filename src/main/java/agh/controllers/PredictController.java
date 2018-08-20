@@ -313,6 +313,7 @@ public class PredictController implements Initializable{
                 mass.getText()
 
         };
-        String[] results = WekaManager.makePrediction(data);
+        String predictedQuality = WekaManager.makePrediction(data, classifiers.getSelectionModel().getSelectedIndex());
+        quality.setText(predictedQuality);
     }
 }
