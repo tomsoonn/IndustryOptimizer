@@ -35,7 +35,7 @@ public class Controller {
 
     public void setScene(Stage stage, Parent root, String title){
         stage.setTitle(title);
-        stage.setScene(new Scene(root, 1140, 700));
+        stage.setScene(new Scene(root));
         stage.show();
     }
 
@@ -61,7 +61,7 @@ public class Controller {
         }
     }
 
-    public void handleData(ListView<String> listView, String taskName) throws IOException {
+    public void handleData(ListView<String> listView, String taskName) {
         if (listView.getSelectionModel().getSelectedItem() == null){
             new Alert(Alert.AlertType.ERROR, "Nie wybrano danych").showAndWait();
             return;

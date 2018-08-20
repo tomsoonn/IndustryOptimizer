@@ -19,7 +19,6 @@ public class ClassifyControler implements Initializable {
 
     @FXML private ListView<String> listView;
 
-
     @FXML private Pane ClassifyPane;
     @FXML private TableView tableView;
 
@@ -46,7 +45,7 @@ public class ClassifyControler implements Initializable {
     }
 
     public void setScene(Stage stage, Parent root){
-        controller.setScene(stage, root, "Classify");
+        controller.setScene(stage, root, "Testowanie");
     }
 
 }

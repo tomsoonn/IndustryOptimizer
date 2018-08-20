@@ -1,12 +1,16 @@
 package agh.controllers;
 
+import agh.classification.WekaManager;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -26,27 +30,51 @@ public class PredictController implements Initializable{
     @FXML
     private Pane PredictPane;
     @FXML
-    private TextField tf1;
+    private TextField aluminium;
     @FXML
-    private TextField tf2;
+    private TextField krzem;
     @FXML
-    private TextField tf3;
+    private TextField magnez;
     @FXML
-    private TextField tf4;
+    private TextField miedz;
     @FXML
-    private TextField tf5;
+    private TextField cynk;
     @FXML
-    private TextField tf6;
+    private TextField cyna;
     @FXML
-    private TextField tf7;
+    private TextField nikiel;
     @FXML
-    private TextField tf8;
+    private TextField zelazo;
     @FXML
-    private TextField tf9;
+    private TextField olow;
     @FXML
     private TextField remained;
     @FXML
     private TextField quality;
+    @FXML
+    private ChoiceBox uprades;
+    @FXML
+    private ChoiceBox stops;
+    @FXML
+    private ChoiceBox classifiers;
+    @FXML
+    private TextField temp;
+    @FXML
+    private TextField time;
+    @FXML
+    private TextField temp1;
+    @FXML
+    private TextField time1;
+    @FXML
+    private TextField temp2;
+    @FXML
+    private TextField time2;
+    @FXML
+    private TextField mass;
+    @FXML
+    private TextArea input;
+    @FXML
+    private TextField price;
 
     @FXML
     protected void handleBack(ActionEvent event){
@@ -59,17 +87,13 @@ public class PredictController implements Initializable{
             new Alert(Alert.AlertType.ERROR, "Niepoprawne wartości metali").showAndWait();
             return;
         }
-        if (!hasValues()){
-            new Alert(Alert.AlertType.ERROR, "Nie wprowadzono wszystkich danych").showAndWait();
-            return;
-        }
-        String val = tf1.getText() + "," + tf2.getText() + "," + tf3.getText() + "," + tf4.getText() + "," + tf5.getText()
-                + "," + tf6.getText() + "," + tf7.getText() + "," + tf8.getText() + "," + tf9.getText();
+//        String val = tf1.getText() + "," + tf2.getText() + "," + tf3.getText() + "," + tf4.getText() + "," + tf5.getText()
+//                + "," + tf6.getText() + "," + tf7.getText() + "," + tf8.getText() + "," + tf9.getText();
         BufferedWriter task = new BufferedWriter(new FileWriter("python/task_folder/task.txt"));
         task.write("predict,1");
         task.close();
         BufferedWriter data = new BufferedWriter(new FileWriter("python/input/predict.csv"));
-        data.write(val + ",3");
+//        data.write(val + ",3");
         data.close();
         controller.handleConfirm();
     }
@@ -85,95 +109,180 @@ public class PredictController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        tf1.textProperty().addListener((observable, oldValue, newValue) -> {
+        ObservableList<String> options =
+                FXCollections.observableArrayList(
+                        "Brak",
+                        "Słabe",
+                        "Srednie",
+                        "Dobre",
+                        "Bardzo Dobre"
+                );
+        uprades.setItems(options);
+        options = FXCollections.observableArrayList(
+                "AlSi",
+                "AlSiMg",
+                "AlSiCuMg",
+                "MgAlSi",
+                "MgAlZn",
+                "CuSn-brąz",
+                "CuSn-mosiądz",
+                "NiCuFe",
+                "PbSnCu"
+        );
+        stops.setItems(options);
+        stops.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                setStops(newValue.intValue());
+            }
+        });
+        options = FXCollections.observableArrayList(
+                "MultilayerPerceptron",
+                "M5P",
+                "RandomForest",
+                "Vote"
+
+        );
+        classifiers.setItems(options);
+
+        aluminium.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
-                tf1.setText(newValue.replaceAll("[^\\d]", ""));
+                aluminium.setText(newValue.replaceAll("[^\\d]", ""));
             }
             remained.setText(String.valueOf(100 - getValue()));
         });
 
-        tf2.textProperty().addListener((observable, oldValue, newValue) -> {
+        krzem.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
-                tf2.setText(newValue.replaceAll("[^\\d]", ""));
+                krzem.setText(newValue.replaceAll("[^\\d]", ""));
             }
             remained.setText(String.valueOf(100 - getValue()));
         });
 
-        tf3.textProperty().addListener((observable, oldValue, newValue) -> {
+        magnez.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
-                tf3.setText(newValue.replaceAll("[^\\d]", ""));
+                magnez.setText(newValue.replaceAll("[^\\d]", ""));
             }
             remained.setText(String.valueOf(100 - getValue()));
         });
 
-        tf4.textProperty().addListener((observable, oldValue, newValue) -> {
+        miedz.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
-                tf4.setText(newValue.replaceAll("[^\\d]", ""));
+                miedz.setText(newValue.replaceAll("[^\\d]", ""));
             }
             remained.setText(String.valueOf(100 - getValue()));
         });
 
-        tf5.textProperty().addListener((observable, oldValue, newValue) -> {
+        cynk.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
-                tf5.setText(newValue.replaceAll("[^\\d]", ""));
+                cynk.setText(newValue.replaceAll("[^\\d]", ""));
             }
             remained.setText(String.valueOf(100 - getValue()));
         });
 
-        tf6.textProperty().addListener((observable, oldValue, newValue) -> {
+        cyna.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
-                tf6.setText(newValue.replaceAll("[^\\d]", ""));
+                cyna.setText(newValue.replaceAll("[^\\d]", ""));
             }
+            remained.setText(String.valueOf(100 - getValue()));
         });
 
-        tf7.textProperty().addListener((observable, oldValue, newValue) -> {
+        nikiel.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
-                tf7.setText(newValue.replaceAll("[^\\d]", ""));
+                nikiel.setText(newValue.replaceAll("[^\\d]", ""));
             }
+            remained.setText(String.valueOf(100 - getValue()));
         });
 
-        tf8.textProperty().addListener((observable, oldValue, newValue) -> {
+        zelazo.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
-                tf8.setText(newValue.replaceAll("[^\\d]", ""));
+                zelazo.setText(newValue.replaceAll("[^\\d]", ""));
             }
+            remained.setText(String.valueOf(100 - getValue()));
         });
 
-        tf9.textProperty().addListener((observable, oldValue, newValue) -> {
+        olow.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
-                tf9.setText(newValue.replaceAll("[^\\d]", ""));
+                olow.setText(newValue.replaceAll("[^\\d]", ""));
             }
+            remained.setText(String.valueOf(100 - getValue()));
         });
     }
 
     private double getValue(){
-        double t1, t2, t3, t4, t5;
-        if (tf1.getText() == null || tf1.getText().trim().isEmpty()) t1 = 0;
-        else t1 = Double.parseDouble(tf1.getText());
-        if (tf2.getText() == null || tf2.getText().trim().isEmpty()) t2 = 0;
-        else t2 = Double.parseDouble(tf2.getText());
-        if (tf3.getText() == null || tf3.getText().trim().isEmpty()) t3 = 0;
-        else t3 = Double.parseDouble(tf3.getText());
-        if (tf4.getText() == null || tf4.getText().trim().isEmpty()) t4 = 0;
-        else t4 = Double.parseDouble(tf4.getText());
-        if (tf5.getText() == null || tf5.getText().trim().isEmpty()) t5 = 0;
-        else t5 = Double.parseDouble(tf5.getText());
-        return t1 + t2 + t3 + t4 + t5;
-    }
-
-    private boolean hasValues(){
-        if (tf1.getText() == null || tf1.getText().trim().isEmpty() || tf2.getText() == null || tf2.getText().trim().isEmpty() ||
-                tf3.getText() == null || tf3.getText().trim().isEmpty() || tf4.getText() == null || tf4.getText().trim().isEmpty() ||
-                tf5.getText() == null || tf5.getText().trim().isEmpty() || tf6.getText() == null || tf6.getText().trim().isEmpty() ||
-                tf7.getText() == null || tf7.getText().trim().isEmpty() || tf8.getText() == null || tf8.getText().trim().isEmpty() ||
-                tf9.getText() == null || tf9.getText().trim().isEmpty())
-            return false;
-        return true;
+        double t1, t2, t3, t4, t5, t6, t7, t8, t9;
+        if (aluminium.getText() == null || aluminium.getText().trim().isEmpty()) t1 = 0;
+        else t1 = Double.parseDouble(aluminium.getText());
+        if (krzem.getText() == null || krzem.getText().trim().isEmpty()) t2 = 0;
+        else t2 = Double.parseDouble(krzem.getText());
+        if (magnez.getText() == null || magnez.getText().trim().isEmpty()) t3 = 0;
+        else t3 = Double.parseDouble(magnez.getText());
+        if (miedz.getText() == null || miedz.getText().trim().isEmpty()) t4 = 0;
+        else t4 = Double.parseDouble(miedz.getText());
+        if (cynk.getText() == null || cynk.getText().trim().isEmpty()) t5 = 0;
+        else t5 = Double.parseDouble(cynk.getText());
+        if (cyna.getText() == null || cyna.getText().trim().isEmpty()) t6 = 0;
+        else t6 = Double.parseDouble(cyna.getText());
+        if (nikiel.getText() == null || nikiel.getText().trim().isEmpty()) t7 = 0;
+        else t7 = Double.parseDouble(nikiel.getText());
+        if (zelazo.getText() == null || zelazo.getText().trim().isEmpty()) t8 = 0;
+        else t8 = Double.parseDouble(zelazo.getText());
+        if (olow.getText() == null || olow.getText().trim().isEmpty()) t9 = 0;
+        else t9 = Double.parseDouble(olow.getText());
+        return t1 + t2 + t3 + t4 + t5 + t6 + t7 + t8 + t9;
     }
 
     public void setScene(Stage stage, Parent root){
         stage.setTitle("Predict");
-        stage.setScene(new Scene(root, 1140, 550));
+        stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    public void setStops(int i){
+
+        int[] alsi = {80, 20, 0, 0, 0, 0, 0, 0, 0};
+        int[] alsimg = {80, 15, 5, 0, 0, 0, 0, 0, 0};
+        int[] alsimgcu = {80, 12, 2, 6, 0, 0, 0, 0, 0};
+        int[] mgalsi = {8, 2, 90, 0, 0, 0, 0, 0, 0};
+        int[] mgalzn = {7, 0, 90, 0, 3, 0, 0, 0, 0};
+        int[] cusn = {0, 0, 0, 98, 0, 2, 0, 0, 0};
+        int[] cuzn = {0, 0, 0, 70, 30, 0, 0, 0, 0};
+        int[] nicufe = {0, 0, 0, 30, 0, 0, 67, 3, 0};
+        int[] pbzncu = {0, 0, 0, 2, 0, 3, 0, 0, 95};
+
+        switch (i){
+            case 0: setTextifelds(alsi);
+                break;
+            case 1: setTextifelds(alsimg);
+                break;
+            case 2: setTextifelds(alsimgcu);
+                break;
+            case 3: setTextifelds(mgalsi);
+                break;
+            case 4: setTextifelds(mgalzn);
+                break;
+            case 5: setTextifelds(cusn);
+                break;
+            case 6: setTextifelds(cuzn);
+                break;
+            case 7: setTextifelds(nicufe);
+                break;
+            case 8: setTextifelds(pbzncu);
+                break;
+        }
+
+    }
+
+    public void setTextifelds(int[] metals){
+        aluminium.setText(new Integer(metals[0]).toString());
+        krzem.setText(new Integer(metals[1]).toString());
+        magnez.setText(new Integer(metals[2]).toString());
+        miedz.setText(new Integer(metals[3]).toString());
+        cynk.setText(new Integer(metals[4]).toString());
+        cyna.setText(new Integer(metals[5]).toString());
+        nikiel.setText(new Integer(metals[6]).toString());
+        zelazo.setText(new Integer(metals[7]).toString());
+        olow.setText(new Integer(metals[8]).toString());
     }
 
     static String readFile(String path, Charset encoding)
@@ -181,5 +290,29 @@ public class PredictController implements Initializable{
     {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, encoding);
+    }
+    @FXML
+    void makePrediction() {
+        String[] data = {
+                aluminium.getText(),
+                krzem.getText(),
+                magnez.getText(),
+                miedz.getText(),
+                cynk.getText(),
+                cyna.getText(),
+                nikiel.getText(),
+                zelazo.getText(),
+                olow.getText(),
+                temp.getText(),
+                time.getText(),
+                temp1.getText(),
+                time1.getText(),
+                temp2.getText(),
+                time2.getText(),
+                new Integer(uprades.getSelectionModel().getSelectedIndex()+1).toString(),
+                mass.getText()
+
+        };
+        String[] results = WekaManager.makePrediction(data);
     }
 }

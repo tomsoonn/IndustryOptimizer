@@ -71,13 +71,7 @@ public class MainController {
         }
     }
 
-    @FXML private Pane mainGridPane;
-
     @FXML protected void handleGenerateData(ActionEvent event){
-        mainGridPane.setVisible(true);
-    }
-
-    @FXML protected void handleSubmitButtonAction(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxml/generator.fxml"));
         Parent root;
@@ -91,10 +85,9 @@ public class MainController {
         }
     }
 
-
     public void setScene(Stage stage, Parent root){
         stage.setTitle("Main");
-        stage.setScene(new Scene(root, 1140, 700));
+        stage.setScene(new Scene(root));
         stage.show();
     }
 }
