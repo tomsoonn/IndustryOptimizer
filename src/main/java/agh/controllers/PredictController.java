@@ -1,5 +1,6 @@
 package agh.controllers;
 
+import agh.calculation.Calculator;
 import agh.classification.WekaManager;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -74,7 +75,7 @@ public class PredictController implements Initializable{
     @FXML
     private TextArea input;
     @FXML
-    private TextField price;
+    private TextField cost;
 
     @FXML
     protected void handleBack(ActionEvent event){
@@ -118,6 +119,7 @@ public class PredictController implements Initializable{
                         "Bardzo Dobre"
                 );
         uprades.setItems(options);
+        uprades.getSelectionModel().selectFirst();
         options = FXCollections.observableArrayList(
                 "AlSi",
                 "AlSiMg",
@@ -144,6 +146,7 @@ public class PredictController implements Initializable{
 
         );
         classifiers.setItems(options);
+        classifiers.getSelectionModel().selectFirst();
 
         aluminium.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -291,6 +294,7 @@ public class PredictController implements Initializable{
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, encoding);
     }
+
     @FXML
     void makePrediction() {
         String[] data = {
@@ -314,6 +318,11 @@ public class PredictController implements Initializable{
 
         };
         String predictedQuality = WekaManager.makePrediction(data, classifiers.getSelectionModel().getSelectedIndex());
+        String calculatedInput = Calculator.calculateInput(data);
+        String calculatedCost = Calculator.calculateCost(data);
+
         quality.setText(predictedQuality);
+        input.setText(calculatedInput);
+        cost.setText(calculatedCost);
     }
 }

@@ -29,7 +29,7 @@ public class ProductionData {
     private RandomForest forest = new RandomForest();
     private M5P m5p = new M5P();
     private Vote vote = new Vote();
-    private Classifier actualClassifier = forest;
+    private Classifier actualClassifier;
 
     public ProductionData() {
     }
@@ -64,8 +64,6 @@ public class ProductionData {
 //            options[0] = "-U";            // unpruned tree
 //            tree.setOptions(options);     // set the options
 
-
-            actualClassifier.buildClassifier(trainData);
             forest.buildClassifier(trainData);
             m5p.buildClassifier(trainData);
             //mlp.setLearningRate(0.3);
@@ -118,6 +116,7 @@ public class ProductionData {
 
         //System.out.println(labeled.toString());
 
+
         switch (classifier){
             case 0: actualClassifier=mlp;
             break;
@@ -126,6 +125,8 @@ public class ProductionData {
             case 2: actualClassifier=forest;
             break;
             case 3: actualClassifier=vote;
+            break;
+            default: actualClassifier=mlp;
             break;
 
         }

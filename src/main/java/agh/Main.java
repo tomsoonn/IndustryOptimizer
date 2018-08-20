@@ -37,7 +37,10 @@ public class Main extends Application {
 
         //minTime = 30, coeff = 2/3, minHeatingTime = 10, coolingTempCoeff2 = 0.5, minHeatTime2 = 25
         //generator.generateQuality(20, "AlSi.arff", "110000000", 30, 0.6666, 10, 0.5, 25,  90);
-        productionData.trainAndTest("TrainingData.arff","AlSi.arff");
+
+        Thread thread = new Thread(() ->
+                productionData.trainAndTest("TrainingData.arff","AlSi.arff"));
+        thread.start();
         launch(args);
     }
 }

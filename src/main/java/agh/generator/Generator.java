@@ -159,12 +159,12 @@ public class Generator {
         writer.print("@ATTRIBUTE StopieńUszlachetniania numeric\n");
         writer.print("@ATTRIBUTE Jakość ");
         printType(numeric);
-        writer.print("\n@DATA");
+        writer.print("\n\n@DATA");
     }
 
     public static void printLine(String filename, String line){
         printHeader(filename, true);
-        writer.print("\n\n"+line);
+        writer.print("\n"+line);
         writer.close();
     }
 
