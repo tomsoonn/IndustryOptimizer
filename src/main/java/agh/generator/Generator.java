@@ -1,10 +1,7 @@
 package agh.generator;
 
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 
@@ -71,7 +68,7 @@ public class Generator {
                     writer.print(aLoad);
                     writer.print(",");
                 }
-                if (temperature < getMinTemperature(metal)) {
+                if (temperature < Metals.getMinTemperature(metal)) {
                     ratio = 0;
                 } else if (temperature < 1000) {
                     ratio = Metals.getRatio(metal);
@@ -114,8 +111,8 @@ public class Generator {
         int temperature = 0;
         for (Metals metal : Metals.values()) {
             if (metalList[metal.getValue() - 1] != 0) {
-                if (getMinTemperature(metal) > temperature)
-                    temperature = getMinTemperature(metal);
+                if (Metals.getMinTemperature(metal) > temperature)
+                    temperature = Metals.getMinTemperature(metal);
             }
         }
         return temperature;
@@ -283,31 +280,7 @@ public class Generator {
     }
 
 
-    private static int getMinTemperature(Metals metal) {
-        switch (metal) {
-            case Aluminium:
-                return 660;
-            case Miedz:
-                return 1084;
-            case Nikiel:
-                return 1453;
-            case Cynk:
-                return 420;
-            case Olow:
-                return 327;
-            case Cyna:
-                return 232;
-            case Magnez:
-                return 650;
-            case Zelazo:
-                return 1500;
-            case Krzem:
-                return 1410;
-            default:
-                return -1;
-        }
 
-    }
 
 }
 

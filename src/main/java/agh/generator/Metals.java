@@ -46,4 +46,54 @@ public enum Metals {
 
         }
     }
+    public static int getMinTemperature(Metals metal) {
+        switch (metal) {
+            case Aluminium:
+                return 660;
+            case Miedz:
+                return 1084;
+            case Nikiel:
+                return 1453;
+            case Cynk:
+                return 420;
+            case Olow:
+                return 327;
+            case Cyna:
+                return 232;
+            case Magnez:
+                return 650;
+            case Zelazo:
+                return 1500;
+            case Krzem:
+                return 1410;
+            default:
+                return -1;
+        }
+
+    }
+    public static double getPrice(Metals metal) {
+        switch (metal) {
+            case Aluminium:
+                return 7.5;
+            case Miedz:
+                return 22;
+            case Nikiel:
+                return 48;
+            case Cynk:
+                return 9.5;
+            case Olow:
+                return 8;
+            case Cyna:
+                return 73;
+            case Magnez:
+                return 32;
+            case Zelazo:
+                return 0.5;
+            case Krzem:
+                return 40;
+            default:
+                return -1;
+        }
+
+    }
 }

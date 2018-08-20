@@ -53,11 +53,11 @@ public class PredictController implements Initializable {
     @FXML
     private TextField quality;
     @FXML
-    private ChoiceBox uprades;
+    private ChoiceBox<String> uprades;
     @FXML
-    private ChoiceBox stops;
+    private ChoiceBox<String> stops;
     @FXML
-    private ChoiceBox classifiers;
+    private ChoiceBox<String> classifiers;
     @FXML
     private TextField temp;
     @FXML
@@ -241,7 +241,7 @@ public class PredictController implements Initializable {
         stage.show();
     }
 
-    public void setStops(int i) {
+    private void setStops(int i) {
 
         int[] alsi = {80, 20, 0, 0, 0, 0, 0, 0, 0};
         int[] alsimg = {80, 15, 5, 0, 0, 0, 0, 0, 0};
@@ -255,46 +255,46 @@ public class PredictController implements Initializable {
 
         switch (i) {
             case 0:
-                setTextifelds(alsi);
+                setTextFields(alsi);
                 break;
             case 1:
-                setTextifelds(alsimg);
+                setTextFields(alsimg);
                 break;
             case 2:
-                setTextifelds(alsimgcu);
+                setTextFields(alsimgcu);
                 break;
             case 3:
-                setTextifelds(mgalsi);
+                setTextFields(mgalsi);
                 break;
             case 4:
-                setTextifelds(mgalzn);
+                setTextFields(mgalzn);
                 break;
             case 5:
-                setTextifelds(cusn);
+                setTextFields(cusn);
                 break;
             case 6:
-                setTextifelds(cuzn);
+                setTextFields(cuzn);
                 break;
             case 7:
-                setTextifelds(nicufe);
+                setTextFields(nicufe);
                 break;
             case 8:
-                setTextifelds(pbzncu);
+                setTextFields(pbzncu);
                 break;
         }
 
     }
 
-    public void setTextifelds(int[] metals) {
-        aluminium.setText(new Integer(metals[0]).toString());
-        krzem.setText(new Integer(metals[1]).toString());
-        magnez.setText(new Integer(metals[2]).toString());
-        miedz.setText(new Integer(metals[3]).toString());
-        cynk.setText(new Integer(metals[4]).toString());
-        cyna.setText(new Integer(metals[5]).toString());
-        nikiel.setText(new Integer(metals[6]).toString());
-        zelazo.setText(new Integer(metals[7]).toString());
-        olow.setText(new Integer(metals[8]).toString());
+    private void setTextFields(int[] metals) {
+        aluminium.setText(Integer.toString(metals[0]));
+        krzem.setText(Integer.toString(metals[1]));
+        magnez.setText(Integer.toString(metals[2]));
+        miedz.setText(Integer.toString(metals[3]));
+        cynk.setText(Integer.toString(metals[4]));
+        cyna.setText(Integer.toString(metals[5]));
+        nikiel.setText(Integer.toString(metals[6]));
+        zelazo.setText(Integer.toString(metals[7]));
+        olow.setText(Integer.toString(metals[8]));
     }
 
     static String readFile(String path, Charset encoding)
@@ -321,7 +321,7 @@ public class PredictController implements Initializable {
                 time1.getText(),
                 temp2.getText(),
                 time2.getText(),
-                new Integer(uprades.getSelectionModel().getSelectedIndex() + 1).toString(),
+                Integer.toString(uprades.getSelectionModel().getSelectedIndex() + 1),
                 mass.getText()
 
         };

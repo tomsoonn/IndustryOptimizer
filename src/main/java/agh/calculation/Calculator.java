@@ -5,25 +5,27 @@ import agh.generator.Metals;
 import java.util.Locale;
 
 public class Calculator {
+    private static double cost;
 
     public static String calculateInput(String[] data) {
-        String result = new String();
+        StringBuilder result = new StringBuilder();
         double mass = Double.parseDouble(data[data.length - 1]);
         double temp = Double.parseDouble(data[Metals.values().length]);
-
+        cost = 0;
         for (int i = 0; i < Metals.values().length; i++) {
 
             double tmp = (mass * (Double.parseDouble(data[i]) / 100.0) * ((100.0 + Metals.getRatio(Metals.values()[i]) + (temp / 2000.0)) / 100.0));
-            result += Metals.values()[i].toString() + " : " + String.format(Locale.US, "%.2f", tmp) + "\n";
+            cost += tmp * Metals.getPrice(Metals.values()[i]);
+            result.append(Metals.values()[i].toString()).append(" : ").append(String.format(Locale.US, "%.2f", tmp)).append("\n");
         }
 
-        return result;
+        return result.toString();
     }
 
     public static String calculateCost(String[] data) {
-        String result = new String();
+
         //TODO
 
-        return result;
+        return String.format(Locale.US, "%.2f", cost);
     }
 }

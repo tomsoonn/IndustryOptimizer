@@ -2,26 +2,13 @@ package agh.classification;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.functions.GaussianProcesses;
 import weka.classifiers.functions.MultilayerPerceptron;
-import weka.classifiers.functions.SMOreg;
-import weka.classifiers.functions.SimpleLinearRegression;
-import weka.classifiers.lazy.IBk;
-import weka.classifiers.lazy.KStar;
-import weka.classifiers.lazy.LWL;
 import weka.classifiers.meta.*;
-import weka.classifiers.rules.DecisionTable;
-import weka.classifiers.rules.ZeroR;
 import weka.classifiers.trees.*;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
-import weka.filters.Filter;
-import weka.filters.unsupervised.attribute.NumericToNominal;
-
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProductionData {
 
@@ -33,7 +20,6 @@ public class ProductionData {
 
     public ProductionData() {
     }
-
 
     public void trainAndTest(String trainFile, String testFile) {
         try {
@@ -150,7 +136,7 @@ public class ProductionData {
         System.out.println(unlabeled.toString() + "\n\nunalbeled--------------------------------------------------\n");
         System.out.println(labeled.toString() + "\n\nlabeled--------------------------------------------------\n");
 
-        String result = labeled.toString().split(",")[16];
+        String result = labeled.toString().split(",")[16].substring(0,6);
 
 
         // save labeled data

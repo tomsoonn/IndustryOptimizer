@@ -1,7 +1,6 @@
 package agh;
 
 import agh.classification.ProductionData;
-import agh.generator.Generator;
 import com.mongodb.*;
 import javafx.application.Application;
 import javafx.application.Platform;
