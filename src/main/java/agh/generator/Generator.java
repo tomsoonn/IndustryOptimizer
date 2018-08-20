@@ -1,8 +1,10 @@
 package agh.generator;
 
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 
@@ -126,143 +128,152 @@ public class Generator {
             writer.print("{" + 0);
             for (int i = 1; i < 101; i++)
                 writer.print("," + i);
+            writer.print("}\n");
         }
-        writer.print("}\n");
+
+    }
+
+    private static void printHeader(String filename, boolean numeric){
+        try {
+            writer = new PrintWriter(filename, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+            writer.close();
+        }
+        writer.print("@RELATION " + filename + "\n\n");
+        writer.print("@ATTRIBUTE Aluminium numeric\n");
+        writer.print("@ATTRIBUTE Krzem numeric\n");
+        writer.print("@ATTRIBUTE Magnez numeric\n");
+        writer.print("@ATTRIBUTE Miedz numeric\n");
+        writer.print("@ATTRIBUTE Cynk numeric\n");
+        writer.print("@ATTRIBUTE Cyna numeric\n");
+        writer.print("@ATTRIBUTE Nikiel numeric\n");
+        writer.print("@ATTRIBUTE Zelazo numeric\n");
+        writer.print("@ATTRIBUTE Olow numeric\n");
+        writer.print("@ATTRIBUTE TemperaturaWytapiania numeric\n");
+        writer.print("@ATTRIBUTE CzasWytapiania numeric\n");
+        writer.print("@ATTRIBUTE TemperaturaStudzenia numeric\n");
+        writer.print("@ATTRIBUTE CzasPodgrzewania numeric\n");
+        writer.print("@ATTRIBUTE TemperaturaStudzenia2 numeric\n");
+        writer.print("@ATTRIBUTE CzasPodgrzewania2 numeric\n");
+        writer.print("@ATTRIBUTE StopieńUszlachetniania numeric\n");
+        writer.print("@ATTRIBUTE Jakość ");
+        printType(numeric);
+        writer.print("\n@DATA");
+    }
+
+    public static void printLine(String filename, String line){
+        printHeader(filename, true);
+        writer.print("\n\n"+line);
+        writer.close();
     }
 
 
     public static void generateQ(String filename, int[] metals, int quantity, boolean labeled, boolean numeric){
-        try {
-            writer = new PrintWriter(filename, "UTF-8");
-            writer.print("@RELATION " + filename + "\n\n");
-            writer.print("@ATTRIBUTE Aluminium numeric\n");
-            writer.print("@ATTRIBUTE Krzem numeric\n");
-            writer.print("@ATTRIBUTE Magnez numeric\n");
-            writer.print("@ATTRIBUTE Miedz numeric\n");
-            writer.print("@ATTRIBUTE Cynk numeric\n");
-            writer.print("@ATTRIBUTE Cyna numeric\n");
-            writer.print("@ATTRIBUTE Nikiel numeric\n");
-            writer.print("@ATTRIBUTE Zelazo numeric\n");
-            writer.print("@ATTRIBUTE Olow numeric\n");
-            writer.print("@ATTRIBUTE TemperaturaWytapiania numeric\n");
-            writer.print("@ATTRIBUTE CzasWytapiania numeric\n");
-            writer.print("@ATTRIBUTE TemperaturaStudzenia numeric\n");
-            writer.print("@ATTRIBUTE CzasPodgrzewania numeric\n");
-            writer.print("@ATTRIBUTE TemperaturaStudzenia2 numeric\n");
-            writer.print("@ATTRIBUTE CzasPodgrzewania2 numeric\n");
-            writer.print("@ATTRIBUTE StopieńUszlachetniania numeric\n");
-            writer.print("@ATTRIBUTE Jakość ");
-            printType(numeric);
-            writer.print("\n@DATA");
+        printHeader(filename,numeric);
+        System.out.println("start");
+        Random r = new Random();
+        int temperatureLevel = getHighestTemperatureArray(metals);
+        for (int i = 0; i < quantity; i++){
+            int quality = 90;
+            int temperatureBound = (int) (0.7*temperatureLevel);
+            int minTemperature = (int) (0.5*temperatureLevel);
+            int temperature = (r.nextInt(temperatureBound) + minTemperature);
 
-            System.out.println("start");
-            Random r = new Random();
-            int temperatureLevel = getHighestTemperatureArray(metals);
-            for (int i = 0; i < quantity; i++){
-                int quality = 90;
-                int temperatureBound = (int) (0.7*temperatureLevel);
-                int minTemperature = (int) (0.5*temperatureLevel);
-                int temperature = (r.nextInt(temperatureBound) + minTemperature);
-
-                if (temperature >= temperatureLevel){
-                    quality += (temperature-temperatureLevel)/((minTemperature+temperatureBound-temperatureLevel)/10);
-                } else {
-                    quality -= (temperatureLevel - temperature)/(temperatureLevel*0.5/90);
-                }
-
-                int time = (r.nextInt(40) + 30);
-
-
-                if (quality!=0)
-                    quality -= Math.abs(time-50)/(20.0/(0.6*quality));
-
-                int optimalCoolingTemperature = (int) (0.6666*temperature);
-
-                int coolingTemperature = (r.nextInt((int) (0.25*temperature)) + optimalCoolingTemperature - (int) (0.25*temperature)/2);
-
-
-                if (quality!=0)
-                    quality -= Math.abs(coolingTemperature-optimalCoolingTemperature)/(((0.25*temperature)/2)/(0.3*quality));
-
-                int heatingTime = (r.nextInt(20) + 5);
-
-
-                if (quality!=0)
-                    quality -= Math.abs(heatingTime-15)/(10.0/(0.1*quality));
-
-                int optimalCoolingTemperature2 = (int) (0.5*optimalCoolingTemperature);
-
-                int coolingTemperature2 = (r.nextInt((int) (0.25*coolingTemperature)) + optimalCoolingTemperature2 - (int) (0.25*optimalCoolingTemperature)/2);
-
-
-                if (quality!=0)
-                    quality -= Math.abs(coolingTemperature2-optimalCoolingTemperature2)/(((0.25*optimalCoolingTemperature)/2)/(0.1*quality));
-
-                int heatingTime2 = (r.nextInt(30) + 10);
-
-
-                if (quality!=0)
-                    quality -= Math.abs(heatingTime2-25)/(15.0/(0.05*quality));
-
-                int level = (r.nextInt(5) + 1);
-
-
-                switch (level){
-                    case 1: quality += 0;
-                    break;
-                    case 2: quality += 2;
-                    break;
-                    case 3: quality += 4;
-                    break;
-                    case 4: quality += 6;
-                    break;
-                    case 5: quality += 8;
-                }
-
-                if (quality >= 0 && quality <= 100) {
-
-                    writer.print("\n");
-
-                    for (int metal : metals) {
-                        writer.print(metal);
-                        writer.print(",");
-                    }
-
-                    writer.print(temperature);
-                    writer.print(",");
-
-                    writer.print(time);
-                    writer.print(",");
-
-                    writer.print(coolingTemperature);
-                    writer.print(",");
-
-                    writer.print(heatingTime);
-                    writer.print(",");
-
-                    writer.print(coolingTemperature2);
-                    writer.print(",");
-
-                    writer.print(heatingTime2);
-                    writer.print(",");
-
-                    writer.print(level);
-                    writer.print(",");
-
-                    writer.print(quality);
-
-                if (labeled) writer.print(quality);
-                else writer.print("?");
-                }
+            if (temperature >= temperatureLevel){
+                quality += (temperature-temperatureLevel)/((minTemperature+temperatureBound-temperatureLevel)/10);
+            } else {
+                quality -= (temperatureLevel - temperature)/(temperatureLevel*0.5/90);
             }
 
+            int time = (r.nextInt(40) + 30);
 
 
+            if (quality!=0)
+                quality -= Math.abs(time-50)/(20.0/(0.6*quality));
 
-            writer.close();
-        } catch (IOException e) {
-            writer.close();
+            int optimalCoolingTemperature = (int) (0.6666*temperature);
+
+            int coolingTemperature = (r.nextInt((int) (0.25*temperature)) + optimalCoolingTemperature - (int) (0.25*temperature)/2);
+
+
+            if (quality!=0)
+                quality -= Math.abs(coolingTemperature-optimalCoolingTemperature)/(((0.25*temperature)/2)/(0.3*quality));
+
+            int heatingTime = (r.nextInt(20) + 5);
+
+
+            if (quality!=0)
+                quality -= Math.abs(heatingTime-15)/(10.0/(0.1*quality));
+
+            int optimalCoolingTemperature2 = (int) (0.5*optimalCoolingTemperature);
+
+            int coolingTemperature2 = (r.nextInt((int) (0.25*coolingTemperature)) + optimalCoolingTemperature2 - (int) (0.25*optimalCoolingTemperature)/2);
+
+
+            if (quality!=0)
+                quality -= Math.abs(coolingTemperature2-optimalCoolingTemperature2)/(((0.25*optimalCoolingTemperature)/2)/(0.1*quality));
+
+            int heatingTime2 = (r.nextInt(30) + 10);
+
+
+            if (quality!=0)
+                quality -= Math.abs(heatingTime2-25)/(15.0/(0.05*quality));
+
+            int level = (r.nextInt(5) + 1);
+
+
+            switch (level){
+                case 1: quality += 0;
+                break;
+                case 2: quality += 2;
+                break;
+                case 3: quality += 4;
+                break;
+                case 4: quality += 6;
+                break;
+                case 5: quality += 8;
+            }
+
+            if (quality >= 0 && quality <= 100) {
+
+                writer.print("\n");
+
+                for (int metal : metals) {
+                    writer.print(metal);
+                    writer.print(",");
+                }
+
+                writer.print(temperature);
+                writer.print(",");
+
+                writer.print(time);
+                writer.print(",");
+
+                writer.print(coolingTemperature);
+                writer.print(",");
+
+                writer.print(heatingTime);
+                writer.print(",");
+
+                writer.print(coolingTemperature2);
+                writer.print(",");
+
+                writer.print(heatingTime2);
+                writer.print(",");
+
+                writer.print(level);
+                writer.print(",");
+
+                writer.print(quality);
+
+            if (labeled) writer.print(quality);
+            else writer.print("?");
+            }
         }
+
+
+        writer.close();
         System.out.println("koniec");
     }
 

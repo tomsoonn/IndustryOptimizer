@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ClassifyPane" prefHeight="700.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.controllers.ClassifyControler">
+<AnchorPane fx:id="ClassifyPane" prefHeight="700.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.controllers.ClassifyControler">
    <children>
       <BorderPane layoutX="-6.0" layoutY="-6.0" prefHeight="714.0" prefWidth="1154.0">
          <left>
@@ -48,7 +48,7 @@
          <top>
             <Pane prefHeight="91.0" prefWidth="1154.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label layoutX="476.0" layoutY="24.0" text="Klasyfikacja">
+                  <Label layoutX="476.0" layoutY="24.0" text="Testowanie">
                      <font>
                         <Font size="36.0" />
                      </font>

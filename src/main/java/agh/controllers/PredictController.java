@@ -1,5 +1,8 @@
 package agh.controllers;
 
+import agh.classification.WekaManager;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -52,6 +55,8 @@ public class PredictController implements Initializable{
     private ChoiceBox uprades;
     @FXML
     private ChoiceBox stops;
+    @FXML
+    private ChoiceBox classifiers;
     @FXML
     private TextField temp;
     @FXML
@@ -114,9 +119,32 @@ public class PredictController implements Initializable{
                 );
         uprades.setItems(options);
         options = FXCollections.observableArrayList(
-                        "TODO"
-                );
+                "AlSi",
+                "AlSiMg",
+                "AlSiCuMg",
+                "MgAlSi",
+                "MgAlZn",
+                "CuSn-brąz",
+                "CuSn-mosiądz",
+                "NiCuFe",
+                "PbSnCu"
+        );
         stops.setItems(options);
+        stops.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                setStops(newValue.intValue());
+            }
+        });
+        options = FXCollections.observableArrayList(
+                "MultilayerPerceptron",
+                "M5P",
+                "RandomForest",
+                "Vote"
+
+        );
+        classifiers.setItems(options);
+
         aluminium.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 aluminium.setText(newValue.replaceAll("[^\\d]", ""));
@@ -210,10 +238,81 @@ public class PredictController implements Initializable{
         stage.show();
     }
 
+    public void setStops(int i){
+
+        int[] alsi = {80, 20, 0, 0, 0, 0, 0, 0, 0};
+        int[] alsimg = {80, 15, 5, 0, 0, 0, 0, 0, 0};
+        int[] alsimgcu = {80, 12, 2, 6, 0, 0, 0, 0, 0};
+        int[] mgalsi = {8, 2, 90, 0, 0, 0, 0, 0, 0};
+        int[] mgalzn = {7, 0, 90, 0, 3, 0, 0, 0, 0};
+        int[] cusn = {0, 0, 0, 98, 0, 2, 0, 0, 0};
+        int[] cuzn = {0, 0, 0, 70, 30, 0, 0, 0, 0};
+        int[] nicufe = {0, 0, 0, 30, 0, 0, 67, 3, 0};
+        int[] pbzncu = {0, 0, 0, 2, 0, 3, 0, 0, 95};
+
+        switch (i){
+            case 0: setTextifelds(alsi);
+                break;
+            case 1: setTextifelds(alsimg);
+                break;
+            case 2: setTextifelds(alsimgcu);
+                break;
+            case 3: setTextifelds(mgalsi);
+                break;
+            case 4: setTextifelds(mgalzn);
+                break;
+            case 5: setTextifelds(cusn);
+                break;
+            case 6: setTextifelds(cuzn);
+                break;
+            case 7: setTextifelds(nicufe);
+                break;
+            case 8: setTextifelds(pbzncu);
+                break;
+        }
+
+    }
+
+    public void setTextifelds(int[] metals){
+        aluminium.setText(new Integer(metals[0]).toString());
+        krzem.setText(new Integer(metals[1]).toString());
+        magnez.setText(new Integer(metals[2]).toString());
+        miedz.setText(new Integer(metals[3]).toString());
+        cynk.setText(new Integer(metals[4]).toString());
+        cyna.setText(new Integer(metals[5]).toString());
+        nikiel.setText(new Integer(metals[6]).toString());
+        zelazo.setText(new Integer(metals[7]).toString());
+        olow.setText(new Integer(metals[8]).toString());
+    }
+
     static String readFile(String path, Charset encoding)
             throws IOException
     {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, encoding);
+    }
+    @FXML
+    void makePrediction() {
+        String[] data = {
+                aluminium.getText(),
+                krzem.getText(),
+                magnez.getText(),
+                miedz.getText(),
+                cynk.getText(),
+                cyna.getText(),
+                nikiel.getText(),
+                zelazo.getText(),
+                olow.getText(),
+                temp.getText(),
+                time.getText(),
+                temp1.getText(),
+                time1.getText(),
+                temp2.getText(),
+                time2.getText(),
+                new Integer(uprades.getSelectionModel().getSelectedIndex()+1).toString(),
+                mass.getText()
+
+        };
+        String[] results = WekaManager.makePrediction(data);
     }
 }

@@ -45,7 +45,7 @@ public class ClassifyControler implements Initializable {
     }
 
     public void setScene(Stage stage, Parent root){
-        controller.setScene(stage, root, "Classify");
+        controller.setScene(stage, root, "Testowanie");
     }
 
 }

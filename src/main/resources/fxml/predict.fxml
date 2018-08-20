@@ -61,8 +61,8 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button layoutX="188.0" layoutY="503.0" mnemonicParsing="false" onAction="#handleShowData" prefHeight="50.0" prefWidth="160.0" text="Pokaż wynik" />
-                        <Button layoutX="132.0" layoutY="565.0" mnemonicParsing="false" onAction="#handleProcessing" prefHeight="50.0" text="Pokaż przebieg wyznaczania wyników" textAlignment="CENTER" wrapText="true" />
+                  <Button layoutX="315.0" layoutY="503.0" mnemonicParsing="false" onAction="#makePrediction" prefHeight="50.0" prefWidth="160.0" text="Pokaż wynik" />
+                        <Button layoutX="140.0" layoutY="578.0" mnemonicParsing="false" onAction="#handleProcessing" prefHeight="50.0" text="Pokaż przebieg wyznaczania wyników" textAlignment="CENTER" wrapText="true" />
                   <Label layoutX="82.0" layoutY="415.0" text="Przewidywana jakość">
                      <font>
                         <Font size="18.0" />
@@ -93,6 +93,8 @@
                   <TextField fx:id="mass" layoutX="231.0" layoutY="318.0" prefWidth="60.0" />
                   <Separator layoutX="-6.0" layoutY="191.0" prefHeight="0.0" prefWidth="930.0" />
                   <Separator layoutX="4.0" layoutY="360.0" prefHeight="0.0" prefWidth="917.0" />
+                  <ChoiceBox fx:id="classifiers" layoutX="32.0" layoutY="522.0" prefHeight="25.0" prefWidth="248.0" />
+                  <Label layoutX="103.0" layoutY="494.0" text="Wybierz klasyfikator" />
                     </children></Pane>
             </center>
             <top>
