@@ -117,17 +117,22 @@ public class ProductionData {
         //System.out.println(labeled.toString());
 
 
-        switch (classifier){
-            case 0: actualClassifier=mlp;
-            break;
-            case 1: actualClassifier=m5p;
-            break;
-            case 2: actualClassifier=forest;
-            break;
-            case 3: actualClassifier=vote;
-            break;
-            default: actualClassifier=mlp;
-            break;
+        switch (classifier) {
+            case 0:
+                actualClassifier = mlp;
+                break;
+            case 1:
+                actualClassifier = m5p;
+                break;
+            case 2:
+                actualClassifier = forest;
+                break;
+            case 3:
+                actualClassifier = vote;
+                break;
+            default:
+                actualClassifier = mlp;
+                break;
 
         }
 

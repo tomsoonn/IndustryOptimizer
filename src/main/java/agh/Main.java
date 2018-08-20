@@ -20,7 +20,7 @@ public class Main extends Application {
     public static ProductionData productionData = new ProductionData();
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
         primaryStage.setTitle("IndustryOptimizer");
         primaryStage.setScene(new Scene(root));
@@ -39,7 +39,7 @@ public class Main extends Application {
         //generator.generateQuality(20, "AlSi.arff", "110000000", 30, 0.6666, 10, 0.5, 25,  90);
 
         Thread thread = new Thread(() ->
-                productionData.trainAndTest("TrainingData.arff","AlSi.arff"));
+                productionData.trainAndTest("TrainingData.arff", "AlSi.arff"));
         thread.start();
         launch(args);
     }
