@@ -15,9 +15,11 @@ public class UIAgent extends Agent implements InterfaceUI{
 
     private Object [] args;
     private int runProcessStep = 0;
+    private int learningStep = 0;
     private int DBQueryStartStep = 0;
     private String agentResult;
     private boolean runProcessFinished = false;
+    private boolean learningFinished = false;
     private boolean dbQueryFinished = false;
 
     //private List<ProcessJson> processes = null;
@@ -132,8 +134,8 @@ public class UIAgent extends Agent implements InterfaceUI{
                         msgTmp = MessageTemplate.MatchPerformative(AgentMessages.RECEIVE_RESULT);
                         msgReceive = receive(msgTmp);
                         if(msgReceive!=null){
-                            runProcessFinished = true;
                             agentResult = msgReceive.getContent();
+                            runProcessFinished = true;
 
                         }
                         break;
@@ -158,6 +160,90 @@ public class UIAgent extends Agent implements InterfaceUI{
             }
         }
         return agentResult;
+    }
+
+    @Override
+    public void startTraining() {
+        addBehaviour(new Behaviour() {
+            @Override
+            public void action() {
+
+                String msgContent = "Train on new data";
+                MessageTemplate msgTmp;
+                ACLMessage msgReceive;
+                switch(learningStep){
+
+                    case(0):
+                        ACLMessage msgProcessInit = new ACLMessage(AgentMessages.START_LEARNING_AGENT);
+                        msgProcessInit.setContent("");
+                        msgProcessInit.addReceiver(new AID( args[0].toString(), AID.ISLOCALNAME));
+                        send(msgProcessInit);
+                        learningStep = 1;
+                        block();
+
+                    case(1):
+                        msgTmp = MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING_AGENT_ACK);
+                        msgReceive = receive(msgTmp);
+                        if(msgReceive!=null){
+                            learningStep = 2;
+                        }
+                        break;
+
+                    case(2):
+                        ACLMessage msgSetValues = new ACLMessage(AgentMessages.START_LEARNING);
+                        msgSetValues.setContent("");
+                        msgSetValues.addReceiver(new AID( args[0].toString(), AID.ISLOCALNAME));
+                        send(msgSetValues);
+                        learningStep = 3;
+                        break;
+
+                    case(3):
+                        msgTmp = MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING_ACK);
+                        msgReceive = receive(msgTmp);
+                        if(msgReceive!=null){
+                            learningStep = 4;
+                            learningFinished = true;
+                        }
+                        break;
+
+//                    case(4):
+//                        ACLMessage msgStartProcess = new ACLMessage(AgentMessages.START_PROCESS);
+//                        msgStartProcess.setContent("");
+//                        msgStartProcess.addReceiver(new AID( args[0].toString(), AID.ISLOCALNAME));
+//                        send(msgStartProcess);
+//                        runProcessStep = 5;
+//                        break;
+//
+//                    case(5):
+//                        msgTmp = MessageTemplate.MatchPerformative(AgentMessages.RECEIVE_RESULT);
+//                        msgReceive = receive(msgTmp);
+//                        if(msgReceive!=null){
+//                            runProcessFinished = true;
+//                            agentResult = msgReceive.getContent();
+//
+//                        }
+//                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public boolean done() {
+                return learningFinished;
+            }
+        });
+
+        learningFinished = false;
+        learningStep = 0;
+//        while (agentResult==null) {
+//            try {
+//                Thread.sleep(1);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        //return "";
     }
 
 

@@ -1,6 +1,7 @@
 package agh.agents;
 
 import agh.calculation.Calculator;
+import agh.classification.WekaManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.stream.Collectors;
@@ -11,9 +12,9 @@ public class ProductionProcess {
     private final static Logger logger = LoggerFactory.getLogger(ProductionProcess.class);
 
     private String[] data;
+    private int classifier;
     Calculator calculator;
 
-    private double cost;
 
     private Long pid;
 
@@ -22,14 +23,14 @@ public class ProductionProcess {
         //DBManager.getINSTANCE().saveProcess(new ProcessJson(pid));
     }
 
-    public ProductionProcess(String[] data) {
+    public ProductionProcess(String[] data, int classifier) {
         this();
         this.data = data;
+        this.classifier = classifier;
         calculator = new Calculator();
     }
 
-    private String firstStep() {
-        //wyliczenie rzeczywistego składu
+    private String firstStep() {    //wyliczenie rzeczywistego składu
         return calculator.calculateInput(data);
     }
 
@@ -44,22 +45,21 @@ public class ProductionProcess {
                                 */
     }
 
-    private String secondStep() {
+    private String secondStep() {   //wyliczenie kosztu
         //saveCurrentStage(2);
         return calculator.calculateCost(data);
     }
 
-    private double thirdStep(){     //calculate cost
-        return 0.0;
+    private String thirdStep(){     //wyznaczenie jakości
+        return WekaManager.makePrediction(data, classifier);
     }
 
-
     public String[] runProcess() {
-        String[] result = new String[2];
+        String[] result = new String[3];
 
         result[0] = firstStep();
-
         result[1] = secondStep();
+        result[2] = thirdStep();
 
         return result;
     }

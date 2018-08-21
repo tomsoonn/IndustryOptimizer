@@ -11,6 +11,8 @@ public class AgentMessages {
     public static final int GET_PROCESS_IDS = 107;
     public static final int GET_PROCESS_IDS_ACK = 108;
     public static final int RECOM = 109;
-    public static final int START_LEARNING = 110;
-    public static final int START_LEARNING_ACK = 111;
+    public static final int START_LEARNING_AGENT = 110;
+    public static final int START_LEARNING_AGENT_ACK = 111;
+    public static final int START_LEARNING = 112;
+    public static final int START_LEARNING_ACK = 113;
 }

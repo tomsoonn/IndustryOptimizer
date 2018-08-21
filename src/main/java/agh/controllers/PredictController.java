@@ -1,6 +1,5 @@
 package agh.controllers;
 
-import agh.calculation.Calculator;
 import agh.agents.InterfaceUI;
 import agh.agents.MainContainer;
 import agh.classification.WekaManager;
@@ -146,30 +145,15 @@ public class PredictController implements Initializable {
                 mass.getText()
 
         };
-        String predictedQuality = WekaManager.makePrediction(data, classifiers.getSelectionModel().getSelectedIndex());
-        //String calculatedInput = Calculator.calculateInput(data);
-        //String calculatedCost = Calculator.calculateCost(data);
-
-        quality.setText(predictedQuality);
-        //input.setText(calculatedInput);
-        //cost.setText(calculatedCost);
 
         AgentController ac = MainContainer.cc.getAgent("UI-agent");
         InterfaceUI uiObj = ac.getO2AInterface(InterfaceUI.class);
 
-        //String predictedQuality = WekaManager.makePrediction(data, classifiers.getSelectionModel().getSelectedIndex());
-        //String calculatedInput = Calculator.calculateInput(data);
-        //String calculatedCost = Calculator.calculateCost(data);
-
-       // quality.setText(predictedQuality);
-        //Double[] metals, int mass, int meltingTemp, int metlingTime, int coolingTemp1, int heatingTime1, int coolingTemp2, int heatingTime2, int level
-        //double quality = uiObj.runProcess(metals, parameters[7], parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5], parameters[6]);
         String result = uiObj.runProcess(data, classifiers.getSelectionModel().getSelectedIndex());
-        System.out.println("result = " + result);
         String[] results = result.split("-");
-        //String[] results = WekaManager.makePrediction(data);
         input.setText(results[0]);
         cost.setText(results[1]);
+        quality.setText(results[2]);
     }
 
     @Override

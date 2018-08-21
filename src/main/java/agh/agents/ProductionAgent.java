@@ -16,6 +16,7 @@ import static java.lang.Thread.sleep;
 public class ProductionAgent extends Agent {
     private ArrayList<AID> processAgents = new ArrayList<>();
     private ArrayList<AID> systemAgents = new ArrayList<>();
+    private ArrayList<AID> learningAgents = new ArrayList<>();
 
     private AID createProcess(){
         ContainerController cc = getContainerController();
@@ -26,6 +27,24 @@ public class ProductionAgent extends Agent {
         try {
             AgentController process = cc.createNewAgent(processNickname,
                     "agh.agents.ProcessAgent", args);
+            process.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        return new AID(processNickname, AID.ISLOCALNAME);
+    }
+
+    private AID createLearningAgent(){
+        ContainerController cc = getContainerController();
+        String processNickname = "Learning-agent"+Integer.toString(learningAgents.size());
+        Object [] args = new Object[1];
+        args[0] = getLocalName();
+
+        try {
+            AgentController process = cc.createNewAgent(processNickname,
+                    "agh.agents.LearningAgent", args);
             process.start();
 
         } catch (Exception e) {
@@ -83,16 +102,6 @@ public class ProductionAgent extends Agent {
         }
 
 */
-        try {
-            AgentController learning = cc.createNewAgent("Learning-agent",
-                    "agh.agents.LearningAgent", args);
-            learning.start();
-            systemAgents.add(new AID("Learning-agent", AID.ISLOCALNAME));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        }
         System.out.println("Agents initialized");
 
         addBehaviour(new CyclicBehaviour(this)
@@ -105,6 +114,8 @@ public class ProductionAgent extends Agent {
                 ArrayList<MessageTemplate> templates = new ArrayList<>();
                 templates.add(MessageTemplate.and(MessageTemplate.MatchSender(
                         systemAgents.get(0)),MessageTemplate.MatchPerformative(AgentMessages.START_PROCESS_AGENT)));
+                templates.add(MessageTemplate.and(MessageTemplate.MatchSender(
+                        systemAgents.get(0)),MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING_AGENT)));
                 templates.add(MessageTemplate.and(MessageTemplate.MatchSender(
                         systemAgents.get(0)),MessageTemplate.MatchPerformative(AgentMessages.SET_PROCESS_VALUES)));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.SET_PROCESS_VALUES_ACK));
@@ -126,9 +137,20 @@ public class ProductionAgent extends Agent {
                                 AID processTag = createProcess();
                                 processAgents.add(processTag);
                                 boolean processConfirmation = checkAgent(processTag);
-                                if(processConfirmation == true){
+                                if(processConfirmation){
                                     msg = new ACLMessage(AgentMessages.START_PROCESS_AGENT_ACK);
                                     msg.setContent("Process Agent created.");
+                                    msg.addReceiver(systemAgents.get(0));
+                                    send(msg);
+                                }
+                                break;
+                            case(AgentMessages.START_LEARNING_AGENT):
+                                AID learningTag = createLearningAgent();
+                                learningAgents.add(learningTag);
+                                boolean learningConfirmation = checkAgent(learningTag);
+                                if(learningConfirmation){
+                                    msg = new ACLMessage(AgentMessages.START_LEARNING_AGENT_ACK);
+                                    msg.setContent("Learning Agent created.");
                                     msg.addReceiver(systemAgents.get(0));
                                     send(msg);
                                 }
@@ -150,6 +172,18 @@ public class ProductionAgent extends Agent {
                                 msg = new ACLMessage(AgentMessages.START_PROCESS);
                                 msg.addReceiver(processAgents.get(processAgents.size()-1));
                                 msg.setContent("");
+                                send(msg);
+                                break;
+                            case(AgentMessages.START_LEARNING):
+                                msg = new ACLMessage(AgentMessages.START_LEARNING);
+                                msg.addReceiver(learningAgents.get(learningAgents.size()-1));
+                                msg.setContent("");
+                                send(msg);
+                                break;
+                            case(AgentMessages.START_LEARNING_ACK):
+                                msg = new ACLMessage(AgentMessages.START_LEARNING_ACK);
+                                msg.setContent("Learning done.");
+                                msg.addReceiver(systemAgents.get(0));
                                 send(msg);
                                 break;
                             case(AgentMessages.RECEIVE_RESULT):

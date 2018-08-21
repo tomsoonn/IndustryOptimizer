@@ -24,7 +24,6 @@ public class LearningAgent extends Agent {
             {
                 MessageTemplate checkState = MessageTemplate.MatchPerformative(CHECK_AGENT);
                 MessageTemplate startLearning = MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING);
-                MessageTemplate startLearningAck = MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING_ACK);
                 ACLMessage checkMsg = receive(checkState);
                 ACLMessage learnMsg = receive(startLearning);
                 if (checkMsg!=null){
@@ -37,6 +36,7 @@ public class LearningAgent extends Agent {
                 else if(learnMsg!=null) {
                     productionData.train("TrainingData.arff");
                     ACLMessage reply = new ACLMessage(AgentMessages.START_LEARNING_ACK);
+                    System.out.println("Training done");
                     reply.setContent("success ");
                     reply.addReceiver(new AID( args[0].toString(), AID.ISLOCALNAME));
                     send(reply);
