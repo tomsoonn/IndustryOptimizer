@@ -1,7 +1,11 @@
 package agh.controllers;
 
 import agh.calculation.Calculator;
+import agh.agents.InterfaceUI;
+import agh.agents.MainContainer;
 import agh.classification.WekaManager;
+import jade.wrapper.AgentController;
+import jade.wrapper.ControllerException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,6 +27,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class PredictController implements Initializable {
@@ -120,7 +125,7 @@ public class PredictController implements Initializable {
     }
 
     @FXML
-    void makePrediction() {
+    void makePrediction() throws ControllerException{
         String[] data = {
                 aluminium.getText(),
                 krzem.getText(),
@@ -142,12 +147,29 @@ public class PredictController implements Initializable {
 
         };
         String predictedQuality = WekaManager.makePrediction(data, classifiers.getSelectionModel().getSelectedIndex());
-        String calculatedInput = Calculator.calculateInput(data);
-        String calculatedCost = Calculator.calculateCost(data);
+        //String calculatedInput = Calculator.calculateInput(data);
+        //String calculatedCost = Calculator.calculateCost(data);
 
         quality.setText(predictedQuality);
-        input.setText(calculatedInput);
-        cost.setText(calculatedCost);
+        //input.setText(calculatedInput);
+        //cost.setText(calculatedCost);
+
+        AgentController ac = MainContainer.cc.getAgent("UI-agent");
+        InterfaceUI uiObj = ac.getO2AInterface(InterfaceUI.class);
+
+        //String predictedQuality = WekaManager.makePrediction(data, classifiers.getSelectionModel().getSelectedIndex());
+        //String calculatedInput = Calculator.calculateInput(data);
+        //String calculatedCost = Calculator.calculateCost(data);
+
+       // quality.setText(predictedQuality);
+        //Double[] metals, int mass, int meltingTemp, int metlingTime, int coolingTemp1, int heatingTime1, int coolingTemp2, int heatingTime2, int level
+        //double quality = uiObj.runProcess(metals, parameters[7], parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5], parameters[6]);
+        String result = uiObj.runProcess(data, classifiers.getSelectionModel().getSelectedIndex());
+        System.out.println("result = " + result);
+        String[] results = result.split("-");
+        //String[] results = WekaManager.makePrediction(data);
+        input.setText(results[0]);
+        cost.setText(results[1]);
     }
 
     @Override

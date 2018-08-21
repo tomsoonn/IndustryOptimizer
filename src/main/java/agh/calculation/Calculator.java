@@ -8,7 +8,10 @@ public class Calculator {
     private static double cost;
     private static double actualMass;
 
-    public static String calculateInput(String[] data) {
+    public Calculator() {
+    }
+
+    public String calculateInput(String[] data) {
         StringBuilder result = new StringBuilder();
         double mass = Double.parseDouble(data[data.length - 1]);
         double temp = Double.parseDouble(data[Metals.values().length]);
@@ -25,7 +28,7 @@ public class Calculator {
         return result.toString();
     }
 
-    public static String calculateCost(String[] data) {
+    public String calculateCost(String[] data) {
 
         //TODO
         double temp = Double.parseDouble(data[Metals.values().length]);

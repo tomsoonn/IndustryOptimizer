@@ -1,7 +1,11 @@
 package agh;
 
 import agh.classification.ProductionData;
+import agh.agents.MainContainer;
+import agh.generator.Generator;
 import com.mongodb.*;
+import jade.wrapper.AgentController;
+import jade.wrapper.StaleProxyException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -31,6 +35,16 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
+
+        try {
+            AgentController prod = MainContainer.cc.createNewAgent("Production-agent",
+                    "agh.agents.ProductionAgent", null);
+            prod.start();
+            AgentController rma = MainContainer.cc.createNewAgent("rma", "jade.tools.rma.rma", null);
+            rma.start();
+        } catch (StaleProxyException e) {
+            e.printStackTrace();
+        }
 
         //Generator generator = new Generator();
 
