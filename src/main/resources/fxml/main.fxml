@@ -14,7 +14,7 @@
             prefWidth="300.0" text="Generuj nowe dane"/>
     <Label layoutX="355.0" layoutY="34.0" text="Wybierz opcje">
         <font>
-          <Font name="Helvetica Bold" size="36.0"/>
+            <Font name="Helvetica Bold" size="36.0"/>
         </font>
     </Label>
     <Separator layoutY="99.0" prefHeight="18.0" prefWidth="1140.0"/>
@@ -24,6 +24,6 @@
             prefWidth="300.0" text="Statystyki"/>
     <Button layoutX="113.0" layoutY="384.0" mnemonicParsing="false" onAction="#handlePrediction" prefHeight="78.0"
             prefWidth="300.0" text="Przewidywanie"/>
-    <Button layoutX="113.0" layoutY="282.0" mnemonicParsing="false" onAction="#handleClassify" prefHeight="78.0"
+    <Button layoutX="113.0" layoutY="282.0" mnemonicParsing="false" onAction="#handleTesting" prefHeight="78.0"
             prefWidth="300.0" text="Testowanie"/>
 </Pane>

@@ -18,4 +18,9 @@ public class WekaManager {
         return quality;
     }
 
+    public static String makeTest(String testFile, int classifier) {
+        String result = Main.productionData.test("TrainingData.arff", testFile, classifier);
+        return result;
+    }
+
 }

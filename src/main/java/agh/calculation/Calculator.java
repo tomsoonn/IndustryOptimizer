@@ -25,6 +25,12 @@ public class Calculator {
     public static String calculateCost(String[] data) {
 
         //TODO
+        double temp = Double.parseDouble(data[Metals.values().length]);
+        double time = Double.parseDouble(data[Metals.values().length + 1]);
+        double upgrade = Double.parseDouble(data[data.length - 2]);
+        double mass = Double.parseDouble(data[data.length - 1]);
+
+        cost += time * temp / 1000 * 10 + upgrade * mass;
 
         return String.format(Locale.US, "%.2f", cost);
     }

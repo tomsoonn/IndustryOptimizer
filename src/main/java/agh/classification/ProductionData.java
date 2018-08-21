@@ -6,6 +6,7 @@ import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.meta.*;
 import weka.classifiers.trees.*;
 import weka.core.Instances;
+import weka.core.converters.ConverterUtils;
 import weka.core.converters.ConverterUtils.DataSource;
 
 import java.io.*;
@@ -21,16 +22,12 @@ public class ProductionData {
     public ProductionData() {
     }
 
-    public void trainAndTest(String trainFile, String testFile) {
+    public void train(String trainFile) {
         try {
             DataSource source1 = new DataSource(trainFile);
-            DataSource source2 = new DataSource(testFile);
             Instances trainData = source1.getDataSet();
-            Instances testData = source2.getDataSet();
             if (trainData.classIndex() == -1)
                 trainData.setClassIndex(trainData.numAttributes() - 1);
-            if (testData.classIndex() == -1)
-                testData.setClassIndex(testData.numAttributes() - 1);
 
 //            Standardize filter = new Standardize();
 //            filter.setInputFormat(trainData);
@@ -60,14 +57,30 @@ public class ProductionData {
             vote.setClassifiers(new Classifier[]{new M5P(), new RandomForest(), new MultilayerPerceptron()});
             vote.buildClassifier(trainData);
 
-            Evaluation eval = new Evaluation(trainData);
-
-            //eval.evaluateModel(actualClassifier, testData);
-            //System.out.println(eval.toSummaryString("\nResults: "+actualClassifier.toString()+"\n==================\n", false));
-            //eval.evaluateModel(mlp, testData);
-            //System.out.println(eval.toSummaryString("\nResults MultilayerPerceptron\n================\n", false));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public String test(String trainFile, String testFile, int classifier) {
+        try {
+            DataSource source1 = new DataSource(trainFile);
+            DataSource source2 = new DataSource(testFile);
+            Instances trainData = source1.getDataSet();
+            Instances testData = source2.getDataSet();
+            if (trainData.classIndex() == -1)
+                trainData.setClassIndex(trainData.numAttributes() - 1);
+            if (testData.classIndex() == -1)
+                testData.setClassIndex(testData.numAttributes() - 1);
+            Evaluation eval = new Evaluation(trainData);
+
+            setActualClassifier(classifier);
+
+            eval.evaluateModel(actualClassifier, testData);
+            return eval.toSummaryString("\nResults: " + actualClassifier.toString() + "\n==================\n", true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
         }
     }
 
@@ -100,9 +113,40 @@ public class ProductionData {
 
         Instances labeled = new Instances(unlabeled);
 
-        //System.out.println(labeled.toString());
+        setActualClassifier(classifier);
+
+        // label instances
+        for (int i = 0; i < unlabeled.numInstances(); i++) {
+            double clsLabel = 0;
+            try {
+                clsLabel = actualClassifier.classifyInstance(unlabeled.instance(i));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            labeled.instance(i).setClassValue(clsLabel);
+            //System.out.println(clsLabel + " -> " + unlabeled.classAttribute().value((int) clsLabel));
+        }
+        System.out.println(unlabeled.toString() + "\n\nunalbeled--------------------------------------------------\n");
+        System.out.println(labeled.toString() + "\n\nlabeled--------------------------------------------------\n");
+
+        String result = labeled.toString().split(",")[16].substring(0, 6);
 
 
+        // save labeled data
+        try {
+            BufferedWriter writer = new BufferedWriter(
+                    new FileWriter(labeledFile));
+            writer.write(labeled.toString());
+            writer.newLine();
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private void setActualClassifier(int classifier) {
         switch (classifier) {
             case 0:
                 actualClassifier = mlp;
@@ -121,36 +165,5 @@ public class ProductionData {
                 break;
 
         }
-
-        // label instances
-        for (int i = 0; i < unlabeled.numInstances(); i++) {
-            double clsLabel = 0;
-            try {
-                clsLabel = actualClassifier.classifyInstance(unlabeled.instance(i));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            labeled.instance(i).setClassValue(clsLabel);
-            //System.out.println(clsLabel + " -> " + unlabeled.classAttribute().value((int) clsLabel));
-        }
-        System.out.println(unlabeled.toString() + "\n\nunalbeled--------------------------------------------------\n");
-        System.out.println(labeled.toString() + "\n\nlabeled--------------------------------------------------\n");
-
-        String result = labeled.toString().split(",")[16].substring(0,6);
-
-
-        // save labeled data
-        try {
-            BufferedWriter writer = new BufferedWriter(
-                    new FileWriter(labeledFile));
-            writer.write(labeled.toString());
-            writer.newLine();
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
     }
-
 }

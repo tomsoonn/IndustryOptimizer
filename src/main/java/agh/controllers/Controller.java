@@ -19,21 +19,23 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import agh.Main;
 
 public class Controller {
-    private static Controller controller = new Controller( );
+    private static Controller controller = new Controller();
     private volatile boolean changed = false;
     private volatile boolean isChanged = false;
 
-    private Controller() { }
+    private Controller() {
+    }
 
     /* Static 'instance' method */
-    public static Controller getInstance( ) {
+    public static Controller getInstance() {
         return controller;
     }
 
-    public void setScene(Stage stage, Parent root, String title){
+    public void setScene(Stage stage, Parent root, String title) {
         stage.setTitle(title);
         stage.setScene(new Scene(root));
         stage.show();
@@ -62,7 +64,7 @@ public class Controller {
     }
 
     public void handleData(ListView<String> listView, String taskName) {
-        if (listView.getSelectionModel().getSelectedItem() == null){
+        if (listView.getSelectionModel().getSelectedItem() == null) {
             new Alert(Alert.AlertType.ERROR, "Nie wybrano danych").showAndWait();
             return;
         }
@@ -78,7 +80,7 @@ public class Controller {
     public void handleResults(TableView tableView, String path) throws FileNotFoundException {
         DataSourceReader dsr1 = new FileSource(path);
         String[] columnsArray = {"m1", "m2", "m3", "m4", "m5", "t1", "cz1", "t2", "cz2", "ocena"};
-        CSVDataSource ds1 = new CSVDataSource(dsr1,columnsArray);
+        CSVDataSource ds1 = new CSVDataSource(dsr1, columnsArray);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableView.setItems(ds1.getData());
         tableView.getColumns().addAll(ds1.getColumns());
@@ -96,9 +98,9 @@ public class Controller {
                     TableRow<String> currentRow = getTableRow();
 
                     if (!isEmpty()) {
-                        if(item.equals("v.good"))
+                        if (item.equals("v.good"))
                             currentRow.setStyle("-fx-background-color:lightgreen");
-                        if(item.equals("v.bad"))
+                        if (item.equals("v.bad"))
                             currentRow.setStyle("-fx-background-color:red");
                     }
                 }
@@ -116,7 +118,7 @@ public class Controller {
         textView.setText(result[9]);
     }
 
-    public void handleConfirm(){
+    public void handleConfirm() {
         isChanged = true;
     }
 
@@ -137,7 +139,7 @@ public class Controller {
     public void handleProcessing(String path) throws IOException {
         String line;
         String content = "";
-        FileReader fileReader = new FileReader("python/output/processing.txt");
+        FileReader fileReader = new FileReader(path);
         BufferedReader buffer = new BufferedReader(fileReader);
 
         while ((line = buffer.readLine()) != null) {
@@ -145,15 +147,6 @@ public class Controller {
             content += "\n";
         }
         buffer.close();
-        content += "\nMachine Learning:\n";
-
-        FileReader fileReader1 = new FileReader("python/output/process_machine_learning.txt");
-        BufferedReader buffer1 = new BufferedReader(fileReader1);
-        while ((line = buffer1.readLine()) != null) {
-            content += line;
-            content += "\n";
-        }
-        buffer1.close();
 
         TextArea textArea = new TextArea(content);
         textArea.setWrapText(true);

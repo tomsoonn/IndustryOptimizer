@@ -38,7 +38,7 @@ public class Main extends Application {
         //generator.generateQuality(20, "AlSi.arff", "110000000", 30, 0.6666, 10, 0.5, 25,  90);
 
         Thread thread = new Thread(() ->
-                productionData.trainAndTest("TrainingData.arff", "AlSi.arff"));
+                productionData.train("TrainingData.arff"));
         thread.start();
         launch(args);
     }

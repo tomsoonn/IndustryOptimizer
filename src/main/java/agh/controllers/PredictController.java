@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.BufferedWriter;
@@ -105,7 +106,22 @@ public class PredictController implements Initializable {
     }
 
     public void handleProcessing(ActionEvent event) throws IOException {
-        controller.handleProcessing("python/output/processing.txt");
+        String content = WekaManager.makeTest("TrainingData.arff", classifiers.getSelectionModel().getSelectedIndex());
+        TextArea textArea = new TextArea(content);
+        textArea.setWrapText(true);
+        textArea.setEditable(false);
+
+        StackPane secondaryLayout = new StackPane();
+        secondaryLayout.getChildren().add(textArea);
+
+        Scene secondScene = new Scene(secondaryLayout, 1000, 700);
+
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Processing");
+        newWindow.setScene(secondScene);
+
+        newWindow.show();
+        //controller.handleProcessing("processing.txt");
     }
 
     @Override
