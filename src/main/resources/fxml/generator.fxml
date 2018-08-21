@@ -75,7 +75,7 @@
                             </font>
                         </Button>
                         <TextArea fx:id="textArea" editable="false" layoutX="22.0" layoutY="207.0" prefHeight="391.0" prefWidth="429.0" />
-                  <Button fx:id="addToDb" layoutX="94.0" layoutY="108.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="300.0" text="Dodaj do bazy danych terningowych">
+                  <Button fx:id="addToDb" layoutX="94.0" layoutY="108.0" mnemonicParsing="false" onAction="#handelAddToDb" prefHeight="70.0" prefWidth="300.0" text="Dodaj do bazy danych terningowych">
                      <font>
                         <Font size="14.0" />
                      </font></Button>

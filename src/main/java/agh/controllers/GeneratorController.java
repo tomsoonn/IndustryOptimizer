@@ -19,13 +19,16 @@ import javafx.stage.Stage;
 import agh.Main;
 import org.codehaus.jackson.io.UTF8Writer;
 
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GeneratorController implements Initializable {
@@ -69,7 +72,8 @@ public class GeneratorController implements Initializable {
 
     @FXML
     private void handleGenerate(ActionEvent event) {
-        if (filename.getText() == null || filename.getText().trim().isEmpty() || quantity.getText() == null || quantity.getText().trim().isEmpty()){
+        checkIfProperData();
+        if (filename.getText() == null || filename.getText().trim().isEmpty() || quantity.getText() == null || quantity.getText().trim().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Nie wprowadzono wszystkich danych").showAndWait();
             return;
         }
@@ -85,11 +89,49 @@ public class GeneratorController implements Initializable {
                 Integer.parseInt(zelazo.getText()),
                 Integer.parseInt(olow.getText()),
         };
-        Generator.generateQ(filename.getText(),data,Integer.parseInt(quantity.getText()), !unlabeled.isSelected(), true);
+        Generator.generateQ(filename.getText(), data, Integer.parseInt(quantity.getText()), !unlabeled.isSelected(), true);
     }
 
     @FXML
-    protected void handleShowData(ActionEvent event){
+    private void handelAddToDb(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Czy plik zawiera POPRAWNE dane treningowe?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (!result.isPresent())
+            return;
+        else if (result.get() == ButtonType.OK) {
+            addToDataBase();
+        } else if (result.get() == ButtonType.CANCEL)
+            return;
+    }
+
+    private void addToDataBase(){
+        //TODO
+
+        byte[] encoded = new byte[0];
+        try {
+            encoded = Files.readAllBytes(Paths.get(filename.getText()));
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Cannot open file").showAndWait();
+        }
+        String data = new String(encoded, StandardCharsets.UTF_8).split("@DATA")[1];
+        FileWriter file;
+        try {
+            file = new FileWriter("TrainingData.arff", true);
+
+        BufferedWriter out = new BufferedWriter(file);
+        out.write(data);
+        out.close();
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Cannot find training file").showAndWait();
+        }
+    }
+
+    private void checkIfProperData(){
+        //TODO
+    }
+
+    @FXML
+    protected void handleShowData(ActionEvent event) {
         //DBCollection coll = Main.database.getCollection(filename.getText());
         //DBCursor cursor = coll.find();
         //JSON json = new JSON();
@@ -114,15 +156,12 @@ public class GeneratorController implements Initializable {
     }
 
     @FXML
-    protected void handleBack(ActionEvent event){
+    protected void handleBack(ActionEvent event) {
         controller.handleBack(GeneratorPane);
     }
 
-    public void setScene(Stage stage, Parent root){
-        //controller.setScene(stage, root, "Generator");
-        stage.setTitle("Generate");
-        stage.setScene(new Scene(root));
-        stage.show();
+    public void setScene(Stage stage, Parent root) {
+        controller.setScene(stage, root, "Generator");
     }
 
     @Override
