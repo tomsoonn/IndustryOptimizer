@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
@@ -11,54 +12,90 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="GeneratorPane" prefHeight="700.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.controllers.GeneratorController">
+<AnchorPane fx:id="GeneratorPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.controllers.GeneratorController">
     <children>
-        <BorderPane layoutX="-6.0" layoutY="-6.0" prefHeight="714.0" prefWidth="1154.0">
+        <BorderPane>
             <left>
-                <Pane prefHeight="575.0" prefWidth="487.0" BorderPane.alignment="CENTER">
+                <Pane prefHeight="642.0" prefWidth="432.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Label layoutX="80.0" layoutY="61.0" text="Podaj nazwę pliku:">
+                        <Label layoutX="46.0" layoutY="46.0" text="Podaj nazwę pliku:">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </Label>
-                        <Separator layoutX="-412.0" prefHeight="3.0" prefWidth="1565.0" />
-                  <Label layoutX="80.0" layoutY="135.0" text="Podaj liczbę danych:">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="filename" layoutX="300.0" layoutY="60.0" prefHeight="30.0" prefWidth="150.0" />
-                  <TextField fx:id="quantity" layoutX="300.0" layoutY="134.0" prefHeight="30.0" prefWidth="150.0" />
-                  <Button layoutX="87.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleGenerate" prefHeight="78.0" prefWidth="317.0" text="Generuj dane" />
-                  <CheckBox fx:id="unlabeled" layoutX="80.0" layoutY="212.0" mnemonicParsing="false" text="Nieznana jakość">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </CheckBox>
+                        <Label layoutX="40.0" layoutY="102.0" text="Podaj liczbę danych:">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="filename" layoutX="241.0" layoutY="45.0" prefHeight="30.0" prefWidth="150.0" />
+                        <TextField fx:id="quantity" layoutX="243.0" layoutY="102.0" prefHeight="30.0" prefWidth="150.0" />
+                        <Label layoutX="53.0" layoutY="175.0" text="Aluminium" />
+                        <TextField fx:id="aluminium" layoutX="135.0" layoutY="171.0" prefWidth="50.0" />
+                        <Label layoutX="65.0" layoutY="216.0" text="Krzem" />
+                        <TextField fx:id="krzem" layoutX="135.0" layoutY="212.0" prefWidth="50.0" />
+                        <Label layoutX="60.0" layoutY="253.0" text="Magnez" />
+                        <TextField fx:id="magnez" layoutX="135.0" layoutY="249.0" prefWidth="50.0" />
+                        <Label layoutX="65.0" layoutY="290.0" text="Miedź" />
+                        <TextField fx:id="miedz" layoutX="135.0" layoutY="286.0" prefWidth="50.0" />
+                        <Label layoutX="68.0" layoutY="331.0" text="Cynk" />
+                        <TextField fx:id="cynk" layoutX="135.0" layoutY="327.0" prefWidth="50.0" />
+                        <Label layoutX="252.0" layoutY="175.0" text="Cyna" />
+                        <TextField fx:id="cyna" layoutX="305.0" layoutY="171.0" prefWidth="50.0" />
+                        <Label layoutX="250.0" layoutY="216.0" text="Nikiel" />
+                        <TextField fx:id="nikiel" layoutX="305.0" layoutY="212.0" prefWidth="50.0" />
+                        <Label layoutX="248.0" layoutY="253.0" text="Żelazo" />
+                        <TextField fx:id="zelazo" layoutX="305.0" layoutY="249.0" prefWidth="50.0" />
+                        <Label layoutX="251.0" layoutY="290.0" text="Ołów" />
+                        <TextField fx:id="olow" layoutX="305.0" layoutY="286.0" prefWidth="50.0" />
+                        <Label layoutX="57.0" layoutY="396.0" text="Gotowe stopy" />
+                        <ChoiceBox fx:id="stops" layoutX="46.0" layoutY="419.0" prefHeight="7.0" prefWidth="113.0" />
+                        <Label layoutX="213.0" layoutY="396.0" text="Do wykorzystania pozostało" />
+                        <TextField fx:id="remained" editable="false" layoutX="280.0" layoutY="419.0" prefWidth="50.0" />
+                        <Button layoutX="73.0" layoutY="521.0" mnemonicParsing="false" onAction="#handleGenerate" prefHeight="75.0" prefWidth="300.0" text="Generuj dane">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Button>
+                        <CheckBox fx:id="unlabeled" layoutX="144.0" layoutY="470.0" mnemonicParsing="false" text="Nieznana jakość">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </CheckBox>
                     </children>
                 </Pane>
             </left>
             <center>
-                <Pane prefHeight="575.0" prefWidth="628.0" BorderPane.alignment="CENTER">
+                <Pane prefHeight="642.0" prefWidth="445.0" BorderPane.alignment="CENTER">
                     <children>
                         <Separator layoutX="-3.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="625.0" prefWidth="0.0" />
-                  <Button layoutX="175.0" layoutY="47.0" mnemonicParsing="false" onAction="#handleShowData" prefHeight="78.0" prefWidth="317.0" text="Pokaż wygenerowane dane" />
-                  <TextArea fx:id="textArea" layoutX="13.0" layoutY="188.0" prefHeight="366.0" prefWidth="639.0" />
-                    </children></Pane>
+                        <Button layoutX="94.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleShowData" prefHeight="70.0" prefWidth="300.0" text="Pokaż wygenerowane dane">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Button>
+                        <TextArea fx:id="textArea" editable="false" layoutX="22.0" layoutY="207.0" prefHeight="391.0" prefWidth="429.0" />
+                  <Button fx:id="addToDb" layoutX="94.0" layoutY="108.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="300.0" text="Dodaj do bazy danych terningowych">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                    </children>
+                </Pane>
             </center>
             <top>
-                <Pane prefHeight="91.0" prefWidth="1154.0" BorderPane.alignment="CENTER">
+                <Pane prefHeight="91.0" prefWidth="919.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Label layoutX="425.0" layoutY="23.0" text="Generator danych">
+                        <Label layoutX="320.0" layoutY="22.0" text="Generator danych">
                             <font>
                                 <Font size="36.0" />
                             </font>
                         </Label>
                         <Button layoutX="45.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="38.0" prefWidth="75.0" text="Powrót" />
+                        <Separator layoutX="-11.0" layoutY="88.0" prefHeight="0.0" prefWidth="932.0" />
                     </children>
                 </Pane>
-            </top></BorderPane>
+            </top>
+        </BorderPane>
     </children>
 
 </AnchorPane>

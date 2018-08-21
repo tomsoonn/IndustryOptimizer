@@ -24,7 +24,7 @@ public class Calculator {
             actualMass += tmp;
             result.append(Metals.values()[i].toString()).append(" : ").append(String.format(Locale.US, "%.2f", tmp)).append("\n");
         }
-
+        result.deleteCharAt(result.length()-1);
         return result.toString();
     }
 

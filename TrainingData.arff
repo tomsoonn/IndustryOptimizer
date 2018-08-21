@@ -1,4 +1,4 @@
-@RELATION AlSi.arff
+@RELATION TrainingData.arff
 
 @ATTRIBUTE Aluminium numeric
 @ATTRIBUTE Krzem numeric

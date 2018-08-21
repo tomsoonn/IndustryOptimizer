@@ -170,7 +170,6 @@ public class Generator {
         Random r = new Random();
         int temperatureLevel = getHighestTemperatureArray(metals);
 
-
             for (int k=0; k<100; k+=10){
                 int j = 0;
                 while (j!=quantity/10) {
