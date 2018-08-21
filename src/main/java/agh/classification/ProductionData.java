@@ -23,6 +23,7 @@ public class ProductionData {
     }
 
     public void train(String trainFile) {
+        System.out.println("TrainingStarted");
         try {
             DataSource source1 = new DataSource(trainFile);
             Instances trainData = source1.getDataSet();
@@ -60,6 +61,7 @@ public class ProductionData {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("TrainingFinished");
     }
 
     public String test(String trainFile, String testFile, int classifier) {

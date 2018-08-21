@@ -120,6 +120,7 @@ public class ProductionAgent extends Agent {
                         systemAgents.get(0)),MessageTemplate.MatchPerformative(AgentMessages.SET_PROCESS_VALUES)));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.SET_PROCESS_VALUES_ACK));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.START_PROCESS));
+                templates.add(MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.RECEIVE_RESULT));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.GET_PROCESS_IDS));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.GET_PROCESS_IDS_ACK));
@@ -176,6 +177,7 @@ public class ProductionAgent extends Agent {
                                 break;
                             case(AgentMessages.START_LEARNING):
                                 msg = new ACLMessage(AgentMessages.START_LEARNING);
+                                System.out.println("Start learning msg received");
                                 msg.addReceiver(learningAgents.get(learningAgents.size()-1));
                                 msg.setContent("");
                                 send(msg);

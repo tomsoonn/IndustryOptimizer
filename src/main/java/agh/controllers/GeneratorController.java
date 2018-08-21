@@ -1,9 +1,13 @@
 package agh.controllers;
 
+import agh.agents.InterfaceUI;
+import agh.agents.MainContainer;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.util.JSON;
 import agh.generator.Generator;
+import jade.wrapper.AgentController;
+import jade.wrapper.ControllerException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -93,7 +97,7 @@ public class GeneratorController implements Initializable {
     }
 
     @FXML
-    private void handelAddToDb(ActionEvent event) {
+    private void handelAddToDb(ActionEvent event) throws ControllerException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Czy plik zawiera POPRAWNE dane treningowe?");
         Optional<ButtonType> result = alert.showAndWait();
         if (!result.isPresent())
@@ -104,7 +108,7 @@ public class GeneratorController implements Initializable {
             return;
     }
 
-    private void addToDataBase(){
+    private void addToDataBase() throws ControllerException {
         //TODO
 
         byte[] encoded = new byte[0];
@@ -124,6 +128,11 @@ public class GeneratorController implements Initializable {
         } catch (IOException e) {
             new Alert(Alert.AlertType.ERROR, "Cannot find training file").showAndWait();
         }
+
+        AgentController ac = MainContainer.cc.getAgent("UI-agent");
+        InterfaceUI uiObj = ac.getO2AInterface(InterfaceUI.class);
+
+        uiObj.startTraining();
     }
 
     private void checkIfProperData(){

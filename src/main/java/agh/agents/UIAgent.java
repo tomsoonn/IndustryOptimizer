@@ -175,6 +175,7 @@ public class UIAgent extends Agent implements InterfaceUI{
 
                     case(0):
                         ACLMessage msgProcessInit = new ACLMessage(AgentMessages.START_LEARNING_AGENT);
+                        System.out.println("Started learning agent");
                         msgProcessInit.setContent("");
                         msgProcessInit.addReceiver(new AID( args[0].toString(), AID.ISLOCALNAME));
                         send(msgProcessInit);
@@ -191,6 +192,7 @@ public class UIAgent extends Agent implements InterfaceUI{
 
                     case(2):
                         ACLMessage msgSetValues = new ACLMessage(AgentMessages.START_LEARNING);
+                        System.out.println("Started learning");
                         msgSetValues.setContent("");
                         msgSetValues.addReceiver(new AID( args[0].toString(), AID.ISLOCALNAME));
                         send(msgSetValues);
