@@ -87,7 +87,7 @@ public class MainController {
     }
 
     public void setScene(Stage stage, Parent root) {
-        stage.setTitle("Main");
+        stage.setTitle("IndustryOptimizer");
         stage.setScene(new Scene(root));
         stage.show();
     }

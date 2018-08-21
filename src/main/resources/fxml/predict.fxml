@@ -67,7 +67,7 @@
                         <Label layoutX="83.0" layoutY="322.0" text="Masa stopu"/>
                         <TextField fx:id="mass" layoutX="231.0" layoutY="318.0" prefWidth="60.0"/>
                         <Label layoutX="421.0" layoutY="322.0" text="Stopień uszlachetniania"/>
-                        <ChoiceBox fx:id="uprades" layoutX="616.0" layoutY="318.0" prefHeight="25.0" prefWidth="185.0"/>
+                        <ChoiceBox fx:id="upgrades" layoutX="616.0" layoutY="318.0" prefHeight="25.0" prefWidth="185.0"/>
                         <Label layoutX="435.0" layoutY="374.0" text="Wyniki">
                             <font>
                                 <Font size="18.0"/>

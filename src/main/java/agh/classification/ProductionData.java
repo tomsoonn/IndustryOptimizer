@@ -126,11 +126,10 @@ public class ProductionData {
             labeled.instance(i).setClassValue(clsLabel);
             //System.out.println(clsLabel + " -> " + unlabeled.classAttribute().value((int) clsLabel));
         }
-        System.out.println(unlabeled.toString() + "\n\nunalbeled--------------------------------------------------\n");
-        System.out.println(labeled.toString() + "\n\nlabeled--------------------------------------------------\n");
+        System.out.println("Unlabeled data :" + unlabeled.toString().split("@data")[1] + "\n");
+        System.out.println("Labeled data :" + labeled.toString().split("@data")[1] + "\n");
 
         String result = labeled.toString().split(",")[16].substring(0, 6);
-
 
         // save labeled data
         try {

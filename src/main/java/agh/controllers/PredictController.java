@@ -54,7 +54,7 @@ public class PredictController implements Initializable {
     @FXML
     private TextField quality;
     @FXML
-    private ChoiceBox<String> uprades;
+    private ChoiceBox<String> upgrades;
     @FXML
     private ChoiceBox<String> stops;
     @FXML
@@ -100,11 +100,6 @@ public class PredictController implements Initializable {
         controller.handleConfirm();
     }
 
-    @FXML
-    protected void handleShowData(ActionEvent event) throws IOException {
-        controller.handleShowData(quality, "python/output/results.csv");
-    }
-
     public void handleProcessing(ActionEvent event) throws IOException {
         String content = WekaManager.makeTest("TrainingData.arff", classifiers.getSelectionModel().getSelectedIndex());
         TextArea textArea = new TextArea(content);
@@ -124,8 +119,58 @@ public class PredictController implements Initializable {
         //controller.handleProcessing("processing.txt");
     }
 
+    @FXML
+    void makePrediction() {
+        String[] data = {
+                aluminium.getText(),
+                krzem.getText(),
+                magnez.getText(),
+                miedz.getText(),
+                cynk.getText(),
+                cyna.getText(),
+                nikiel.getText(),
+                zelazo.getText(),
+                olow.getText(),
+                temp.getText(),
+                time.getText(),
+                temp1.getText(),
+                time1.getText(),
+                temp2.getText(),
+                time2.getText(),
+                Integer.toString(upgrades.getSelectionModel().getSelectedIndex() + 1),
+                mass.getText()
+
+        };
+        String predictedQuality = WekaManager.makePrediction(data, classifiers.getSelectionModel().getSelectedIndex());
+        String calculatedInput = Calculator.calculateInput(data);
+        String calculatedCost = Calculator.calculateCost(data);
+
+        quality.setText(predictedQuality);
+        input.setText(calculatedInput);
+        cost.setText(calculatedCost);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        initializeChoiceBoxes();
+        initializeTextFields();
+
+        initializeAllParameters(); //TEMPORARY FOR TESTING
+    }
+
+    private void initializeAllParameters(){
+        stops.getSelectionModel().select(2);
+        temp.setText("1500");
+        time.setText("50");
+        temp1.setText("1000");
+        time1.setText("15");
+        temp2.setText("700");
+        time2.setText("25");
+        mass.setText("100");
+    }
+
+    private void initializeChoiceBoxes() {
         ObservableList<String> options =
                 FXCollections.observableArrayList(
                         "Brak",
@@ -134,8 +179,8 @@ public class PredictController implements Initializable {
                         "Dobre",
                         "Bardzo Dobre"
                 );
-        uprades.setItems(options);
-        uprades.getSelectionModel().selectFirst();
+        upgrades.setItems(options);
+        upgrades.getSelectionModel().selectFirst();
         options = FXCollections.observableArrayList(
                 "AlSi",
                 "AlSiMg",
@@ -163,7 +208,9 @@ public class PredictController implements Initializable {
         );
         classifiers.setItems(options);
         classifiers.getSelectionModel().selectFirst();
+    }
 
+    private void initializeTextFields() {
         aluminium.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 aluminium.setText(newValue.replaceAll("[^\\d]", ""));
@@ -319,34 +366,4 @@ public class PredictController implements Initializable {
         return new String(encoded, encoding);
     }
 
-    @FXML
-    void makePrediction() {
-        String[] data = {
-                aluminium.getText(),
-                krzem.getText(),
-                magnez.getText(),
-                miedz.getText(),
-                cynk.getText(),
-                cyna.getText(),
-                nikiel.getText(),
-                zelazo.getText(),
-                olow.getText(),
-                temp.getText(),
-                time.getText(),
-                temp1.getText(),
-                time1.getText(),
-                temp2.getText(),
-                time2.getText(),
-                Integer.toString(uprades.getSelectionModel().getSelectedIndex() + 1),
-                mass.getText()
-
-        };
-        String predictedQuality = WekaManager.makePrediction(data, classifiers.getSelectionModel().getSelectedIndex());
-        String calculatedInput = Calculator.calculateInput(data);
-        String calculatedCost = Calculator.calculateCost(data);
-
-        quality.setText(predictedQuality);
-        input.setText(calculatedInput);
-        cost.setText(calculatedCost);
-    }
 }
