@@ -6,7 +6,6 @@ import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-//import pl.edu.agh.parameter.ProcessJson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,18 +21,10 @@ public class UIAgent extends Agent implements InterfaceUI{
     private boolean learningFinished = false;
     private boolean dbQueryFinished = false;
 
-    //private List<ProcessJson> processes = null;
-
     public UIAgent(){
         registerO2AInterface(InterfaceUI.class, this);
     }
 
-    //db access start for GUI
-   /* public List<ProcessJson> startQuery() {
-        while(!AgentQuery());
-        dbQueryFinished = false;
-        return processes;
-    }*/
 
     public boolean AgentQuery(){
         addBehaviour(new Behaviour() {
@@ -83,7 +74,6 @@ public class UIAgent extends Agent implements InterfaceUI{
         addBehaviour(new Behaviour() {
             @Override
             public void action() {
-                //System.out.println("UIAgent----" + Arrays.toString(metals));
                 String msgContent = Arrays.toString(data)+" "+
                         Integer.toString(classifier);
                 MessageTemplate msgTmp;
@@ -208,23 +198,6 @@ public class UIAgent extends Agent implements InterfaceUI{
                         }
                         break;
 
-//                    case(4):
-//                        ACLMessage msgStartProcess = new ACLMessage(AgentMessages.START_PROCESS);
-//                        msgStartProcess.setContent("");
-//                        msgStartProcess.addReceiver(new AID( args[0].toString(), AID.ISLOCALNAME));
-//                        send(msgStartProcess);
-//                        runProcessStep = 5;
-//                        break;
-//
-//                    case(5):
-//                        msgTmp = MessageTemplate.MatchPerformative(AgentMessages.RECEIVE_RESULT);
-//                        msgReceive = receive(msgTmp);
-//                        if(msgReceive!=null){
-//                            runProcessFinished = true;
-//                            agentResult = msgReceive.getContent();
-//
-//                        }
-//                        break;
                     default:
                         break;
                 }
@@ -238,14 +211,6 @@ public class UIAgent extends Agent implements InterfaceUI{
 
         learningFinished = false;
         learningStep = 0;
-//        while (agentResult==null) {
-//            try {
-//                Thread.sleep(1);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-        //return "";
     }
 
 

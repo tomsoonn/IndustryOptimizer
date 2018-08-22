@@ -5,5 +5,4 @@ package agh.agents;
 public interface InterfaceUI {
     public String runProcess(String[] data, int classifier);
     public void startTraining();
-    //public List<ProcessJson> startQuery();
 }

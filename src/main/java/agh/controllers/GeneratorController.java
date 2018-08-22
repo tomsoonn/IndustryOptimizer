@@ -32,12 +32,15 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GeneratorController implements Initializable {
 
     private Controller controller = Controller.getInstance();
+    private Map<Integer, int[]> metalsMap = new HashMap<>();
 
     @FXML
     private Pane GeneratorPane;
@@ -175,6 +178,7 @@ public class GeneratorController implements Initializable {
 
         initializeChoiceBoxes();
         initializeTextFields();
+        initMetalsMap();
 
     }
 
@@ -283,48 +287,24 @@ public class GeneratorController implements Initializable {
         return t1 + t2 + t3 + t4 + t5 + t6 + t7 + t8 + t9;
     }
 
+    private void initMetalsMap(){
+        metalsMap.put(0, new int[]{80, 20, 0, 0, 0, 0, 0, 0, 0});
+        metalsMap.put(1, new int[]{80, 15, 5, 0, 0, 0, 0, 0, 0});
+        metalsMap.put(2, new int[]{80, 12, 2, 6, 0, 0, 0, 0, 0});
+        metalsMap.put(3, new int[]{8, 2, 90, 0, 0, 0, 0, 0, 0});
+        metalsMap.put(4, new int[]{7, 0, 90, 0, 3, 0, 0, 0, 0});
+        metalsMap.put(5, new int[]{0, 0, 0, 98, 0, 2, 0, 0, 0});
+        metalsMap.put(6, new int[]{0, 0, 0, 70, 30, 0, 0, 0, 0});
+        metalsMap.put(7, new int[]{0, 0, 0, 30, 0, 0, 67, 3, 0});
+        metalsMap.put(8, new int[]{0, 0, 0, 2, 0, 3, 0, 0, 95});
+    }
+
+    private void addToMetalsMap(){
+
+    }
+
     private void setStops(int i) {
-
-        int[] alsi = {80, 20, 0, 0, 0, 0, 0, 0, 0};
-        int[] alsimg = {80, 15, 5, 0, 0, 0, 0, 0, 0};
-        int[] alsimgcu = {80, 12, 2, 6, 0, 0, 0, 0, 0};
-        int[] mgalsi = {8, 2, 90, 0, 0, 0, 0, 0, 0};
-        int[] mgalzn = {7, 0, 90, 0, 3, 0, 0, 0, 0};
-        int[] cusn = {0, 0, 0, 98, 0, 2, 0, 0, 0};
-        int[] cuzn = {0, 0, 0, 70, 30, 0, 0, 0, 0};
-        int[] nicufe = {0, 0, 0, 30, 0, 0, 67, 3, 0};
-        int[] pbzncu = {0, 0, 0, 2, 0, 3, 0, 0, 95};
-
-        switch (i) {
-            case 0:
-                setTextFields(alsi);
-                break;
-            case 1:
-                setTextFields(alsimg);
-                break;
-            case 2:
-                setTextFields(alsimgcu);
-                break;
-            case 3:
-                setTextFields(mgalsi);
-                break;
-            case 4:
-                setTextFields(mgalzn);
-                break;
-            case 5:
-                setTextFields(cusn);
-                break;
-            case 6:
-                setTextFields(cuzn);
-                break;
-            case 7:
-                setTextFields(nicufe);
-                break;
-            case 8:
-                setTextFields(pbzncu);
-                break;
-        }
-
+        setTextFields(metalsMap.get(i));
     }
 
     private void setTextFields(int[] metals) {

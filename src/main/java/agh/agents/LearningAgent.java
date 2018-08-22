@@ -15,8 +15,6 @@ public class LearningAgent extends Agent {
 
     protected void setup()
     {
-        final int CHECK_AGENT = 100;
-
         Object [] args = getArguments();
 
         addBehaviour(new CyclicBehaviour(this)
