@@ -84,17 +84,7 @@ public class GeneratorController implements Initializable {
             return;
         }
         addToDb.setDisable(unlabeled.isSelected());
-        int[] data = {
-                Integer.parseInt(aluminium.getText()),
-                Integer.parseInt(krzem.getText()),
-                Integer.parseInt(magnez.getText()),
-                Integer.parseInt(miedz.getText()),
-                Integer.parseInt(cynk.getText()),
-                Integer.parseInt(cyna.getText()),
-                Integer.parseInt(nikiel.getText()),
-                Integer.parseInt(zelazo.getText()),
-                Integer.parseInt(olow.getText()),
-        };
+        int[] data = getMetalsPercentage();
         Generator.generateQ(filename.getText(), data, Integer.parseInt(quantity.getText()), !unlabeled.isSelected(), true);
     }
 
@@ -108,9 +98,12 @@ public class GeneratorController implements Initializable {
         } else if (result.get() == ButtonType.CANCEL) {
         }
     }
-    @FXML
-    private void handleAddStop(ActionEvent event){
 
+    @FXML
+    private void handleAddStop(ActionEvent event) {
+        String name = stopName.getText();
+        int[] data = getMetalsPercentage();
+        //TODO
     }
 
     private void addToDataBase() throws ControllerException {
@@ -345,4 +338,20 @@ public class GeneratorController implements Initializable {
         zelazo.setText(Integer.toString(metals[7]));
         olow.setText(Integer.toString(metals[8]));
     }
+
+    private int[] getMetalsPercentage() {
+        int[] data = {
+                Integer.parseInt(aluminium.getText()),
+                Integer.parseInt(krzem.getText()),
+                Integer.parseInt(magnez.getText()),
+                Integer.parseInt(miedz.getText()),
+                Integer.parseInt(cynk.getText()),
+                Integer.parseInt(cyna.getText()),
+                Integer.parseInt(nikiel.getText()),
+                Integer.parseInt(zelazo.getText()),
+                Integer.parseInt(olow.getText()),
+        };
+        return data;
+    }
+
 }
