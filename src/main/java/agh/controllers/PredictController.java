@@ -26,12 +26,16 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class PredictController implements Initializable {
 
     private Controller controller = Controller.getInstance();
+    private Map<Integer, int[]> metalsMap = new HashMap<>();
+    private TextField[] metalsArray;
 
     @FXML
     private Pane PredictPane;
@@ -141,10 +145,27 @@ public class PredictController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         initializeChoiceBoxes();
-        initializeTextFields();
-
         initializeAllParameters(); //TEMPORARY FOR TESTING
+        initializeTextFields();
     }
+
+    private void initMetalsMap(){
+        metalsMap.put(0, new int[]{80, 20, 0, 0, 0, 0, 0, 0, 0});
+        metalsMap.put(1, new int[]{80, 15, 5, 0, 0, 0, 0, 0, 0});
+        metalsMap.put(2, new int[]{80, 12, 2, 6, 0, 0, 0, 0, 0});
+        metalsMap.put(3, new int[]{8, 2, 90, 0, 0, 0, 0, 0, 0});
+        metalsMap.put(4, new int[]{7, 0, 90, 0, 3, 0, 0, 0, 0});
+        metalsMap.put(5, new int[]{0, 0, 0, 98, 0, 2, 0, 0, 0});
+        metalsMap.put(6, new int[]{0, 0, 0, 70, 30, 0, 0, 0, 0});
+        metalsMap.put(7, new int[]{0, 0, 0, 30, 0, 0, 67, 3, 0});
+        metalsMap.put(8, new int[]{0, 0, 0, 2, 0, 3, 0, 0, 95});
+    }
+
+    private void initTextFieldsArray(){
+        metalsArray = new TextField[]{aluminium, krzem, magnez, miedz, cynk, cyna, nikiel, zelazo, olow};
+    }
+
+
 
     private void initializeAllParameters() {
         stops.getSelectionModel().select(2);
@@ -192,91 +213,22 @@ public class PredictController implements Initializable {
     }
 
     private void initializeTextFields() {
-        aluminium.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                aluminium.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        krzem.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                krzem.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        magnez.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                magnez.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        miedz.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                miedz.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        cynk.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                cynk.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        cyna.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                cyna.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        nikiel.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                nikiel.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        zelazo.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                zelazo.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        olow.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                olow.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
+        initMetalsMap();
+        initTextFieldsArray();
+        for (int i=0; i<metalsArray.length; i++){
+            TextField metal = metalsArray[i];
+            metal.textProperty().addListener((observable, oldValue, newValue) -> {
+                remained.setText(String.valueOf(100 - getValue()));
+            });
+        }
     }
 
     private double getValue() {
-        double t1, t2, t3, t4, t5, t6, t7, t8, t9;
-        if (aluminium.getText() == null || aluminium.getText().trim().isEmpty()) t1 = 0;
-        else t1 = Double.parseDouble(aluminium.getText());
-        if (krzem.getText() == null || krzem.getText().trim().isEmpty()) t2 = 0;
-        else t2 = Double.parseDouble(krzem.getText());
-        if (magnez.getText() == null || magnez.getText().trim().isEmpty()) t3 = 0;
-        else t3 = Double.parseDouble(magnez.getText());
-        if (miedz.getText() == null || miedz.getText().trim().isEmpty()) t4 = 0;
-        else t4 = Double.parseDouble(miedz.getText());
-        if (cynk.getText() == null || cynk.getText().trim().isEmpty()) t5 = 0;
-        else t5 = Double.parseDouble(cynk.getText());
-        if (cyna.getText() == null || cyna.getText().trim().isEmpty()) t6 = 0;
-        else t6 = Double.parseDouble(cyna.getText());
-        if (nikiel.getText() == null || nikiel.getText().trim().isEmpty()) t7 = 0;
-        else t7 = Double.parseDouble(nikiel.getText());
-        if (zelazo.getText() == null || zelazo.getText().trim().isEmpty()) t8 = 0;
-        else t8 = Double.parseDouble(zelazo.getText());
-        if (olow.getText() == null || olow.getText().trim().isEmpty()) t9 = 0;
-        else t9 = Double.parseDouble(olow.getText());
-        return t1 + t2 + t3 + t4 + t5 + t6 + t7 + t8 + t9;
+        double sum = 0;
+        for (int i=0; i<metalsArray.length; i++)
+            if (metalsArray[i].getText() != null && !metalsArray[i].getText().trim().isEmpty())
+                sum += Double.parseDouble(metalsArray[i].getText());
+        return sum;
     }
 
     public void setScene(Stage stage, Parent root) {
@@ -286,59 +238,12 @@ public class PredictController implements Initializable {
     }
 
     private void setStops(int i) {
-
-        int[] alsi = {80, 20, 0, 0, 0, 0, 0, 0, 0};
-        int[] alsimg = {80, 15, 5, 0, 0, 0, 0, 0, 0};
-        int[] alsimgcu = {80, 12, 2, 6, 0, 0, 0, 0, 0};
-        int[] mgalsi = {8, 2, 90, 0, 0, 0, 0, 0, 0};
-        int[] mgalzn = {7, 0, 90, 0, 3, 0, 0, 0, 0};
-        int[] cusn = {0, 0, 0, 98, 0, 2, 0, 0, 0};
-        int[] cuzn = {0, 0, 0, 70, 30, 0, 0, 0, 0};
-        int[] nicufe = {0, 0, 0, 30, 0, 0, 67, 3, 0};
-        int[] pbzncu = {0, 0, 0, 2, 0, 3, 0, 0, 95};
-
-        switch (i) {
-            case 0:
-                setTextFields(alsi);
-                break;
-            case 1:
-                setTextFields(alsimg);
-                break;
-            case 2:
-                setTextFields(alsimgcu);
-                break;
-            case 3:
-                setTextFields(mgalsi);
-                break;
-            case 4:
-                setTextFields(mgalzn);
-                break;
-            case 5:
-                setTextFields(cusn);
-                break;
-            case 6:
-                setTextFields(cuzn);
-                break;
-            case 7:
-                setTextFields(nicufe);
-                break;
-            case 8:
-                setTextFields(pbzncu);
-                break;
-        }
-
+        setTextFields(metalsMap.get(i));
     }
 
     private void setTextFields(int[] metals) {
-        aluminium.setText(Integer.toString(metals[0]));
-        krzem.setText(Integer.toString(metals[1]));
-        magnez.setText(Integer.toString(metals[2]));
-        miedz.setText(Integer.toString(metals[3]));
-        cynk.setText(Integer.toString(metals[4]));
-        cyna.setText(Integer.toString(metals[5]));
-        nikiel.setText(Integer.toString(metals[6]));
-        zelazo.setText(Integer.toString(metals[7]));
-        olow.setText(Integer.toString(metals[8]));
+        for (int i=0; i<metalsArray.length; i++)
+            metalsArray[i].setText(Integer.toString(metals[i]));
     }
 
     static String readFile(String path, Charset encoding)

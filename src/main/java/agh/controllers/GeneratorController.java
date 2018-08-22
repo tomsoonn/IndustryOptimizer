@@ -32,15 +32,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class GeneratorController implements Initializable {
 
     private Controller controller = Controller.getInstance();
     private Map<Integer, int[]> metalsMap = new HashMap<>();
+    private TextField[] metalsArray;
 
     @FXML
     private Pane GeneratorPane;
@@ -175,11 +173,12 @@ public class GeneratorController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         initializeChoiceBoxes();
         initializeTextFields();
-        initMetalsMap();
+    }
 
+    private void initTextFieldsArray(){
+        metalsArray = new TextField[]{aluminium, krzem, magnez, miedz, cynk, cyna, nikiel, zelazo, olow};
     }
 
     private void initializeChoiceBoxes() {
@@ -200,91 +199,22 @@ public class GeneratorController implements Initializable {
     }
 
     private void initializeTextFields() {
-        aluminium.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                aluminium.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        krzem.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                krzem.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        magnez.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                magnez.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        miedz.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                miedz.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        cynk.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                cynk.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        cyna.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                cyna.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        nikiel.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                nikiel.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        zelazo.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                zelazo.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
-
-        olow.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                olow.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            remained.setText(String.valueOf(100 - getValue()));
-        });
+        initMetalsMap();
+        initTextFieldsArray();
+        for (int i=0; i<metalsArray.length; i++){
+            TextField metal = metalsArray[i];
+            metal.textProperty().addListener((observable, oldValue, newValue) -> {
+                remained.setText(String.valueOf(100 - getValue()));
+            });
+        }
     }
 
     private double getValue() {
-        double t1, t2, t3, t4, t5, t6, t7, t8, t9;
-        if (aluminium.getText() == null || aluminium.getText().trim().isEmpty()) t1 = 0;
-        else t1 = Double.parseDouble(aluminium.getText());
-        if (krzem.getText() == null || krzem.getText().trim().isEmpty()) t2 = 0;
-        else t2 = Double.parseDouble(krzem.getText());
-        if (magnez.getText() == null || magnez.getText().trim().isEmpty()) t3 = 0;
-        else t3 = Double.parseDouble(magnez.getText());
-        if (miedz.getText() == null || miedz.getText().trim().isEmpty()) t4 = 0;
-        else t4 = Double.parseDouble(miedz.getText());
-        if (cynk.getText() == null || cynk.getText().trim().isEmpty()) t5 = 0;
-        else t5 = Double.parseDouble(cynk.getText());
-        if (cyna.getText() == null || cyna.getText().trim().isEmpty()) t6 = 0;
-        else t6 = Double.parseDouble(cyna.getText());
-        if (nikiel.getText() == null || nikiel.getText().trim().isEmpty()) t7 = 0;
-        else t7 = Double.parseDouble(nikiel.getText());
-        if (zelazo.getText() == null || zelazo.getText().trim().isEmpty()) t8 = 0;
-        else t8 = Double.parseDouble(zelazo.getText());
-        if (olow.getText() == null || olow.getText().trim().isEmpty()) t9 = 0;
-        else t9 = Double.parseDouble(olow.getText());
-        return t1 + t2 + t3 + t4 + t5 + t6 + t7 + t8 + t9;
+        double sum = 0;
+        for (int i=0; i<metalsArray.length; i++)
+            if (metalsArray[i].getText() != null && !metalsArray[i].getText().trim().isEmpty())
+                sum += Double.parseDouble(metalsArray[i].getText());
+        return sum;
     }
 
     private void initMetalsMap(){
@@ -308,29 +238,14 @@ public class GeneratorController implements Initializable {
     }
 
     private void setTextFields(int[] metals) {
-        aluminium.setText(Integer.toString(metals[0]));
-        krzem.setText(Integer.toString(metals[1]));
-        magnez.setText(Integer.toString(metals[2]));
-        miedz.setText(Integer.toString(metals[3]));
-        cynk.setText(Integer.toString(metals[4]));
-        cyna.setText(Integer.toString(metals[5]));
-        nikiel.setText(Integer.toString(metals[6]));
-        zelazo.setText(Integer.toString(metals[7]));
-        olow.setText(Integer.toString(metals[8]));
+        for (int i=0; i<metalsArray.length; i++)
+            metalsArray[i].setText(Integer.toString(metals[i]));
     }
 
     private int[] getMetalsPercentage() {
-        int[] data = {
-                Integer.parseInt(aluminium.getText()),
-                Integer.parseInt(krzem.getText()),
-                Integer.parseInt(magnez.getText()),
-                Integer.parseInt(miedz.getText()),
-                Integer.parseInt(cynk.getText()),
-                Integer.parseInt(cyna.getText()),
-                Integer.parseInt(nikiel.getText()),
-                Integer.parseInt(zelazo.getText()),
-                Integer.parseInt(olow.getText()),
-        };
+        int[] data = new int[metalsArray.length];
+        for (int i=0; i<metalsArray.length; i++)
+            data[i] = Integer.parseInt(metalsArray[i].getText());
         return data;
     }
 
