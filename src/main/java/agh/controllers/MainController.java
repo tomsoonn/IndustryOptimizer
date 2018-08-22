@@ -23,7 +23,7 @@ public class MainController {
         Parent root;
         try {
             root = (Parent) loader.load();
-            ClassifyControler controller = (ClassifyControler) loader.getController();
+            TestingController controller = (TestingController) loader.getController();
             controller.setScene((Stage) mainPane.getScene().getWindow(), root);
         } catch (IOException e) {
             e.printStackTrace();

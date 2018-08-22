@@ -100,16 +100,14 @@ public class GeneratorController implements Initializable {
     private void handelAddToDb(ActionEvent event) throws ControllerException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Czy plik zawiera POPRAWNE dane treningowe?");
         Optional<ButtonType> result = alert.showAndWait();
-        if (!result.isPresent())
-            return;
-        else if (result.get() == ButtonType.OK) {
+        if (!result.isPresent()) {
+        } else if (result.get() == ButtonType.OK) {
             addToDataBase();
-        } else if (result.get() == ButtonType.CANCEL)
-            return;
+        } else if (result.get() == ButtonType.CANCEL) {
+        }
     }
 
     private void addToDataBase() throws ControllerException {
-        //TODO
 
         byte[] encoded = new byte[0];
         try {
@@ -122,9 +120,9 @@ public class GeneratorController implements Initializable {
         try {
             file = new FileWriter("TrainingData.arff", true);
 
-        BufferedWriter out = new BufferedWriter(file);
-        out.write(data);
-        out.close();
+            BufferedWriter out = new BufferedWriter(file);
+            out.write(data);
+            out.close();
         } catch (IOException e) {
             new Alert(Alert.AlertType.ERROR, "Cannot find training file").showAndWait();
         }
@@ -135,7 +133,7 @@ public class GeneratorController implements Initializable {
         uiObj.startTraining();
     }
 
-    private void checkIfProperData(){
+    private void checkIfProperData() {
         //TODO
     }
 
@@ -194,12 +192,7 @@ public class GeneratorController implements Initializable {
                 "PbSnCu"
         );
         stops.setItems(options);
-        stops.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                setStops(newValue.intValue());
-            }
-        });
+        stops.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> setStops(newValue.intValue()));
 
     }
 

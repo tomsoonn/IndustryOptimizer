@@ -1,9 +1,12 @@
 package agh.controllers;
 
+import agh.classification.WekaManager;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.util.JSON;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,9 +17,11 @@ import javafx.stage.Stage;
 import org.javafxdata.datasources.provider.CSVDataSource;
 import org.javafxdata.datasources.reader.DataSourceReader;
 import org.javafxdata.datasources.reader.FileSource;
+import org.apache.commons.io.comparator.LastModifiedFileComparator;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -44,8 +49,19 @@ public class Controller {
     public void initialize(ListView listView) {
         List<String> values = new ArrayList<>();
 
-        Set<String> colls = Main.database.getCollectionNames();
-        values.addAll(colls);
+        //Set<String> colls = Main.database.getCollectionNames();
+        //values.addAll(colls);
+
+        File[] listOfFiles = new File(".").listFiles((dir, name) -> name.endsWith(".arff"));
+
+        if (listOfFiles != null && listOfFiles.length > 0) {
+            Arrays.sort(listOfFiles, LastModifiedFileComparator.LASTMODIFIED_COMPARATOR);
+            for (File listOfFile : listOfFiles) {
+                if (listOfFile.isFile()) {
+                    values.add(listOfFile.getName());
+                }
+            }
+        }
 
         listView.setItems(FXCollections.observableList(values));
     }
@@ -136,18 +152,9 @@ public class Controller {
         textArea.setText(content);
     }
 
-    public void handleProcessing(String path) throws IOException {
-        String line;
-        String content = "";
-        FileReader fileReader = new FileReader(path);
-        BufferedReader buffer = new BufferedReader(fileReader);
-
-        while ((line = buffer.readLine()) != null) {
-            content += line;
-            content += "\n";
-        }
-        buffer.close();
-
+    @FXML
+    public void handleProcessing(int classifier) throws IOException {
+        String content = WekaManager.makeTest("TrainingData.arff", classifier);
         TextArea textArea = new TextArea(content);
         textArea.setWrapText(true);
         textArea.setEditable(false);
@@ -162,6 +169,35 @@ public class Controller {
         newWindow.setScene(secondScene);
 
         newWindow.show();
+        //controller.handleProcessing("processing.txt");
     }
+
+//    public void handleProcessing(String path) throws IOException {
+//        String line;
+//        String content = "";
+//        FileReader fileReader = new FileReader(path);
+//        BufferedReader buffer = new BufferedReader(fileReader);
+//
+//        while ((line = buffer.readLine()) != null) {
+//            content += line;
+//            content += "\n";
+//        }
+//        buffer.close();
+//
+//        TextArea textArea = new TextArea(content);
+//        textArea.setWrapText(true);
+//        textArea.setEditable(false);
+//
+//        StackPane secondaryLayout = new StackPane();
+//        secondaryLayout.getChildren().add(textArea);
+//
+//        Scene secondScene = new Scene(secondaryLayout, 1000, 700);
+//
+//        Stage newWindow = new Stage();
+//        newWindow.setTitle("Processing");
+//        newWindow.setScene(secondScene);
+//
+//        newWindow.show();
+//    }
 
 }

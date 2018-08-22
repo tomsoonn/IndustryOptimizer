@@ -5,8 +5,8 @@ import agh.generator.Metals;
 import java.util.Locale;
 
 public class Calculator {
-    private static double cost;
-    private static double actualMass;
+    private double cost;
+    private double actualMass;
 
     public Calculator() {
     }
@@ -16,7 +16,7 @@ public class Calculator {
         double mass = Double.parseDouble(data[data.length - 1]);
         double temp = Double.parseDouble(data[Metals.values().length]);
         cost = 0;
-        actualMass=0;
+        actualMass = 0;
         for (int i = 0; i < Metals.values().length; i++) {
 
             double tmp = (mass * (Double.parseDouble(data[i]) / 100.0) * ((100.0 + Metals.getRatio(Metals.values()[i]) + (temp / 2000.0)) / 100.0));
@@ -24,13 +24,11 @@ public class Calculator {
             actualMass += tmp;
             result.append(Metals.values()[i].toString()).append(" : ").append(String.format(Locale.US, "%.2f", tmp)).append("\n");
         }
-        result.deleteCharAt(result.length()-1);
+        result.deleteCharAt(result.length() - 1);
         return result.toString();
     }
 
     public String calculateCost(String[] data) {
-
-        //TODO
         double temp = Double.parseDouble(data[Metals.values().length]);
         double time = Double.parseDouble(data[Metals.values().length + 1]);
         double upgrade = Double.parseDouble(data[data.length - 2]);

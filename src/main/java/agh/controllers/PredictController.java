@@ -87,44 +87,25 @@ public class PredictController implements Initializable {
         controller.handleBack(PredictPane);
     }
 
-    @FXML
-    protected void handleConfirm(ActionEvent event) throws IOException {
+    private void checkIfProperData() {
         if (getValue() > 100) {
             new Alert(Alert.AlertType.ERROR, "Niepoprawne wartości metali").showAndWait();
             return;
         }
 //        String val = tf1.getText() + "," + tf2.getText() + "," + tf3.getText() + "," + tf4.getText() + "," + tf5.getText()
 //                + "," + tf6.getText() + "," + tf7.getText() + "," + tf8.getText() + "," + tf9.getText();
-        BufferedWriter task = new BufferedWriter(new FileWriter("python/task_folder/task.txt"));
-        task.write("predict,1");
-        task.close();
-        BufferedWriter data = new BufferedWriter(new FileWriter("python/input/predict.csv"));
-//        data.write(val + ",3");
-        data.close();
+
         controller.handleConfirm();
     }
 
+    @FXML
     public void handleProcessing(ActionEvent event) throws IOException {
-        String content = WekaManager.makeTest("TrainingData.arff", classifiers.getSelectionModel().getSelectedIndex());
-        TextArea textArea = new TextArea(content);
-        textArea.setWrapText(true);
-        textArea.setEditable(false);
-
-        StackPane secondaryLayout = new StackPane();
-        secondaryLayout.getChildren().add(textArea);
-
-        Scene secondScene = new Scene(secondaryLayout, 1000, 700);
-
-        Stage newWindow = new Stage();
-        newWindow.setTitle("Processing");
-        newWindow.setScene(secondScene);
-
-        newWindow.show();
-        //controller.handleProcessing("processing.txt");
+        controller.handleProcessing(classifiers.getSelectionModel().getSelectedIndex());
     }
 
     @FXML
-    void makePrediction() throws ControllerException{
+    void handlePrediction() throws ControllerException {
+        checkIfProperData();
         String[] data = {
                 aluminium.getText(),
                 krzem.getText(),
@@ -165,7 +146,7 @@ public class PredictController implements Initializable {
         initializeAllParameters(); //TEMPORARY FOR TESTING
     }
 
-    private void initializeAllParameters(){
+    private void initializeAllParameters() {
         stops.getSelectionModel().select(2);
         temp.setText("1500");
         time.setText("50");
@@ -199,12 +180,7 @@ public class PredictController implements Initializable {
                 "PbSnCu"
         );
         stops.setItems(options);
-        stops.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                setStops(newValue.intValue());
-            }
-        });
+        stops.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> setStops(newValue.intValue()));
         options = FXCollections.observableArrayList(
                 "MultilayerPerceptron",
                 "M5P",

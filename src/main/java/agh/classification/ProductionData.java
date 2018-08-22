@@ -94,24 +94,22 @@ public class ProductionData {
             e.printStackTrace();
         }
 
-        // set class attribute
         unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
 
-
-        //Standardize filter = new Standardize();
-        //NumericToNominal filter1 = new NumericToNominal();
-        try {
-            //filter.setInputFormat(unlabeled);
-            //filter1.setInputFormat(unlabeled);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            //unlabeled = Filter.useFilter(unlabeled, filter);
-            //unlabeled = Filter.useFilter(unlabeled, filter1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        Standardize filter = new Standardize();
+//        NumericToNominal filter1 = new NumericToNominal();
+//        try {
+//            filter.setInputFormat(unlabeled);
+//            filter1.setInputFormat(unlabeled);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            unlabeled = Filter.useFilter(unlabeled, filter);
+//            unlabeled = Filter.useFilter(unlabeled, filter1);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         Instances labeled = new Instances(unlabeled);
 
