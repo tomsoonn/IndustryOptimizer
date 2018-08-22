@@ -73,6 +73,8 @@ public class GeneratorController implements Initializable {
     private ChoiceBox<String> stops;
     @FXML
     private Button addToDb;
+    @FXML
+    private TextField stopName;
 
     @FXML
     private void handleGenerate(ActionEvent event) {
@@ -105,6 +107,10 @@ public class GeneratorController implements Initializable {
             addToDataBase();
         } else if (result.get() == ButtonType.CANCEL) {
         }
+    }
+    @FXML
+    private void handleAddStop(ActionEvent event){
+
     }
 
     private void addToDataBase() throws ControllerException {

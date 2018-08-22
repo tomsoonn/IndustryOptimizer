@@ -186,7 +186,6 @@ public class PredictController implements Initializable {
                 "M5P",
                 "RandomForest",
                 "Vote"
-
         );
         classifiers.setItems(options);
         classifiers.getSelectionModel().selectFirst();
