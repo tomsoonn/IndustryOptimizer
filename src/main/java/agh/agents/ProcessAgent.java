@@ -11,17 +11,14 @@ import java.util.Arrays;
 
 public class ProcessAgent extends Agent {
 
-    private String [] processParameters = new String[9];
+    private String[] processParameters = new String[9];
     private int classifier;
 
-    protected void setup()
-    {
-        Object [] args = getArguments();
+    protected void setup() {
+        Object[] args = getArguments();
 
-        addBehaviour(new CyclicBehaviour(this)
-        {
-            public void action()
-            {
+        addBehaviour(new CyclicBehaviour(this) {
+            public void action() {
                 ACLMessage reply;
 
                 ArrayList<MessageTemplate> templates = new ArrayList<>();
@@ -29,18 +26,18 @@ public class ProcessAgent extends Agent {
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.START_PROCESS));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.SET_PROCESS_VALUES));
 
-                ACLMessage [] checkMsg = new ACLMessage[templates.size()];
+                ACLMessage[] checkMsg = new ACLMessage[templates.size()];
                 int counter = 0;
-                for(MessageTemplate checkState: templates){
+                for (MessageTemplate checkState : templates) {
                     checkMsg[counter++] = receive(checkState);
                 }
-                for(ACLMessage msg: checkMsg) {
+                for (ACLMessage msg : checkMsg) {
                     if (msg != null) {
-                        switch(msg.getPerformative()) {
+                        switch (msg.getPerformative()) {
                             case (AgentMessages.CHECK_AGENT):
                                 reply = new ACLMessage(AgentMessages.CHECK_AGENT);
                                 reply.setContent("success");
-                                reply.addReceiver(new AID( args[0].toString(), AID.ISLOCALNAME));
+                                reply.addReceiver(new AID(args[0].toString(), AID.ISLOCALNAME));
                                 send(reply);
                                 break;
                             case (AgentMessages.SET_PROCESS_VALUES):
@@ -51,17 +48,17 @@ public class ProcessAgent extends Agent {
                                 classifier = Integer.parseInt(a[0]);
                                 reply = new ACLMessage(AgentMessages.SET_PROCESS_VALUES_ACK);
                                 reply.setContent("success");
-                                reply.addReceiver(new AID( args[0].toString(), AID.ISLOCALNAME));
+                                reply.addReceiver(new AID(args[0].toString(), AID.ISLOCALNAME));
                                 send(reply);
                                 break;
                             case (AgentMessages.START_PROCESS):
-                                String result = "";
+                                String result;
                                 String[] parameters = fromString(processParameters[0]);
                                 ProductionProcess process = new ProductionProcess(parameters, classifier); //instancja processu z zainicjalizowanymi docelowymi parametrami
                                 String[] wjp = process.runProcess();
                                 result = wjp[0] + "-" + wjp[1] + "-" + wjp[2];
                                 reply = new ACLMessage(AgentMessages.RECEIVE_RESULT);
-                                reply.addReceiver(new AID( args[0].toString(), AID.ISLOCALNAME));
+                                reply.addReceiver(new AID(args[0].toString(), AID.ISLOCALNAME));
                                 reply.setContent(result);
                                 send(reply);
                                 doDelete();
@@ -77,9 +74,7 @@ public class ProcessAgent extends Agent {
     private String[] fromString(String string) {
         String[] strings = string.replace("[", "").replace("]", "").split(", ");
         String result[] = new String[strings.length];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = (strings[i]);
-        }
+        System.arraycopy(strings, 0, result, 0, result.length);
         return result;
     }
 }

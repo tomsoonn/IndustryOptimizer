@@ -18,10 +18,10 @@ public class ProductionAgent extends Agent {
     private ArrayList<AID> systemAgents = new ArrayList<>();
     private ArrayList<AID> learningAgents = new ArrayList<>();
 
-    private AID createProcess(){
+    private AID createProcess() {
         ContainerController cc = getContainerController();
-        String processNickname = "Process-agent"+Integer.toString(processAgents.size());
-        Object [] args = new Object[1];
+        String processNickname = "Process-agent" + Integer.toString(processAgents.size());
+        Object[] args = new Object[1];
         args[0] = getLocalName();
 
         try {
@@ -36,10 +36,10 @@ public class ProductionAgent extends Agent {
         return new AID(processNickname, AID.ISLOCALNAME);
     }
 
-    private AID createLearningAgent(){
+    private AID createLearningAgent() {
         ContainerController cc = getContainerController();
-        String processNickname = "Learning-agent"+Integer.toString(learningAgents.size());
-        Object [] args = new Object[1];
+        String processNickname = "Learning-agent" + Integer.toString(learningAgents.size());
+        Object[] args = new Object[1];
         args[0] = getLocalName();
 
         try {
@@ -54,7 +54,7 @@ public class ProductionAgent extends Agent {
         return new AID(processNickname, AID.ISLOCALNAME);
     }
 
-    private boolean checkAgent(AID agentAddress){
+    private boolean checkAgent(AID agentAddress) {
         ACLMessage msg = new ACLMessage(AgentMessages.CHECK_AGENT);
         msg.setContent("success");
         msg.addReceiver(agentAddress);
@@ -70,9 +70,8 @@ public class ProductionAgent extends Agent {
         return reply != null;
     }
 
-    protected void setup()
-    {
-        Object [] args = new Object[1];
+    protected void setup() {
+        Object[] args = new Object[1];
         args[0] = getLocalName();
         ContainerController cc = getContainerController();
 
@@ -88,36 +87,21 @@ public class ProductionAgent extends Agent {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-/*
-        //initialize database agent
-        try {
-            AgentController database = cc.createNewAgent("Database-agent",
-                    "agh.agents.DatabaseAgent", args);
-            database.start();
-            systemAgents.add(new AID("Database-agent", AID.ISLOCALNAME));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        }
-
-*/
         System.out.println("Agents initialized");
 
-        addBehaviour(new CyclicBehaviour(this)
-        {
-            public void action()
-            {
+        addBehaviour(new CyclicBehaviour(this) {
+            public void action() {
 
                 ACLMessage msg;
 
                 ArrayList<MessageTemplate> templates = new ArrayList<>();
                 templates.add(MessageTemplate.and(MessageTemplate.MatchSender(
-                        systemAgents.get(0)),MessageTemplate.MatchPerformative(AgentMessages.START_PROCESS_AGENT)));
+                        systemAgents.get(0)), MessageTemplate.MatchPerformative(AgentMessages.START_PROCESS_AGENT)));
                 templates.add(MessageTemplate.and(MessageTemplate.MatchSender(
-                        systemAgents.get(0)),MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING_AGENT)));
+                        systemAgents.get(0)), MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING_AGENT)));
                 templates.add(MessageTemplate.and(MessageTemplate.MatchSender(
-                        systemAgents.get(0)),MessageTemplate.MatchPerformative(AgentMessages.SET_PROCESS_VALUES)));
+                        systemAgents.get(0)), MessageTemplate.MatchPerformative(AgentMessages.SET_PROCESS_VALUES)));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.SET_PROCESS_VALUES_ACK));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.START_PROCESS));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING));
@@ -125,83 +109,83 @@ public class ProductionAgent extends Agent {
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.GET_PROCESS_IDS));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.GET_PROCESS_IDS_ACK));
 
-                ACLMessage [] checkMsg = new ACLMessage[templates.size()];
+                ACLMessage[] checkMsg = new ACLMessage[templates.size()];
                 int counter = 0;
-                for(MessageTemplate checkState: templates){
+                for (MessageTemplate checkState : templates) {
                     checkMsg[counter++] = receive(checkState);
                 }
-                for(ACLMessage check: checkMsg) {
+                for (ACLMessage check : checkMsg) {
                     if (check != null) {
                         //confirming that agent is working
-                        switch(check.getPerformative()){
-                            case(AgentMessages.START_PROCESS_AGENT):
+                        switch (check.getPerformative()) {
+                            case (AgentMessages.START_PROCESS_AGENT):
                                 AID processTag = createProcess();
                                 processAgents.add(processTag);
                                 boolean processConfirmation = checkAgent(processTag);
-                                if(processConfirmation){
+                                if (processConfirmation) {
                                     msg = new ACLMessage(AgentMessages.START_PROCESS_AGENT_ACK);
                                     msg.setContent("Process Agent created.");
                                     msg.addReceiver(systemAgents.get(0));
                                     send(msg);
                                 }
                                 break;
-                            case(AgentMessages.START_LEARNING_AGENT):
+                            case (AgentMessages.START_LEARNING_AGENT):
                                 AID learningTag = createLearningAgent();
                                 learningAgents.add(learningTag);
                                 boolean learningConfirmation = checkAgent(learningTag);
-                                if(learningConfirmation){
+                                if (learningConfirmation) {
                                     msg = new ACLMessage(AgentMessages.START_LEARNING_AGENT_ACK);
                                     msg.setContent("Learning Agent created.");
                                     msg.addReceiver(systemAgents.get(0));
                                     send(msg);
                                 }
                                 break;
-                            case(AgentMessages.SET_PROCESS_VALUES):
+                            case (AgentMessages.SET_PROCESS_VALUES):
                                 String parameters = check.getContent();
                                 msg = new ACLMessage(AgentMessages.SET_PROCESS_VALUES);
-                                msg.addReceiver(processAgents.get(processAgents.size()-1));
+                                msg.addReceiver(processAgents.get(processAgents.size() - 1));
                                 msg.setContent(parameters);
                                 send(msg);
                                 break;
-                            case(AgentMessages.SET_PROCESS_VALUES_ACK):
+                            case (AgentMessages.SET_PROCESS_VALUES_ACK):
                                 msg = new ACLMessage(AgentMessages.SET_PROCESS_VALUES_ACK);
                                 msg.setContent("Values set.");
                                 msg.addReceiver(systemAgents.get(0));
                                 send(msg);
                                 break;
-                            case(AgentMessages.START_PROCESS):
+                            case (AgentMessages.START_PROCESS):
                                 msg = new ACLMessage(AgentMessages.START_PROCESS);
-                                msg.addReceiver(processAgents.get(processAgents.size()-1));
+                                msg.addReceiver(processAgents.get(processAgents.size() - 1));
                                 msg.setContent("");
                                 send(msg);
                                 break;
-                            case(AgentMessages.START_LEARNING):
+                            case (AgentMessages.START_LEARNING):
                                 msg = new ACLMessage(AgentMessages.START_LEARNING);
                                 System.out.println("Start learning msg received");
-                                msg.addReceiver(learningAgents.get(learningAgents.size()-1));
+                                msg.addReceiver(learningAgents.get(learningAgents.size() - 1));
                                 msg.setContent("");
                                 send(msg);
                                 break;
-                            case(AgentMessages.START_LEARNING_ACK):
+                            case (AgentMessages.START_LEARNING_ACK):
                                 msg = new ACLMessage(AgentMessages.START_LEARNING_ACK);
                                 msg.setContent("Learning done.");
                                 msg.addReceiver(systemAgents.get(0));
                                 send(msg);
                                 break;
-                            case(AgentMessages.RECEIVE_RESULT):
+                            case (AgentMessages.RECEIVE_RESULT):
                                 String finish = check.getContent();
                                 msg = new ACLMessage(AgentMessages.RECEIVE_RESULT);
                                 msg.addReceiver(systemAgents.get(0));
                                 msg.setContent(finish);
                                 send(msg);
                                 break;
-                            case(AgentMessages.GET_PROCESS_IDS):
+                            case (AgentMessages.GET_PROCESS_IDS):
                                 msg = new ACLMessage(AgentMessages.GET_PROCESS_IDS);
                                 msg.addReceiver(systemAgents.get(1));
                                 msg.setContent("");
                                 send(msg);
                                 break;
-                            case(AgentMessages.GET_PROCESS_IDS_ACK):
+                            case (AgentMessages.GET_PROCESS_IDS_ACK):
                                 msg = new ACLMessage(AgentMessages.GET_PROCESS_IDS_ACK);
                                 String pids = check.getContent();
                                 msg.addReceiver(systemAgents.get(0));

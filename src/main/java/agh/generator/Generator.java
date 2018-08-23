@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-
 public class Generator {
     private static PrintWriter writer;
 
@@ -164,7 +163,7 @@ public class Generator {
         writer.close();
     }
 
-    private static void writeToFile(int[] metals, int temperature, int time, int coolingTemperature, int heatingTime, int coolingTemperature2, int heatingTime2, int level, int quality, boolean labeled){
+    private static void writeToFile(int[] metals, int temperature, int time, int coolingTemperature, int heatingTime, int coolingTemperature2, int heatingTime2, int level, int quality, boolean labeled) {
         writer.print("\n");
 
         for (int metal : metals) {
@@ -193,13 +192,11 @@ public class Generator {
         writer.print(level);
         writer.print(",");
 
-        //writer.print(quality);
-
         if (labeled) writer.print(quality);
         else writer.print("?");
     }
 
-    private static Integer[] gen(Random r, int temperatureLevel){
+    private static Integer[] gen(Random r, int temperatureLevel) {
         int quality = 90;
         int temperatureBound = (int) (0.7 * temperatureLevel);
         int minTemperature = (int) (0.5 * temperatureLevel);
@@ -268,9 +265,9 @@ public class Generator {
         Random r = new Random();
         int temperatureLevel = getHighestTemperatureArray(metals);
 
-        for (int k=0; k<100; k+=10){
+        for (int k = 0; k < 100; k += 10) {
             int j = 0;
-            while (j!=quantity/10) {
+            while (j != quantity / 10) {
 
                 Integer[] res = gen(r, temperatureLevel);
                 int quality = res[7];
@@ -282,9 +279,9 @@ public class Generator {
             }
         }
 
-        int l = quantity%10;
+        int l = quantity % 10;
 
-        for (int i=0; i<l; i++){
+        for (int i = 0; i < l; i++) {
             Integer[] res = gen(r, temperatureLevel);
             int quality = res[7];
 
@@ -294,7 +291,6 @@ public class Generator {
         writer.close();
         System.out.println("koniec");
     }
-
 }
 
 

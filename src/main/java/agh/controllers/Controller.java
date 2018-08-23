@@ -5,7 +5,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.util.JSON;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,7 +22,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import agh.Main;
 
@@ -48,10 +46,6 @@ public class Controller {
 
     public void initialize(ListView listView) {
         List<String> values = new ArrayList<>();
-
-        //Set<String> colls = Main.database.getCollectionNames();
-        //values.addAll(colls);
-
         File[] listOfFiles = new File(".").listFiles((dir, name) -> name.endsWith(".arff"));
 
         if (listOfFiles != null && listOfFiles.length > 0) {
@@ -86,11 +80,7 @@ public class Controller {
         }
 
         String coll = listView.getSelectionModel().getSelectedItem();
-        DBCollection collection = Main.database.getCollection(coll);
-        DBCursor cursor = collection.find();
-        JSON json = new JSON();
-        String serialize = json.serialize(cursor);
-        System.out.println(serialize);
+        //TODO
     }
 
     public void handleResults(TableView tableView, String path) throws FileNotFoundException {
@@ -126,7 +116,7 @@ public class Controller {
 
     public void handleShowData(TextField textView, String path) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(path));
-        String line = "";
+        String line;
         String[] result = null;
         while ((line = br.readLine()) != null)
             result = line.split(",");
@@ -140,20 +130,20 @@ public class Controller {
 
     public void handleResult(String path, TextArea textArea) throws IOException {
         String line;
-        String content = "";
+        StringBuilder content = new StringBuilder();
         FileReader fileReader = new FileReader(path);
         BufferedReader buffer = new BufferedReader(fileReader);
 
         while ((line = buffer.readLine()) != null) {
-            content += line;
-            content += "\n";
+            content.append(line);
+            content.append("\n");
         }
         buffer.close();
-        textArea.setText(content);
+        textArea.setText(content.toString());
     }
 
     @FXML
-    public void handleProcessing(int classifier) throws IOException {
+    public void handleProcessing(int classifier) {
         String content = WekaManager.makeTest("TrainingData.arff", classifier);
         TextArea textArea = new TextArea(content);
         textArea.setWrapText(true);
@@ -169,35 +159,5 @@ public class Controller {
         newWindow.setScene(secondScene);
 
         newWindow.show();
-        //controller.handleProcessing("processing.txt");
     }
-
-//    public void handleProcessing(String path) throws IOException {
-//        String line;
-//        String content = "";
-//        FileReader fileReader = new FileReader(path);
-//        BufferedReader buffer = new BufferedReader(fileReader);
-//
-//        while ((line = buffer.readLine()) != null) {
-//            content += line;
-//            content += "\n";
-//        }
-//        buffer.close();
-//
-//        TextArea textArea = new TextArea(content);
-//        textArea.setWrapText(true);
-//        textArea.setEditable(false);
-//
-//        StackPane secondaryLayout = new StackPane();
-//        secondaryLayout.getChildren().add(textArea);
-//
-//        Scene secondScene = new Scene(secondaryLayout, 1000, 700);
-//
-//        Stage newWindow = new Stage();
-//        newWindow.setTitle("Processing");
-//        newWindow.setScene(secondScene);
-//
-//        newWindow.show();
-//    }
-
 }

@@ -6,7 +6,6 @@ import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.meta.*;
 import weka.classifiers.trees.*;
 import weka.core.Instances;
-import weka.core.converters.ConverterUtils;
 import weka.core.converters.ConverterUtils.DataSource;
 
 import java.io.*;
@@ -29,24 +28,6 @@ public class ProductionData {
             Instances trainData = source1.getDataSet();
             if (trainData.classIndex() == -1)
                 trainData.setClassIndex(trainData.numAttributes() - 1);
-
-//            Standardize filter = new Standardize();
-//            filter.setInputFormat(trainData);
-//            trainData = Filter.useFilter(trainData, filter);
-//            testData = Filter.useFilter(testData, filter);
-
-//            NumericToNominal toNominalFilter = new NumericToNominal();
-//            toNominalFilter.setInputFormat(trainData);
-//            String[] options = new String[2];
-//            options[0] = "-R";                                    // "range"
-//            options[1] = "2,4,6,8,10,12,14,16,18";
-//            toNominalFilter.setOptions(options);     // set the options
-//            trainData = Filter.useFilter(trainData, toNominalFilter);
-//            testData = Filter.useFilter(testData, toNominalFilter);
-
-//            String[] options = new String[1];
-//            options[0] = "-U";            // unpruned tree
-//            tree.setOptions(options);     // set the options
 
             forest.buildClassifier(trainData);
             m5p.buildClassifier(trainData);
@@ -95,21 +76,6 @@ public class ProductionData {
         }
 
         unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
-
-//        Standardize filter = new Standardize();
-//        NumericToNominal filter1 = new NumericToNominal();
-//        try {
-//            filter.setInputFormat(unlabeled);
-//            filter1.setInputFormat(unlabeled);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            unlabeled = Filter.useFilter(unlabeled, filter);
-//            unlabeled = Filter.useFilter(unlabeled, filter1);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
 
         Instances labeled = new Instances(unlabeled);
 

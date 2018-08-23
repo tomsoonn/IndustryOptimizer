@@ -13,20 +13,23 @@ import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class StatsController implements Initializable{
+public class StatsController implements Initializable {
 
     private Controller controller = Controller.getInstance();
 
-    @FXML private Pane StatsPane;
-    @FXML private ListView<String> listView;
-    @FXML private TextArea textArea;
+    @FXML
+    private Pane StatsPane;
+    @FXML
+    private ListView<String> listView;
+    @FXML
+    private TextArea textArea;
 
-    public void handleData(ActionEvent event) throws IOException {
+    public void handleData(ActionEvent event) {
         controller.handleData(listView, "statistics");
     }
 
     @FXML
-    protected void handleBack(ActionEvent event){
+    protected void handleBack(ActionEvent event) {
         controller.handleBack(StatsPane);
     }
 
@@ -35,7 +38,7 @@ public class StatsController implements Initializable{
         controller.handleResult("python/output/statistics.txt", textArea);
     }
 
-    public void setScene(Stage stage, Parent root){
+    public void setScene(Stage stage, Parent root) {
         controller.setScene(stage, root, "Stats");
     }
 

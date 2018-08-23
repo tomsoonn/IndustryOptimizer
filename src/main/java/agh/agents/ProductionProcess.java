@@ -7,7 +7,7 @@ public class ProductionProcess {
 
     private String[] data;
     private int classifier;
-    Calculator calculator;
+    private Calculator calculator;
 
 
     public ProductionProcess(String[] data, int classifier) {
@@ -20,12 +20,11 @@ public class ProductionProcess {
         return calculator.calculateInput(data);
     }
 
-
     private String secondStep() {
         return calculator.calculateCost(data);
     }
 
-    private String thirdStep(){     //wyznaczenie jakości
+    private String thirdStep() {     //wyznaczenie jakości
         return WekaManager.makePrediction(data, classifier);
     }
 
@@ -38,5 +37,4 @@ public class ProductionProcess {
 
         return result;
     }
-
 }

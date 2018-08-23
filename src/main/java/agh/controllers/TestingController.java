@@ -1,52 +1,50 @@
 package agh.controllers;
 
-import agh.classification.WekaManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.*;
+import java.util.ResourceBundle;
 
 
 public class TestingController implements Initializable {
 
     private Controller controller = Controller.getInstance();
 
-    @FXML private ListView<String> listView;
-
-    @FXML private Pane ClassifyPane;
-    @FXML private TableView tableView;
-    @FXML private ChoiceBox classifiers;
+    @FXML
+    private ListView<String> listView;
+    @FXML
+    private Pane ClassifyPane;
+    @FXML
+    private TableView tableView;
+    @FXML
+    private ChoiceBox classifiers;
 
     @FXML
-    protected void handleBack(ActionEvent event){
+    protected void handleBack(ActionEvent event) {
         controller.handleBack(ClassifyPane);
     }
 
     public void handleResults(ActionEvent event) throws FileNotFoundException {
-        controller.handleResults(tableView,"python/output/results.csv");
+        controller.handleResults(tableView, "python/output/results.csv");
     }
 
     public void handleData(ActionEvent event) {
         controller.handleData(listView, "classify");
     }
 
-//    public void handleProcessing(ActionEvent event) throws IOException {
-//        controller.handleProcessing("python/output/processing.txt");
-//    }
-
     @FXML
-    public void handleProcessing(ActionEvent event) throws IOException {
+    public void handleProcessing(ActionEvent event) {
         controller.handleProcessing(classifiers.getSelectionModel().getSelectedIndex());
     }
 
@@ -63,8 +61,7 @@ public class TestingController implements Initializable {
         classifiers.getSelectionModel().selectFirst();
     }
 
-    public void setScene(Stage stage, Parent root){
+    public void setScene(Stage stage, Parent root) {
         controller.setScene(stage, root, "Testowanie");
     }
-
 }

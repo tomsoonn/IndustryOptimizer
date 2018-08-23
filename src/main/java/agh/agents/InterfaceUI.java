@@ -1,8 +1,6 @@
 package agh.agents;
 
-//import pl.edu.agh.parameter.ProcessJson;
-
 public interface InterfaceUI {
-    public String runProcess(String[] data, int classifier);
-    public void startTraining();
+    String runProcess(String[] data, int classifier);
+    void startTraining();
 }

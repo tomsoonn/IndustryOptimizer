@@ -22,5 +22,4 @@ public class WekaManager {
         String result = Main.productionData.test("TrainingData.arff", testFile, classifier);
         return result;
     }
-
 }

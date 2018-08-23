@@ -2,11 +2,8 @@ package agh.controllers;
 
 import agh.agents.InterfaceUI;
 import agh.agents.MainContainer;
-import agh.classification.WekaManager;
 import jade.wrapper.AgentController;
 import jade.wrapper.ControllerException;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,18 +13,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -103,7 +96,7 @@ public class PredictController implements Initializable {
     }
 
     @FXML
-    public void handleProcessing(ActionEvent event) throws IOException {
+    public void handleProcessing(ActionEvent event) {
         controller.handleProcessing(classifiers.getSelectionModel().getSelectedIndex());
     }
 
@@ -128,7 +121,6 @@ public class PredictController implements Initializable {
                 time2.getText(),
                 Integer.toString(upgrades.getSelectionModel().getSelectedIndex() + 1),
                 mass.getText()
-
         };
 
         AgentController ac = MainContainer.cc.getAgent("UI-agent");
@@ -149,7 +141,7 @@ public class PredictController implements Initializable {
         initializeTextFields();
     }
 
-    private void initMetalsMap(){
+    private void initMetalsMap() {
         metalsMap.put(0, new int[]{80, 20, 0, 0, 0, 0, 0, 0, 0});
         metalsMap.put(1, new int[]{80, 15, 5, 0, 0, 0, 0, 0, 0});
         metalsMap.put(2, new int[]{80, 12, 2, 6, 0, 0, 0, 0, 0});
@@ -161,11 +153,9 @@ public class PredictController implements Initializable {
         metalsMap.put(8, new int[]{0, 0, 0, 2, 0, 3, 0, 0, 95});
     }
 
-    private void initTextFieldsArray(){
+    private void initTextFieldsArray() {
         metalsArray = new TextField[]{aluminium, krzem, magnez, miedz, cynk, cyna, nikiel, zelazo, olow};
     }
-
-
 
     private void initializeAllParameters() {
         stops.getSelectionModel().select(2);
@@ -215,19 +205,16 @@ public class PredictController implements Initializable {
     private void initializeTextFields() {
         initMetalsMap();
         initTextFieldsArray();
-        for (int i=0; i<metalsArray.length; i++){
-            TextField metal = metalsArray[i];
-            metal.textProperty().addListener((observable, oldValue, newValue) -> {
-                remained.setText(String.valueOf(100 - getValue()));
-            });
+        for (TextField metal : metalsArray) {
+            metal.textProperty().addListener((observable, oldValue, newValue) -> remained.setText(String.valueOf(100 - getValue())));
         }
     }
 
     private double getValue() {
         double sum = 0;
-        for (int i=0; i<metalsArray.length; i++)
-            if (metalsArray[i].getText() != null && !metalsArray[i].getText().trim().isEmpty())
-                sum += Double.parseDouble(metalsArray[i].getText());
+        for (TextField aMetalsArray : metalsArray)
+            if (aMetalsArray.getText() != null && !aMetalsArray.getText().trim().isEmpty())
+                sum += Double.parseDouble(aMetalsArray.getText());
         return sum;
     }
 
@@ -242,7 +229,7 @@ public class PredictController implements Initializable {
     }
 
     private void setTextFields(int[] metals) {
-        for (int i=0; i<metalsArray.length; i++)
+        for (int i = 0; i < metalsArray.length; i++)
             metalsArray[i].setText(Integer.toString(metals[i]));
     }
 

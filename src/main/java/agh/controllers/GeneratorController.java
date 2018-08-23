@@ -93,10 +93,8 @@ public class GeneratorController implements Initializable {
     private void handelAddToDb(ActionEvent event) throws ControllerException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Czy plik zawiera POPRAWNE dane treningowe?");
         Optional<ButtonType> result = alert.showAndWait();
-        if (!result.isPresent()) {
-        } else if (result.get() == ButtonType.OK) {
+        if (result.get() == ButtonType.OK) {
             addToDataBase();
-        } else if (result.get() == ButtonType.CANCEL) {
         }
     }
 
@@ -139,12 +137,6 @@ public class GeneratorController implements Initializable {
 
     @FXML
     protected void handleShowData(ActionEvent event) {
-        //DBCollection coll = Main.database.getCollection(filename.getText());
-        //DBCursor cursor = coll.find();
-        //JSON json = new JSON();
-        //String serialize = json.serialize(cursor);
-        //String area = "";
-        //String[] val = serialize.split("_");
         byte[] encoded = new byte[0];
         try {
             encoded = Files.readAllBytes(Paths.get(filename.getText()));
@@ -152,12 +144,6 @@ public class GeneratorController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Cannot open file").showAndWait();
         }
         String area = new String(encoded, StandardCharsets.UTF_8);
-//        for (int i = 1; i<=Integer.parseInt(quantity.getText()); i++){
-//            String[] res = val[i].split("\"metale\" :");
-//            String[] res1 = res[1].split(", \"jakość\"");
-//            area += res1[0];
-//            area += "\n";
-//        }
         textArea.clear();
         textArea.setText(area);
     }
@@ -177,7 +163,7 @@ public class GeneratorController implements Initializable {
         initializeTextFields();
     }
 
-    private void initTextFieldsArray(){
+    private void initTextFieldsArray() {
         metalsArray = new TextField[]{aluminium, krzem, magnez, miedz, cynk, cyna, nikiel, zelazo, olow};
     }
 
@@ -201,23 +187,20 @@ public class GeneratorController implements Initializable {
     private void initializeTextFields() {
         initMetalsMap();
         initTextFieldsArray();
-        for (int i=0; i<metalsArray.length; i++){
-            TextField metal = metalsArray[i];
-            metal.textProperty().addListener((observable, oldValue, newValue) -> {
-                remained.setText(String.valueOf(100 - getValue()));
-            });
+        for (TextField metal : metalsArray) {
+            metal.textProperty().addListener((observable, oldValue, newValue) -> remained.setText(String.valueOf(100 - getValue())));
         }
     }
 
     private double getValue() {
         double sum = 0;
-        for (int i=0; i<metalsArray.length; i++)
-            if (metalsArray[i].getText() != null && !metalsArray[i].getText().trim().isEmpty())
-                sum += Double.parseDouble(metalsArray[i].getText());
+        for (TextField aMetalsArray : metalsArray)
+            if (aMetalsArray.getText() != null && !aMetalsArray.getText().trim().isEmpty())
+                sum += Double.parseDouble(aMetalsArray.getText());
         return sum;
     }
 
-    private void initMetalsMap(){
+    private void initMetalsMap() {
         metalsMap.put(0, new int[]{80, 20, 0, 0, 0, 0, 0, 0, 0});
         metalsMap.put(1, new int[]{80, 15, 5, 0, 0, 0, 0, 0, 0});
         metalsMap.put(2, new int[]{80, 12, 2, 6, 0, 0, 0, 0, 0});
@@ -229,24 +212,19 @@ public class GeneratorController implements Initializable {
         metalsMap.put(8, new int[]{0, 0, 0, 2, 0, 3, 0, 0, 95});
     }
 
-    private void addToMetalsMap(){
-
-    }
-
     private void setStops(int i) {
         setTextFields(metalsMap.get(i));
     }
 
     private void setTextFields(int[] metals) {
-        for (int i=0; i<metalsArray.length; i++)
+        for (int i = 0; i < metalsArray.length; i++)
             metalsArray[i].setText(Integer.toString(metals[i]));
     }
 
     private int[] getMetalsPercentage() {
         int[] data = new int[metalsArray.length];
-        for (int i=0; i<metalsArray.length; i++)
+        for (int i = 0; i < metalsArray.length; i++)
             data[i] = Integer.parseInt(metalsArray[i].getText());
         return data;
     }
-
 }

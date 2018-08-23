@@ -46,6 +46,7 @@ public enum Metals {
 
         }
     }
+
     public static int getMinTemperature(Metals metal) {
         switch (metal) {
             case Aluminium:
@@ -71,6 +72,7 @@ public enum Metals {
         }
 
     }
+
     public static double getPrice(Metals metal) {
         switch (metal) {
             case Aluminium:

@@ -16,22 +16,26 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ExtremeController implements Initializable{
+public class ExtremeController implements Initializable {
 
     private Controller controller = Controller.getInstance();
 
-    @FXML private Pane ExtremePane;
-    @FXML private ListView<String> listView;
-    @FXML private TableView tableView;
-    @FXML private ChoiceBox choiceBox;
+    @FXML
+    private Pane ExtremePane;
+    @FXML
+    private ListView<String> listView;
+    @FXML
+    private TableView tableView;
+    @FXML
+    private ChoiceBox choiceBox;
 
     @FXML
-    protected void handleBack(ActionEvent event){
+    protected void handleBack(ActionEvent event) {
         controller.handleBack(ExtremePane);
     }
 
-    public void handleData(ActionEvent event) throws IOException {
-        if (choiceBox.getSelectionModel().getSelectedItem() == null){
+    public void handleData(ActionEvent event) {
+        if (choiceBox.getSelectionModel().getSelectedItem() == null) {
             new Alert(Alert.AlertType.ERROR, "Nie wybrano parametru").showAndWait();
             return;
         }
@@ -48,7 +52,7 @@ public class ExtremeController implements Initializable{
         controller.initialize(listView);
     }
 
-    public void setScene(Stage stage, Parent root){
+    public void setScene(Stage stage, Parent root) {
         controller.setScene(stage, root, "Extreme");
     }
 }
