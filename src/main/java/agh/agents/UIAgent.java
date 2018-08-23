@@ -110,6 +110,8 @@ public class UIAgent extends Agent implements InterfaceUI {
 
     @Override
     public void startTraining() {
+        learningFinished = false;
+        learningStep = 0;
         addBehaviour(new Behaviour() {
             @Override
             public void action() {
@@ -165,8 +167,6 @@ public class UIAgent extends Agent implements InterfaceUI {
             }
         });
 
-        learningFinished = false;
-        learningStep = 0;
     }
 
     protected void setup() {

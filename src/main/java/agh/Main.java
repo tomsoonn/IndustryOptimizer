@@ -1,8 +1,10 @@
 package agh;
 
+import agh.agents.InterfaceUI;
 import agh.classification.ProductionData;
 import agh.agents.MainContainer;
 import jade.wrapper.AgentController;
+import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -10,6 +12,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Main extends Application {
     public static ProductionData productionData = new ProductionData();
@@ -26,7 +30,7 @@ public class Main extends Application {
         });
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException, ControllerException {
 
         try {
             AgentController prod = MainContainer.cc.createNewAgent("Production-agent",
@@ -38,9 +42,10 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
-        Thread thread = new Thread(() ->
-                productionData.train("TrainingData.arff"));
-        thread.start();
+        AgentController ac = MainContainer.cc.getAgent("UI-agent");
+        InterfaceUI uiObj = ac.getO2AInterface(InterfaceUI.class);
+        uiObj.startTraining();
+
         launch(args);
     }
 }

@@ -136,9 +136,9 @@ public class PredictController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        initializeChoiceBoxes();
         initializeAllParameters(); //TEMPORARY FOR TESTING
         initializeTextFields();
+        initializeChoiceBoxes();
     }
 
     private void initMetalsMap() {
