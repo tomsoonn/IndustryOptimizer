@@ -2,35 +2,23 @@ package agh.controllers;
 
 import agh.agents.InterfaceUI;
 import agh.agents.MainContainer;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.util.JSON;
 import agh.generator.Generator;
 import jade.wrapper.AgentController;
 import jade.wrapper.ControllerException;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import agh.Main;
-import org.codehaus.jackson.io.UTF8Writer;
 
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -99,10 +87,18 @@ public class GeneratorController implements Initializable {
     }
 
     @FXML
-    private void handleAddStop(ActionEvent event) {
+    private void handleAddStop(ActionEvent event) throws IOException {
         String name = stopName.getText();
         int[] data = getMetalsPercentage();
         //TODO
+        FileWriter file = new FileWriter("Stops.txt", true);
+
+        BufferedWriter out = new BufferedWriter(file);
+        out.write("\n" + name + ", " + Arrays.toString(data));
+        out.close();
+        metalsMap.put(metalsMap.size(), data);
+        stops.getItems().add(name);
+
     }
 
     private void addToDataBase() throws ControllerException {
@@ -159,7 +155,11 @@ public class GeneratorController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeChoiceBoxes();
+        try {
+            initializeChoiceBox();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         initializeTextFields();
     }
 
@@ -167,7 +167,40 @@ public class GeneratorController implements Initializable {
         metalsArray = new TextField[]{aluminium, krzem, magnez, miedz, cynk, cyna, nikiel, zelazo, olow};
     }
 
-    private void initializeChoiceBoxes() {
+    private void initializeChoiceBox() throws IOException {
+        ObservableList<String> options = FXCollections.observableArrayList();
+        FileReader fileReader;
+
+        try {
+            fileReader = new FileReader("Stops.txt");
+        } catch (FileNotFoundException e) {
+            initDefaultStops();
+            return;
+        }
+
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String[] params;
+        int[] percents = new int[9];
+        String line = bufferedReader.readLine();
+        do {
+            params = fromString(line);
+            options.add(params[0]);
+            for (int i = 1; i < params.length; i++) {
+                percents[i - 1] = Integer.parseInt(params[i]);
+            }
+            line = bufferedReader.readLine();
+            addToMetalsMap(percents.clone());
+        } while (line != null);
+
+        bufferedReader.close();
+
+        stops.setItems(options);
+        stops.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> setStops(newValue.intValue()));
+
+    }
+
+    private void initDefaultStops() throws IOException {
+        initMetalsMap();
         ObservableList<String> options = FXCollections.observableArrayList(
                 "AlSi",
                 "AlSiMg",
@@ -181,11 +214,21 @@ public class GeneratorController implements Initializable {
         );
         stops.setItems(options);
         stops.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> setStops(newValue.intValue()));
+        FileWriter writer = new FileWriter("Stops.txt");
+        for (int i = 0; i < options.size() - 1; i++)
+            writer.write(options.get(i) + ", " + Arrays.toString(metalsMap.get(i)) + "\n");
+        writer.write(options.get(options.size() - 1) + ", " + Arrays.toString(metalsMap.get(options.size() - 1)));
+        writer.close();
+    }
 
+    private String[] fromString(String string) {
+        String[] strings = string.replace("[", "").replace("]", "").split(", ");
+        String result[] = new String[strings.length];
+        System.arraycopy(strings, 0, result, 0, result.length);
+        return result;
     }
 
     private void initializeTextFields() {
-        initMetalsMap();
         initTextFieldsArray();
         for (TextField metal : metalsArray) {
             metal.textProperty().addListener((observable, oldValue, newValue) -> remained.setText(String.valueOf(100 - getValue())));
@@ -210,6 +253,10 @@ public class GeneratorController implements Initializable {
         metalsMap.put(6, new int[]{0, 0, 0, 70, 30, 0, 0, 0, 0});
         metalsMap.put(7, new int[]{0, 0, 0, 30, 0, 0, 67, 3, 0});
         metalsMap.put(8, new int[]{0, 0, 0, 2, 0, 3, 0, 0, 95});
+    }
+
+    private void addToMetalsMap(int[] array) {
+        metalsMap.put(metalsMap.size(), array);
     }
 
     private void setStops(int i) {

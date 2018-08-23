@@ -15,11 +15,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -180,6 +181,55 @@ public class PredictController implements Initializable {
         upgrades.setItems(options);
         upgrades.getSelectionModel().selectFirst();
         options = FXCollections.observableArrayList(
+                "MultilayerPerceptron",
+                "M5P",
+                "RandomForest",
+                "Vote"
+        );
+        classifiers.setItems(options);
+        classifiers.getSelectionModel().selectFirst();
+        try {
+            initializeChoiceBox();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initializeChoiceBox() throws IOException {
+        ObservableList<String> options = FXCollections.observableArrayList();
+        FileReader fileReader;
+
+        try {
+            fileReader = new FileReader("Stops.txt");
+        } catch (FileNotFoundException e) {
+            initDefaultStops();
+            return;
+        }
+
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String[] params;
+        int[] percents = new int[9];
+        String line = bufferedReader.readLine();
+        do {
+            params = fromString(line);
+            options.add(params[0]);
+            for (int i = 1; i < params.length; i++) {
+                percents[i - 1] = Integer.parseInt(params[i]);
+            }
+            line = bufferedReader.readLine();
+            addToMetalsMap(percents.clone());
+        } while (line != null);
+
+        bufferedReader.close();
+
+        stops.setItems(options);
+        stops.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> setStops(newValue.intValue()));
+
+    }
+
+    private void initDefaultStops() throws IOException {
+        initMetalsMap();
+        ObservableList<String> options = FXCollections.observableArrayList(
                 "AlSi",
                 "AlSiMg",
                 "AlSiCuMg",
@@ -192,18 +242,21 @@ public class PredictController implements Initializable {
         );
         stops.setItems(options);
         stops.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> setStops(newValue.intValue()));
-        options = FXCollections.observableArrayList(
-                "MultilayerPerceptron",
-                "M5P",
-                "RandomForest",
-                "Vote"
-        );
-        classifiers.setItems(options);
-        classifiers.getSelectionModel().selectFirst();
+        FileWriter writer = new FileWriter("Stops.txt");
+        for (int i = 0; i < options.size() - 1; i++)
+            writer.write(options.get(i) + ", " + Arrays.toString(metalsMap.get(i)) + "\n");
+        writer.write(options.get(options.size() - 1) + ", " + Arrays.toString(metalsMap.get(options.size() - 1)));
+        writer.close();
+    }
+
+    private String[] fromString(String string) {
+        String[] strings = string.replace("[", "").replace("]", "").split(", ");
+        String result[] = new String[strings.length];
+        System.arraycopy(strings, 0, result, 0, result.length);
+        return result;
     }
 
     private void initializeTextFields() {
-        initMetalsMap();
         initTextFieldsArray();
         for (TextField metal : metalsArray) {
             metal.textProperty().addListener((observable, oldValue, newValue) -> remained.setText(String.valueOf(100 - getValue())));
@@ -232,6 +285,11 @@ public class PredictController implements Initializable {
         for (int i = 0; i < metalsArray.length; i++)
             metalsArray[i].setText(Integer.toString(metals[i]));
     }
+
+    private void addToMetalsMap(int[] array) {
+        metalsMap.put(metalsMap.size(), array);
+    }
+
 
     static String readFile(String path, Charset encoding)
             throws IOException {
