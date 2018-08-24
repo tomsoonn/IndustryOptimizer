@@ -67,7 +67,6 @@ public class GeneratorController implements Initializable {
 
     @FXML
     private void handleGenerate(ActionEvent event) {
-        checkIfProperData();
         if (filename.getText() == null || filename.getText().trim().isEmpty() || quantity.getText() == null || quantity.getText().trim().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Nie wprowadzono wszystkich danych").showAndWait();
             return;
@@ -125,10 +124,6 @@ public class GeneratorController implements Initializable {
         InterfaceUI uiObj = ac.getO2AInterface(InterfaceUI.class);
 
         uiObj.startTraining();
-    }
-
-    private void checkIfProperData() {
-        //TODO
     }
 
     @FXML

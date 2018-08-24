@@ -1,9 +1,6 @@
 package agh.controllers;
 
 import agh.classification.WekaManager;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.util.JSON;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -78,7 +75,6 @@ public class Controller {
             return;
         }
         String file = listView.getSelectionModel().getSelectedItem();
-        //TODO
     }
 
     public void handleResults(TableView tableView, String path, int classifier) throws IOException {

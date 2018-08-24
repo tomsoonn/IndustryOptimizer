@@ -88,11 +88,7 @@ public class PredictController implements Initializable {
     private void checkIfProperData() {
         if (getValue() > 100) {
             new Alert(Alert.AlertType.ERROR, "Niepoprawne wartości metali").showAndWait();
-            return;
         }
-//        String val = tf1.getText() + "," + tf2.getText() + "," + tf3.getText() + "," + tf4.getText() + "," + tf5.getText()
-//                + "," + tf6.getText() + "," + tf7.getText() + "," + tf8.getText() + "," + tf9.getText();
-
     }
 
     @FXML

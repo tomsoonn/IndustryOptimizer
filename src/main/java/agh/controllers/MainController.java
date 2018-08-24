@@ -31,20 +31,6 @@ public class MainController {
     }
 
     @FXML
-    protected void handleExtreme(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxml/extreme.fxml"));
-        Parent root;
-        try {
-            root = (Parent) loader.load();
-            ExtremeController controller = (ExtremeController) loader.getController();
-            controller.setScene((Stage) mainPane.getScene().getWindow(), root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
     protected void handlePrediction(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxml/predict.fxml"));
@@ -52,20 +38,6 @@ public class MainController {
         try {
             root = (Parent) loader.load();
             PredictController controller = (PredictController) loader.getController();
-            controller.setScene((Stage) mainPane.getScene().getWindow(), root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    protected void handleStats(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxml/stats.fxml"));
-        Parent root;
-        try {
-            root = (Parent) loader.load();
-            StatsController controller = (StatsController) loader.getController();
             controller.setScene((Stage) mainPane.getScene().getWindow(), root);
         } catch (IOException e) {
             e.printStackTrace();
