@@ -204,20 +204,6 @@ public class ProductionAgent extends Agent {
                                 msg.setContent(finish);
                                 send(msg);
                                 break;
-                            case (AgentMessages.GET_PROCESS_IDS):
-                                msg = new ACLMessage(AgentMessages.GET_PROCESS_IDS);
-                                msg.addReceiver(systemAgents.get(1));
-                                msg.setContent("");
-                                send(msg);
-                                break;
-                            case (AgentMessages.GET_PROCESS_IDS_ACK):
-                                msg = new ACLMessage(AgentMessages.GET_PROCESS_IDS_ACK);
-                                String pids = check.getContent();
-                                msg.addReceiver(systemAgents.get(0));
-                                msg.setContent(pids);
-                                send(msg);
-                                System.out.println("Whatever");
-                                break;
                             default:
                                 break;
                         }
