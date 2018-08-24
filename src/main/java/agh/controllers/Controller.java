@@ -1,9 +1,8 @@
 package agh.controllers;
 
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.util.JSON;
+import agh.classification.WekaManager;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,36 +13,45 @@ import javafx.stage.Stage;
 import org.javafxdata.datasources.provider.CSVDataSource;
 import org.javafxdata.datasources.reader.DataSourceReader;
 import org.javafxdata.datasources.reader.FileSource;
+import org.apache.commons.io.comparator.LastModifiedFileComparator;
+import weka.core.Instances;
+import weka.core.converters.ArffLoader;
+import weka.core.converters.CSVSaver;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import agh.Main;
 
 public class Controller {
-    private static Controller controller = new Controller( );
-    private volatile boolean changed = false;
-    private volatile boolean isChanged = false;
+    private static Controller controller = new Controller();
 
-    private Controller() { }
+    private Controller() {
+    }
 
     /* Static 'instance' method */
-    public static Controller getInstance( ) {
+    public static Controller getInstance() {
         return controller;
     }
 
-    public void setScene(Stage stage, Parent root, String title){
+    public void setScene(Stage stage, Parent root, String title) {
         stage.setTitle(title);
-        stage.setScene(new Scene(root, 1140, 700));
+        stage.setScene(new Scene(root));
         stage.show();
     }
 
     public void initialize(ListView listView) {
         List<String> values = new ArrayList<>();
+        File[] listOfFiles = new File(".").listFiles((dir, name) -> name.endsWith(".arff"));
 
-        Set<String> colls = Main.database.getCollectionNames();
-        values.addAll(colls);
+        if (listOfFiles != null && listOfFiles.length > 0) {
+            Arrays.sort(listOfFiles, LastModifiedFileComparator.LASTMODIFIED_COMPARATOR);
+            for (File listOfFile : listOfFiles) {
+                if (listOfFile.isFile()) {
+                    values.add(listOfFile.getName());
+                }
+            }
+        }
 
         listView.setItems(FXCollections.observableList(values));
     }
@@ -61,54 +69,38 @@ public class Controller {
         }
     }
 
-    public void handleData(ListView<String> listView, String taskName) throws IOException {
-        if (listView.getSelectionModel().getSelectedItem() == null){
+    public void handleData(ListView<String> listView, String taskName) {
+        if (listView.getSelectionModel().getSelectedItem() == null) {
             new Alert(Alert.AlertType.ERROR, "Nie wybrano danych").showAndWait();
             return;
         }
-
-        String coll = listView.getSelectionModel().getSelectedItem();
-        DBCollection collection = Main.database.getCollection(coll);
-        DBCursor cursor = collection.find();
-        JSON json = new JSON();
-        String serialize = json.serialize(cursor);
-        System.out.println(serialize);
+        String file = listView.getSelectionModel().getSelectedItem();
     }
 
-    public void handleResults(TableView tableView, String path) throws FileNotFoundException {
-        DataSourceReader dsr1 = new FileSource(path);
-        String[] columnsArray = {"m1", "m2", "m3", "m4", "m5", "t1", "cz1", "t2", "cz2", "ocena"};
-        CSVDataSource ds1 = new CSVDataSource(dsr1,columnsArray);
+    public void handleResults(TableView tableView, String path, int classifier) throws IOException {
+        WekaManager.makeClassification(path,"classfied_"+path, classifier);
+        ArffLoader arffLoader = new ArffLoader();
+        arffLoader.setFile(new File("classfied_"+path));
+        Instances data = arffLoader.getDataSet();
+        CSVSaver csvSaver = new CSVSaver();
+        csvSaver.setInstances(data);
+        csvSaver.setFile(new File("csv.csv"));
+        csvSaver.writeBatch();
+        String[] columnsArray = {"Aluminium","Krzem","Magnez","Miedz","Cynk","Cyna","Nikiel","Zelazo","Olow","TemperaturaWytapiania","CzasWytapiania","TemperaturaStudzenia","CzasPodgrzewania","TemperaturaStudzenia2","CzasPodgrzewania2","StopieńUszlachetniania","Jakość"
+        };
+        DataSourceReader dsr1 = new FileSource("csv.csv");
+        CSVDataSource ds1 = new CSVDataSource(dsr1, columnsArray);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableView.getItems().clear();
+        tableView.getColumns().clear();
         tableView.setItems(ds1.getData());
         tableView.getColumns().addAll(ds1.getColumns());
-        TableColumn tableColumn = tableView.getVisibleLeafColumn(9);
-
-        tableColumn.setCellFactory(column -> {
-            return new TableCell<String, String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-
-                    setText(empty ? "" : getItem().toString());
-                    setGraphic(null);
-
-                    TableRow<String> currentRow = getTableRow();
-
-                    if (!isEmpty()) {
-                        if(item.equals("v.good"))
-                            currentRow.setStyle("-fx-background-color:lightgreen");
-                        if(item.equals("v.bad"))
-                            currentRow.setStyle("-fx-background-color:red");
-                    }
-                }
-            };
-        });
+        new File("csv.csv").delete();
     }
 
     public void handleShowData(TextField textView, String path) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(path));
-        String line = "";
+        String line;
         String[] result = null;
         while ((line = br.readLine()) != null)
             result = line.split(",");
@@ -116,45 +108,23 @@ public class Controller {
         textView.setText(result[9]);
     }
 
-    public void handleConfirm(){
-        isChanged = true;
-    }
-
     public void handleResult(String path, TextArea textArea) throws IOException {
         String line;
-        String content = "";
+        StringBuilder content = new StringBuilder();
         FileReader fileReader = new FileReader(path);
         BufferedReader buffer = new BufferedReader(fileReader);
 
         while ((line = buffer.readLine()) != null) {
-            content += line;
-            content += "\n";
+            content.append(line);
+            content.append("\n");
         }
         buffer.close();
-        textArea.setText(content);
+        textArea.setText(content.toString());
     }
 
-    public void handleProcessing(String path) throws IOException {
-        String line;
-        String content = "";
-        FileReader fileReader = new FileReader("python/output/processing.txt");
-        BufferedReader buffer = new BufferedReader(fileReader);
-
-        while ((line = buffer.readLine()) != null) {
-            content += line;
-            content += "\n";
-        }
-        buffer.close();
-        content += "\nMachine Learning:\n";
-
-        FileReader fileReader1 = new FileReader("python/output/process_machine_learning.txt");
-        BufferedReader buffer1 = new BufferedReader(fileReader1);
-        while ((line = buffer1.readLine()) != null) {
-            content += line;
-            content += "\n";
-        }
-        buffer1.close();
-
+    @FXML
+    public void handleProcessing(int classifier, String filename) {
+        String content = WekaManager.makeTest(filename, classifier);
         TextArea textArea = new TextArea(content);
         textArea.setWrapText(true);
         textArea.setEditable(false);
@@ -170,5 +140,4 @@ public class Controller {
 
         newWindow.show();
     }
-
 }

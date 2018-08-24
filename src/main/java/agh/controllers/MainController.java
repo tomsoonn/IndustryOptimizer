@@ -12,89 +12,55 @@ import java.io.IOException;
 
 public class MainController {
 
-    @FXML private Pane mainPane;
+    @FXML
+    private Pane mainPane;
 
-    @FXML protected void handleClassify(ActionEvent event){
+    @FXML
+    protected void handleTesting(ActionEvent event) {
 
         FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxml/classify.fxml"));
+                .getResource("/fxml/testing.fxml"));
         Parent root;
         try {
-            root = (Parent)loader.load();
-            ClassifyControler controller = (ClassifyControler) loader.getController();
+            root = (Parent) loader.load();
+            TestingController controller = (TestingController) loader.getController();
             controller.setScene((Stage) mainPane.getScene().getWindow(), root);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @FXML protected void handleExtreme(ActionEvent event){
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxml/extreme.fxml"));
-        Parent root;
-        try {
-            root = (Parent)loader.load();
-            ExtremeController controller = (ExtremeController) loader.getController();
-            controller.setScene((Stage) mainPane.getScene().getWindow(), root);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML protected void handlePrediction(ActionEvent event){
+    @FXML
+    protected void handlePrediction(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxml/predict.fxml"));
         Parent root;
         try {
-            root = (Parent)loader.load();
+            root = (Parent) loader.load();
             PredictController controller = (PredictController) loader.getController();
             controller.setScene((Stage) mainPane.getScene().getWindow(), root);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @FXML protected void handleStats(ActionEvent event){
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/fxml/stats.fxml"));
-        Parent root;
-        try {
-            root = (Parent)loader.load();
-            StatsController controller = (StatsController) loader.getController();
-            controller.setScene((Stage) mainPane.getScene().getWindow(), root);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML private Pane mainGridPane;
-
-    @FXML protected void handleGenerateData(ActionEvent event){
-        mainGridPane.setVisible(true);
-    }
-
-    @FXML protected void handleSubmitButtonAction(ActionEvent event) {
+    @FXML
+    protected void handleGenerateData(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/fxml/generator.fxml"));
         Parent root;
         try {
-            root = (Parent)loader.load();
+            root = (Parent) loader.load();
             GeneratorController controller = (GeneratorController) loader.getController();
             controller.setScene((Stage) mainPane.getScene().getWindow(), root);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    public void setScene(Stage stage, Parent root){
-        stage.setTitle("Main");
-        stage.setScene(new Scene(root, 1140, 700));
+    public void setScene(Stage stage, Parent root) {
+        stage.setTitle("IndustryOptimizer");
+        stage.setScene(new Scene(root));
         stage.show();
     }
 }

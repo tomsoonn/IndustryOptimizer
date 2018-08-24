@@ -1,37 +1,50 @@
 package agh;
 
-import com.mongodb.*;
+import agh.agents.InterfaceUI;
+import agh.classification.ProductionData;
+import agh.agents.MainContainer;
+import jade.wrapper.AgentController;
+import jade.wrapper.ControllerException;
+import jade.wrapper.StaleProxyException;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
-import java.io.*;
+import java.io.IOException;
 
 public class Main extends Application {
-    public static MongoClient mongoClient = new MongoClient();
-    public static DB database = mongoClient.getDB("aghio");
+    public static ProductionData productionData = new ProductionData();
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
-        primaryStage.setTitle("");
-        primaryStage.setScene(new Scene(root, 1140, 700));
+        primaryStage.setTitle("IndustryOptimizer");
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent t) {
-                Platform.exit();
-                System.exit(0);
-            }
+        primaryStage.setOnCloseRequest(t -> {
+            Platform.exit();
+            System.exit(0);
         });
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, ControllerException {
+
+        try {
+            AgentController prod = MainContainer.cc.createNewAgent("Production-agent",
+                    "agh.agents.ProductionAgent", null);
+            prod.start();
+            AgentController rma = MainContainer.cc.createNewAgent("rma", "jade.tools.rma.rma", null);
+            rma.start();
+        } catch (StaleProxyException e) {
+            e.printStackTrace();
+        }
+
+        AgentController ac = MainContainer.cc.getAgent("UI-agent");
+        InterfaceUI uiObj = ac.getO2AInterface(InterfaceUI.class);
+        uiObj.startTraining();
 
         launch(args);
     }
