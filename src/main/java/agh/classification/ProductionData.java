@@ -12,16 +12,37 @@ import java.io.*;
 
 public class ProductionData {
 
-    private MultilayerPerceptron mlp = new MultilayerPerceptron();
-    private RandomForest forest = new RandomForest();
-    private M5P m5p = new M5P();
-    private Vote vote = new Vote();
+    private MultilayerPerceptron mlp;
+    private RandomForest forest;
+    private M5P m5p;
+    private Vote vote;
     private Classifier actualClassifier;
 
     public ProductionData() {
+        mlp = new MultilayerPerceptron();
+        forest = new RandomForest();
+        m5p = new M5P();
+        vote = new Vote();
+        vote.setClassifiers(new Classifier[]{new M5P(), new RandomForest(), new MultilayerPerceptron()});
     }
 
-    public void train(String trainFile) {
+    public MultilayerPerceptron getMlp() {
+        return mlp;
+    }
+
+    public RandomForest getForest() {
+        return forest;
+    }
+
+    public M5P getM5p() {
+        return m5p;
+    }
+
+    public Vote getVote() {
+        return vote;
+    }
+
+    public void train(String trainFile, Classifier classifier) {
         System.out.println("TrainingStarted");
         try {
             DataSource source1 = new DataSource(trainFile);
@@ -29,15 +50,7 @@ public class ProductionData {
             if (trainData.classIndex() == -1)
                 trainData.setClassIndex(trainData.numAttributes() - 1);
 
-            forest.buildClassifier(trainData);
-            m5p.buildClassifier(trainData);
-            //mlp.setLearningRate(0.3);
-            //mlp.setMomentum(0.2);
-            //mlp.setTrainingTime(2000);
-            //mlp.setHiddenLayers("3");
-            mlp.buildClassifier(trainData);
-            vote.setClassifiers(new Classifier[]{new M5P(), new RandomForest(), new MultilayerPerceptron()});
-            vote.buildClassifier(trainData);
+            classifier.buildClassifier(trainData);
 
         } catch (Exception e) {
             e.printStackTrace();

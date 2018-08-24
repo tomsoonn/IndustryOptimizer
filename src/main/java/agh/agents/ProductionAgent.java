@@ -93,7 +93,7 @@ public class ProductionAgent extends Agent {
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
 
-                ACLMessage msg;
+                ACLMessage msg = null;
 
                 ArrayList<MessageTemplate> templates = new ArrayList<>();
                 templates.add(MessageTemplate.and(MessageTemplate.MatchSender(
@@ -105,6 +105,10 @@ public class ProductionAgent extends Agent {
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.SET_PROCESS_VALUES_ACK));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.START_PROCESS));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING));
+                templates.add(MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING_M5P));
+                templates.add(MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING_MLP));
+                templates.add(MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING_FOREST));
+                templates.add(MessageTemplate.MatchPerformative(AgentMessages.START_LEARNING_VOTE));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.RECEIVE_RESULT));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.GET_PROCESS_IDS));
                 templates.add(MessageTemplate.MatchPerformative(AgentMessages.GET_PROCESS_IDS_ACK));
@@ -130,8 +134,11 @@ public class ProductionAgent extends Agent {
                                 }
                                 break;
                             case (AgentMessages.START_LEARNING_AGENT):
-                                AID learningTag = createLearningAgent();
-                                learningAgents.add(learningTag);
+                                AID learningTag = null;
+                                for (int i=0; i<4; i++) {
+                                    learningTag = createLearningAgent();
+                                    learningAgents.add(learningTag);
+                                }
                                 boolean learningConfirmation = checkAgent(learningTag);
                                 if (learningConfirmation) {
                                     msg = new ACLMessage(AgentMessages.START_LEARNING_AGENT_ACK);
@@ -160,13 +167,31 @@ public class ProductionAgent extends Agent {
                                 send(msg);
                                 break;
                             case (AgentMessages.START_LEARNING):
-                                msg = new ACLMessage(AgentMessages.START_LEARNING);
-                                System.out.println("Start learning msg received");
-                                msg.addReceiver(learningAgents.get(learningAgents.size() - 1));
-                                msg.setContent("");
+                                System.out.println("started learning");
+                                sendToLearningAgents(msg, 0, AgentMessages.START_LEARNING_MLP);
+                                sendToLearningAgents(msg, 1, AgentMessages.START_LEARNING_M5P);
+                                sendToLearningAgents(msg, 2, AgentMessages.START_LEARNING_FOREST);
+                                sendToLearningAgents(msg, 3, AgentMessages.START_LEARNING_VOTE);
+                                break;
+                            case (AgentMessages.START_LEARNING_M5P_ACK):
+                                msg = new ACLMessage(AgentMessages.START_LEARNING_ACK);
+                                msg.setContent("Learning done.");
+                                msg.addReceiver(systemAgents.get(0));
                                 send(msg);
                                 break;
-                            case (AgentMessages.START_LEARNING_ACK):
+                            case (AgentMessages.START_LEARNING_MLP_ACK):
+                                msg = new ACLMessage(AgentMessages.START_LEARNING_ACK);
+                                msg.setContent("Learning done.");
+                                msg.addReceiver(systemAgents.get(0));
+                                send(msg);
+                                break;
+                            case (AgentMessages.START_LEARNING_FOREST_ACK):
+                                msg = new ACLMessage(AgentMessages.START_LEARNING_ACK);
+                                msg.setContent("Learning done.");
+                                msg.addReceiver(systemAgents.get(0));
+                                send(msg);
+                                break;
+                            case (AgentMessages.START_LEARNING_VOTE_ACK):
                                 msg = new ACLMessage(AgentMessages.START_LEARNING_ACK);
                                 msg.setContent("Learning done.");
                                 msg.addReceiver(systemAgents.get(0));
@@ -202,5 +227,13 @@ public class ProductionAgent extends Agent {
         });
 
 
+    }
+    private void sendToLearningAgents(ACLMessage msg, int i, int agentMsg){
+        System.out.println("sending msg to agent " + i);
+        msg = new ACLMessage(agentMsg);
+        msg.addReceiver(learningAgents.get(learningAgents.size() - 1 - i));
+        msg.setContent("");
+        send(msg);
+        System.out.println("msg sent to agent " + i);
     }
 }
