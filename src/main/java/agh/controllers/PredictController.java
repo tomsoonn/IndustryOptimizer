@@ -93,12 +93,11 @@ public class PredictController implements Initializable {
 //        String val = tf1.getText() + "," + tf2.getText() + "," + tf3.getText() + "," + tf4.getText() + "," + tf5.getText()
 //                + "," + tf6.getText() + "," + tf7.getText() + "," + tf8.getText() + "," + tf9.getText();
 
-        controller.handleConfirm();
     }
 
     @FXML
     public void handleProcessing(ActionEvent event) {
-        controller.handleProcessing(classifiers.getSelectionModel().getSelectedIndex());
+        controller.handleProcessing(classifiers.getSelectionModel().getSelectedIndex(), "TrainingData.arff");
     }
 
     @FXML

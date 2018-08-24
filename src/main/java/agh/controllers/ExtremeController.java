@@ -43,8 +43,8 @@ public class ExtremeController implements Initializable {
         controller.handleData(listView, "extreme," + param);
     }
 
-    public void handleShowData(ActionEvent event) throws FileNotFoundException {
-        controller.handleResults(tableView, "python/output/extreme.csv");
+    public void handleShowData(ActionEvent event) throws IOException {
+        //controller.handleResults(tableView, "python/output/extreme.csv");
     }
 
     @Override

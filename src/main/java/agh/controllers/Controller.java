@@ -17,18 +17,17 @@ import org.javafxdata.datasources.provider.CSVDataSource;
 import org.javafxdata.datasources.reader.DataSourceReader;
 import org.javafxdata.datasources.reader.FileSource;
 import org.apache.commons.io.comparator.LastModifiedFileComparator;
+import weka.core.Instances;
+import weka.core.converters.ArffLoader;
+import weka.core.converters.CSVSaver;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import agh.Main;
-
 public class Controller {
     private static Controller controller = new Controller();
-    private volatile boolean changed = false;
-    private volatile boolean isChanged = false;
 
     private Controller() {
     }
@@ -78,40 +77,29 @@ public class Controller {
             new Alert(Alert.AlertType.ERROR, "Nie wybrano danych").showAndWait();
             return;
         }
-
-        String coll = listView.getSelectionModel().getSelectedItem();
+        String file = listView.getSelectionModel().getSelectedItem();
         //TODO
     }
 
-    public void handleResults(TableView tableView, String path) throws FileNotFoundException {
-        DataSourceReader dsr1 = new FileSource(path);
-        String[] columnsArray = {"m1", "m2", "m3", "m4", "m5", "t1", "cz1", "t2", "cz2", "ocena"};
+    public void handleResults(TableView tableView, String path, int classifier) throws IOException {
+        WekaManager.makeClassification(path,"classfied_"+path, classifier);
+        ArffLoader arffLoader = new ArffLoader();
+        arffLoader.setFile(new File("classfied_"+path));
+        Instances data = arffLoader.getDataSet();
+        CSVSaver csvSaver = new CSVSaver();
+        csvSaver.setInstances(data);
+        csvSaver.setFile(new File("csv.csv"));
+        csvSaver.writeBatch();
+        String[] columnsArray = {"Aluminium","Krzem","Magnez","Miedz","Cynk","Cyna","Nikiel","Zelazo","Olow","TemperaturaWytapiania","CzasWytapiania","TemperaturaStudzenia","CzasPodgrzewania","TemperaturaStudzenia2","CzasPodgrzewania2","StopieńUszlachetniania","Jakość"
+        };
+        DataSourceReader dsr1 = new FileSource("csv.csv");
         CSVDataSource ds1 = new CSVDataSource(dsr1, columnsArray);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableView.getItems().clear();
+        tableView.getColumns().clear();
         tableView.setItems(ds1.getData());
         tableView.getColumns().addAll(ds1.getColumns());
-        TableColumn tableColumn = tableView.getVisibleLeafColumn(9);
-
-        tableColumn.setCellFactory(column -> {
-            return new TableCell<String, String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-
-                    setText(empty ? "" : getItem().toString());
-                    setGraphic(null);
-
-                    TableRow<String> currentRow = getTableRow();
-
-                    if (!isEmpty()) {
-                        if (item.equals("v.good"))
-                            currentRow.setStyle("-fx-background-color:lightgreen");
-                        if (item.equals("v.bad"))
-                            currentRow.setStyle("-fx-background-color:red");
-                    }
-                }
-            };
-        });
+        new File("csv.csv").delete();
     }
 
     public void handleShowData(TextField textView, String path) throws IOException {
@@ -122,10 +110,6 @@ public class Controller {
             result = line.split(",");
         assert result != null;
         textView.setText(result[9]);
-    }
-
-    public void handleConfirm() {
-        isChanged = true;
     }
 
     public void handleResult(String path, TextArea textArea) throws IOException {
@@ -143,8 +127,8 @@ public class Controller {
     }
 
     @FXML
-    public void handleProcessing(int classifier) {
-        String content = WekaManager.makeTest("TrainingData.arff", classifier);
+    public void handleProcessing(int classifier, String filename) {
+        String content = WekaManager.makeTest(filename, classifier);
         TextArea textArea = new TextArea(content);
         textArea.setWrapText(true);
         textArea.setEditable(false);
