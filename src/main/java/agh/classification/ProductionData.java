@@ -3,8 +3,9 @@ package agh.classification;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.functions.MultilayerPerceptron;
-import weka.classifiers.meta.*;
-import weka.classifiers.trees.*;
+import weka.classifiers.meta.Vote;
+import weka.classifiers.trees.M5P;
+import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 

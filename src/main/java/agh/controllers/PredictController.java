@@ -11,7 +11,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -79,6 +82,12 @@ public class PredictController implements Initializable {
     private TextArea input;
     @FXML
     private TextField cost;
+
+    static String readFile(String path, Charset encoding)
+            throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, encoding);
+    }
 
     @FXML
     protected void handleBack(ActionEvent event) {
@@ -283,13 +292,6 @@ public class PredictController implements Initializable {
 
     private void addToMetalsMap(int[] array) {
         metalsMap.put(metalsMap.size(), array);
-    }
-
-
-    static String readFile(String path, Charset encoding)
-            throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, encoding);
     }
 
 }

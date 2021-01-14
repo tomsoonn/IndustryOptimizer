@@ -1,6 +1,5 @@
 package agh.agents;
 
-import agh.classification.ProductionData;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;

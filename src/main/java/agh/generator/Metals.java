@@ -17,10 +17,6 @@ public enum Metals {
         value = i;
     }
 
-    public int getValue() {
-        return value;
-    }
-
     public static double getRatio(Metals metal) {
         switch (metal) {
             case Aluminium:
@@ -97,5 +93,9 @@ public enum Metals {
                 return -1;
         }
 
+    }
+
+    public int getValue() {
+        return value;
     }
 }

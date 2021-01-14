@@ -135,7 +135,7 @@ public class ProductionAgent extends Agent {
                                 break;
                             case (AgentMessages.START_LEARNING_AGENT):
                                 AID learningTag = null;
-                                for (int i=0; i<4; i++) {
+                                for (int i = 0; i < 4; i++) {
                                     learningTag = createLearningAgent();
                                     learningAgents.add(learningTag);
                                 }
@@ -214,7 +214,8 @@ public class ProductionAgent extends Agent {
 
 
     }
-    private void sendToLearningAgents(ACLMessage msg, int i, int agentMsg){
+
+    private void sendToLearningAgents(ACLMessage msg, int i, int agentMsg) {
         System.out.println("sending msg to agent " + i);
         msg = new ACLMessage(agentMsg);
         msg.addReceiver(learningAgents.get(learningAgents.size() - 1 - i));

@@ -10,15 +10,18 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.apache.commons.io.comparator.LastModifiedFileComparator;
 import org.javafxdata.datasources.provider.CSVDataSource;
 import org.javafxdata.datasources.reader.DataSourceReader;
 import org.javafxdata.datasources.reader.FileSource;
-import org.apache.commons.io.comparator.LastModifiedFileComparator;
 import weka.core.Instances;
 import weka.core.converters.ArffLoader;
 import weka.core.converters.CSVSaver;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -78,15 +81,15 @@ public class Controller {
     }
 
     public void handleResults(TableView tableView, String path, int classifier) throws IOException {
-        WekaManager.makeClassification(path,"classfied_"+path, classifier);
+        WekaManager.makeClassification(path, "classfied_" + path, classifier);
         ArffLoader arffLoader = new ArffLoader();
-        arffLoader.setFile(new File("classfied_"+path));
+        arffLoader.setFile(new File("classfied_" + path));
         Instances data = arffLoader.getDataSet();
         CSVSaver csvSaver = new CSVSaver();
         csvSaver.setInstances(data);
         csvSaver.setFile(new File("csv.csv"));
         csvSaver.writeBatch();
-        String[] columnsArray = {"Aluminium","Krzem","Magnez","Miedz","Cynk","Cyna","Nikiel","Zelazo","Olow","TemperaturaWytapiania","CzasWytapiania","TemperaturaStudzenia","CzasPodgrzewania","TemperaturaStudzenia2","CzasPodgrzewania2","StopieńUszlachetniania","Jakość"
+        String[] columnsArray = {"Aluminium", "Krzem", "Magnez", "Miedz", "Cynk", "Cyna", "Nikiel", "Zelazo", "Olow", "TemperaturaWytapiania", "CzasWytapiania", "TemperaturaStudzenia", "CzasPodgrzewania", "TemperaturaStudzenia2", "CzasPodgrzewania2", "StopieńUszlachetniania", "Jakość"
         };
         DataSourceReader dsr1 = new FileSource("csv.csv");
         CSVDataSource ds1 = new CSVDataSource(dsr1, columnsArray);
